@@ -1,4 +1,5 @@
-import { Box, Table, Icon, Grid, Flex, Heading, Text, Button, Input, Spinner, useToast } from '@chakra-ui/react';
+import { Box, Table, Icon, Grid, Flex, Heading, Text, Button, Input, Spinner } from '@chakra-ui/react';
+import { toaster } from '../components/ui/toaster';
 import { FiEdit2, FiCheckCircle, FiClock, FiDollarSign } from 'react-icons/fi';
 import { GiTooth } from 'react-icons/gi';
 import { useEffect, useState } from 'react';
@@ -16,7 +17,6 @@ type ServiceApi = {
 };
 
 export const ServicesPage = () => {
-    const toast = useToast();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [categoryFilter, setCategoryFilter] = useState<string>('Tous');
     const [servicesData, setServicesData] = useState<ServiceApi[]>([]);
@@ -123,21 +123,17 @@ export const ServicesPage = () => {
             if (!response.ok) throw new Error('Failed to update service');
             await fetchServices();
             closeModal();
-            toast({
+            toaster.create({
                 title: 'Succès',
                 description: 'Le service a été modifié avec succès',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
+                type: 'success',
             });
         } catch (error) {
             console.error('Error updating service:', error);
-            toast({
+            toaster.create({
                 title: 'Erreur',
                 description: 'Échec de la modification du service',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
+                type: 'error',
             });
         } finally {
             setIsUpdating(false);
