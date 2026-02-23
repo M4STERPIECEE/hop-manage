@@ -56,7 +56,7 @@ export const BookingForm = () => {
                 setSuccess(false);
                 setStep('form');
             }, 5000);
-        } catch (error) {
+        } catch {
             setError("Impossible de confirmer le rendez-vous. Veuillez réessayer.");
         } finally {
             setIsSubmitting(false);
@@ -403,7 +403,7 @@ export const BookingForm = () => {
     );
 };
 
-const SummaryItem = ({ icon, label, value }: { icon: any; label: string; value: string }) => (
+const SummaryItem = ({ icon, label, value }: { icon: React.ElementType; label: string; value: string }) => (
     <Flex align="center" p="0.8rem 1rem" bg="rgba(10, 77, 104, 0.03)" borderRadius="10px" gap="1rem" border="1px solid rgba(10, 77, 104, 0.05)">
         <Icon as={icon} color="accent" boxSize="1.2rem" />
         <Box>

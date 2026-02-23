@@ -1,6 +1,6 @@
 import { Box, Table, Text, Icon, Grid, Flex, Heading, Input, Button, Spinner, chakra } from '@chakra-ui/react';
 import { FiEdit2, FiTrash2, FiCalendar, FiCheckCircle, FiClock, FiSearch, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Badge } from '../components/common/Badge';
 import { Modal } from '../components/common/Modal';
 import type { Appointment } from '../types';
@@ -32,8 +32,9 @@ export const AppointmentsPage = () => {
     
     useEffect(() => {
         fetchAppointments();
-    }, [currentPage]);
-    const fetchAppointments = async () => {
+    }, [fetchAppointments]);
+
+    const fetchAppointments = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await fetch(`${apiBase}/appointments?page=${currentPage}&size=5`);
@@ -41,7 +42,13 @@ export const AppointmentsPage = () => {
             const data = await response.json();
             const content = data.content || data;
             const meta = data.totalPages !== undefined ? data : { totalPages: 1, totalElements: content.length };
-            const mapped: Appointment[] = content.map((app: any) => {
+            const mapped: Appointment[] = content.map((app: {
+                id: string;
+                appointmentDate: string;
+                status: Appointment['status'];
+                user?: { firstName: string; lastName: string; email: string; phone: string };
+                service?: { name: string };
+            }) => {
                 const dateStr = app.appointmentDate || '';
                 const dateObj = dateStr ? new Date(dateStr) : new Date();     
                 return {
@@ -65,7 +72,7 @@ export const AppointmentsPage = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [apiBase, currentPage]);
 
     const handleUpdateStatus = async (id: string, newStatus: string) => {
         setIsUpdating(true);
@@ -419,7 +426,7 @@ export const AppointmentsPage = () => {
                                             </Box>
                                         </Table.Cell>
                                         <Table.Cell py="1rem" px="1.25rem">
-                                            <Badge status={appointment.status as any}>
+                                            <Badge status={appointment.status}>
                                                 {appointment.status}
                                             </Badge>
                                         </Table.Cell>
@@ -482,7 +489,7 @@ export const AppointmentsPage = () => {
                 {selectedAppointment ? (
                     <Box>
                         <Text mb="1rem" fontWeight="600">Patient: {selectedAppointment.patient}</Text>
-                        <Text mb="1.5rem" color="textGray">Statut actuel: <Badge status={selectedAppointment.status as any}>{selectedAppointment.status}</Badge></Text>
+                        <Text mb="1.5rem" color="textGray">Statut actuel: <Badge status={selectedAppointment.status}>{selectedAppointment.status}</Badge></Text>
                         
                         <Grid templateColumns="repeat(2, 1fr)" gap="1rem" mb="2rem">
                             {['En attente', 'Confirmé', 'Terminé', 'Annulé'].map((s) => (

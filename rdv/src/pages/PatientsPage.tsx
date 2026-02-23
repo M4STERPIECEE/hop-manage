@@ -1,5 +1,5 @@
 import { Box, Table, Grid, Flex, Heading, Text, Input, Button, Icon, Spinner } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Modal } from '../components/common/Modal';
 import type { Patient } from '../types';
 import { FiChevronLeft, FiChevronRight, FiUsers, FiUserCheck, FiUserPlus, FiSearch } from 'react-icons/fi';
@@ -18,9 +18,9 @@ export const PatientsPage = () => {
 
     useEffect(() => {
         fetchPatients();
-    }, [currentPage]);
+    }, [fetchPatients]);
 
-    const fetchPatients = async () => {
+    const fetchPatients = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await fetch(`${apiBase}/users/patients?page=${currentPage}&size=5`);
@@ -28,8 +28,16 @@ export const PatientsPage = () => {
             const data = await response.json();
             
             const content = data.content || [];
-            const mapped: Patient[] = content.map((user: any) => ({
-                id: user.id || '',
+            const mapped: Patient[] = content.map((user: {
+                id: string | number;
+                firstName: string;
+                lastName: string;
+                email: string;
+                phone?: string;
+                updatedAt?: string;
+                createdAt?: string;
+            }) => ({
+                id: Number(user.id) || 0,
                 name: `${user.firstName} ${user.lastName}`,
                 email: user.email || '',
                 phone: user.phone || 'Non renseigné',
@@ -45,7 +53,7 @@ export const PatientsPage = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [apiBase, currentPage]);
 
     const formatDate = (dateStr: string) => {
         const date = new Date(dateStr);

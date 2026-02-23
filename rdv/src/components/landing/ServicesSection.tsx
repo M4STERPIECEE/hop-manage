@@ -23,7 +23,7 @@ export const ServicesSection = () => {
                 if (response.ok) {
                     const data = await response.json();
                     // Ajouter les icônes aux services
-                    const servicesWithIcons = data.map((service: any) => ({
+                    const servicesWithIcons = data.map((service: Service) => ({
                         ...service,
                         icon: serviceIcons[service.name] || '🦷',
                     }));

@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Grid, Heading, Text, Badge, Spinner, Icon } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Appointment } from '../types';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
@@ -31,22 +31,29 @@ export const CalendarPage = () => {
 
     useEffect(() => {
         fetchCalendarData();
-    }, [currentMonth, currentYear]);
+    }, [fetchCalendarData]);
 
-    const fetchCalendarData = async () => {
+    const fetchCalendarData = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await fetch(`${apiBase}/appointments/calendar?year=${currentYear}&month=${currentMonth + 1}`);
             if (!response.ok) throw new Error('Failed to fetch calendar data');
             const data = await response.json();
             
-            const mapped: Appointment[] = data.map((app: any) => ({
+            const mapped: Appointment[] = data.map((app: {
+                id: string;
+                user?: { firstName: string; lastName: string; email: string; phone: string };
+                service?: { name: string };
+                appointmentDate?: string;
+                status?: Appointment['status'];
+            }) => ({
                 id: app.id || '',
                 patient: app.user ? `${app.user.firstName} ${app.user.lastName}` : 'Inconnu',
                 email: app.user ? app.user.email : '',
                 phone: app.user ? app.user.phone : '',
                 service: app.service ? app.service.name : 'Service inconnu',
                 date: app.appointmentDate ? app.appointmentDate.split('T')[0] : '',
+                time: app.appointmentDate ? new Date(app.appointmentDate).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '',
                 status: app.status || 'En attente'
             }));
             
@@ -56,7 +63,7 @@ export const CalendarPage = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [apiBase, currentMonth, currentYear]);
 
     const changeMonth = (delta: number) => {
         let newMonth = currentMonth + delta;
