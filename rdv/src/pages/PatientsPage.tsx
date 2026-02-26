@@ -16,10 +16,6 @@ export const PatientsPage = () => {
 
     const apiBase = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
 
-    useEffect(() => {
-        fetchPatients();
-    }, [fetchPatients]);
-
     const fetchPatients = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -54,6 +50,10 @@ export const PatientsPage = () => {
             setIsLoading(false);
         }
     }, [apiBase, currentPage]);
+
+    useEffect(() => {
+        fetchPatients();
+    }, [fetchPatients]);
 
     const formatDate = (dateStr: string) => {
         const date = new Date(dateStr);

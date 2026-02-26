@@ -29,10 +29,6 @@ export const CalendarPage = () => {
 
     const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
-    useEffect(() => {
-        fetchCalendarData();
-    }, [fetchCalendarData]);
-
     const fetchCalendarData = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -58,12 +54,16 @@ export const CalendarPage = () => {
             }));
             
             setAppointments(mapped);
+            setIsLoading(false);
         } catch (error) {
             console.error('Error fetching calendar data:', error);
-        } finally {
             setIsLoading(false);
         }
     }, [apiBase, currentMonth, currentYear]);
+
+    useEffect(() => {
+        fetchCalendarData();
+    }, [fetchCalendarData]);
 
     const changeMonth = (delta: number) => {
         let newMonth = currentMonth + delta;
