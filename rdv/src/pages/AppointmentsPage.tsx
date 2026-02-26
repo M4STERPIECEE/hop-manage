@@ -30,10 +30,6 @@ export const AppointmentsPage = () => {
     const [totalElements, setTotalElements] = useState(0);
     const apiBase = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
     
-    useEffect(() => {
-        fetchAppointments();
-    }, [fetchAppointments]);
-
     const fetchAppointments = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -73,6 +69,10 @@ export const AppointmentsPage = () => {
             setIsLoading(false);
         }
     }, [apiBase, currentPage]);
+
+    useEffect(() => {
+        fetchAppointments();
+    }, [fetchAppointments]);
 
     const handleUpdateStatus = async (id: string, newStatus: string) => {
         setIsUpdating(true);
