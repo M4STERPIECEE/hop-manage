@@ -1,8 +1,8 @@
-# RDV Project - DevOps Infrastructure Documentation
+# RDV - DevOps Infrastructure Documentation
 
 This document describes the Kubernetes-based infrastructure and GitOps workflow for the RDV project.
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 The infrastructure is built on **Kubernetes** and managed via **ArgoCD** for continuous deployment.
 
@@ -17,7 +17,7 @@ The infrastructure is built on **Kubernetes** and managed via **ArgoCD** for con
 
 ---
 
-## 🚀 Getting Started (Local PC)
+## Getting Started (Local PC)
 
 ### 1. Prerequisites
 
@@ -199,7 +199,7 @@ kubectl port-forward svc/rdv-spring-backend 8080:8080
 
 ---
 
-## 🐙 ArgoCD Setup (GitOps)
+## ArgoCD Setup (GitOps)
 
 ### 1. Installation
 
