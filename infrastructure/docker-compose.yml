@@ -1,16 +1,16 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: rdv-db
+    container_name: appointment-database
     env_file:
-      - .env
+      - ../backend/.env
     ports:
       - "5433:5432"
     volumes:
       - ./k8s/sql:/docker-entrypoint-initdb.d:ro
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U masterpiece -d rdv_db"]
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,26 +22,27 @@ services:
           cpus: "1"
           memory: 512M
 
-  fastapi-backend:
+  spring-backend:
     build:
-      context: ./fastapi
+      context: ../backend
       dockerfile: Dockerfile
-    container_name: rdv-fastapi-backend
+    container_name: appointment-backend
     env_file:
-      - .env
+      - ../backend/.env
+    environment:
+      DB_HOST: db
     ports:
-      - "8000:8000"
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
     networks:
       - backend-net
-      - frontend-net
     deploy:
       resources:
         limits:
           cpus: "1"
-          memory: 256M
+          memory: 512M
 
 volumes:
   pgdata:
@@ -50,6 +51,3 @@ networks:
   backend-net:
     driver: bridge
     internal: false
-  frontend-net:
-    driver: bridge
-    name: rdv-frontend-net

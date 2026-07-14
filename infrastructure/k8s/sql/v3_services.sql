@@ -1,5 +1,3 @@
--- v3_services.sql
--- Default dental services
 
 INSERT INTO rdv.services (id, name, description, duration_minutes, price, status)
 SELECT gen_random_uuid(), 'Consultation generale', 'Consultation initiale et diagnostic', 30, 50000, 'Actif'

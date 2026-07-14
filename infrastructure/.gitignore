@@ -1,0 +1,5 @@
+.env
+.vscode
+.idea
+# k8s secrets
+k8s/secrets.yaml

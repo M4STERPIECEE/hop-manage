@@ -18,23 +18,9 @@ jobs:
           cache: 'gradle'
       - name: Build with Gradle
         run: |
-          cd backend/spring-boot
+          cd backend
           chmod +x gradlew
           ./gradlew build -x test
-
-  build-fastapi:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: |
-          cd backend/fastapi
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
   build-frontend:
     runs-on: ubuntu-latest

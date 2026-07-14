@@ -7,7 +7,6 @@ generatorOptions:
 resources:
   - secrets.yaml
   - postgres.yaml
-  - fastapi.yaml
   - spring-boot.yaml
 
 configMapGenerator:
