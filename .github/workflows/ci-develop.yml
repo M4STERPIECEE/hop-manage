@@ -21,14 +21,7 @@ jobs:
         run: |
           cd backend/spring-boot
           chmod +x gradlew
-          ./gradlew build -x test
-        env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: rdv_db
-          DB_USER: mock_user
-          DB_PASSWORD: mock_password
-          SPRING_PROFILES_ACTIVE: test
+          SPRING_PROFILES_ACTIVE=test ./gradlew build -x test
 
   build-fastapi:
     runs-on: ubuntu-latest
@@ -55,14 +48,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
-          cache-dependency-path: rdv/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: |
-          cd rdv
+          cd frontend
           npm install
       - name: Build frontend
         run: |
-          cd rdv
+          cd frontend
           npm run build
