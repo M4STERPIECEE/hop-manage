@@ -18,11 +18,7 @@ export const DashboardLayout = ({ title }: DashboardLayoutProps) => {
     return (
         <Flex minH="100vh">
             <Sidebar isOpen={isSidebarOpen} />
-            <Box
-                flex="1"
-                ml={{ base: '0', lg: '280px' }}
-                bg="bgLight"
-            >
+            <Box flex="1" ml={{ base: '0', lg: '280px' }} bg="bgLight">
                 <TopBar title={title} onMenuToggle={toggleSidebar} />
                 <Box p="2rem">
                     <Outlet />

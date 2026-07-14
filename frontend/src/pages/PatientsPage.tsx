@@ -22,7 +22,7 @@ export const PatientsPage = () => {
             const response = await fetch(`${apiBase}/users/patients?page=${currentPage}&size=5`);
             if (!response.ok) throw new Error('Failed to fetch patients');
             const data = await response.json();
-            
+
             const content = data.content || [];
             const mapped: Patient[] = content.map((user: {
                 id: string | number;
@@ -71,7 +71,7 @@ export const PatientsPage = () => {
         setFilteredPatients(filtered);
     };
     const totalPatientsCount = totalElements;
-    const activePatientsCount = patients.length; 
+    const activePatientsCount = patients.length;
     const newThisMonthCount = patients.filter(p => {
         const d = new Date(p.lastVisit);
         const now = new Date();
@@ -115,20 +115,7 @@ export const PatientsPage = () => {
                     </Box>
 
                     <Flex gap="0.75rem" align="center" flexWrap="nowrap" w="100%" maxW="520px">
-                        <Input
-                            placeholder="🔍 Rechercher un patient..."
-                            value={searchValue}
-                            onChange={(e) => handleSearch(e.target.value)}
-                            border="2px solid rgba(10, 77, 104, 0.15)"
-                            borderRadius="8px"
-                            px="1rem"
-                            py="0.6rem"
-                            fontSize="0.9rem"
-                            flex="1"
-                            transition="all 0.3s ease"
-                            _focus={{ borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)', outline: 'none' }}
-                            _hover={{ borderColor: 'rgba(10, 77, 104, 0.25)' }}
-                        />
+                        <Input placeholder="🔍 Rechercher un patient..." value={searchValue} onChange={(e) => handleSearch(e.target.value)} border="2px solid rgba(10, 77, 104, 0.15)" borderRadius="8px" px="1rem" py="0.6rem" fontSize="0.9rem" flex="1" transition="all 0.3s ease" _focus={{ borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)', outline: 'none' }} _hover={{ borderColor: 'rgba(10, 77, 104, 0.25)' }} />
                     </Flex>
                 </Flex>
 
