@@ -18,23 +18,9 @@ jobs:
           cache: 'gradle'
       - name: Build with Gradle
         run: |
-          cd backend/spring-boot
+          cd backend
           chmod +x gradlew
           ./gradlew build -x test
-
-  build-fastapi:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: |
-          cd backend/fastapi
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -43,14 +29,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
-          cache-dependency-path: rdv/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: |
-          cd rdv
+          cd frontend
           npm install
       - name: Build frontend
         run: |
-          cd rdv
+          cd frontend
           npm run build

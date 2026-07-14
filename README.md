@@ -103,8 +103,8 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 #### Windows (PowerShell)
 
 ```powershell
-docker build -t rdv-fastapi-backend:latest "D:\FREELANCE\inventory-management\MED-MANAGE\backend\fastapi"
-docker build -t rdv-spring-backend:latest "D:\FREELANCE\inventory-management\MED-MANAGE\backend\spring-boot"
+docker build -t rdv-fastapi-backend:latest "D:\FREELANCE\inventory-management\hop-manage\backend\fastapi"
+docker build -t rdv-spring-backend:latest "D:\FREELANCE\inventory-management\hop-manage\backend\spring-boot"
 ```
 
 #### Linux (bash)
