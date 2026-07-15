@@ -1,5 +1,5 @@
 import { Box, Table, Text, Icon, Grid, Flex, Heading, Input, Button, Spinner, chakra } from '@chakra-ui/react';
-import { FiEdit2, FiTrash2, FiCalendar, FiCheckCircle, FiClock, FiSearch, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { Pencil, Trash2, Calendar, CheckCircle, Clock, Search, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { Badge } from '../../components/common/Badge';
 import { Modal } from '../../components/common/Modal';
@@ -175,7 +175,7 @@ export const AppointmentsPage = () => {
             <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap="1.25rem" mb="2rem">
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)" boxShadow="0 2px 8px rgba(10, 77, 104, 0.06)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)', }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={FiCalendar} boxSize="1.5rem" color="primary" />
+                        <Icon as={Calendar} boxSize="1.5rem" color="primary" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
                             Total RDV
                         </Text>
@@ -186,7 +186,7 @@ export const AppointmentsPage = () => {
                 </Box>
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(34, 197, 94, 0.2)" boxShadow="0 2px 8px rgba(34, 197, 94, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)', }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={FiCheckCircle} boxSize="1.5rem" color="#22c55e" />
+                        <Icon as={CheckCircle} boxSize="1.5rem" color="#22c55e" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
                             Confirmés
                         </Text>
@@ -197,14 +197,14 @@ export const AppointmentsPage = () => {
                 </Box>
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(251, 191, 36, 0.2)" boxShadow="0 2px 8px rgba(251, 191, 36, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(251, 191, 36, 0.15)', }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={FiClock} boxSize="1.5rem" color="#fbbf24" />
+                        <Icon as={Clock} boxSize="1.5rem" color="#fbbf24" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">En attente</Text>
                     </Flex>
                     <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Poppins', sans-serif">{pendingCount}</Text>
                 </Box>
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)', }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={FiCheck} boxSize="1.5rem" color="accent" />
+                        <Icon as={Check} boxSize="1.5rem" color="accent" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Terminés</Text>
                     </Flex>
                     <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">{completedCount}</Text>
@@ -218,7 +218,7 @@ export const AppointmentsPage = () => {
                     </Box>
 
                     <Flex gap="0.75rem" align="center" flexWrap="nowrap" w="100%" maxW="550px">
-                        <Input placeholder="🔍 Rechercher un patient, service..." value={searchValue} onChange={(e) => handleSearch(e.target.value)} border="2px solid rgba(10, 77, 104, 0.15)" borderRadius="8px" px="1rem" py="0.6rem" fontSize="0.9rem" flex="1" transition="all 0.3s ease" _focus={{ borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)', outline: 'none' }} _hover={{ borderColor: 'rgba(10, 77, 104, 0.25)' }} />
+                        <Input placeholder="Rechercher un patient, service..." value={searchValue} onChange={(e) => handleSearch(e.target.value)} border="2px solid rgba(10, 77, 104, 0.15)" borderRadius="8px" px="1rem" py="0.6rem" fontSize="0.9rem" flex="1" transition="all 0.3s ease" _focus={{ borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)', outline: 'none' }} _hover={{ borderColor: 'rgba(10, 77, 104, 0.25)' }} />
                         <Button onClick={() => setIsModalOpen(true)} bg="primary" color="white" border="2px solid transparent" px="1.25rem" py="0.6rem" borderRadius="8px" cursor="pointer" fontWeight="600" fontSize="0.9rem" transition="all 0.3s ease" whiteSpace="nowrap" _hover={{ bg: 'rgba(10, 77, 104, 0.9)', transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.3)' }}>
                             + Nouveau RDV
                         </Button>
@@ -275,10 +275,10 @@ export const AppointmentsPage = () => {
                                         <Table.Cell py="1rem" px="1.25rem">
                                             <Flex gap="0.5rem">
                                                 <Box as="button" onClick={() => openEditModal(appointment)} bg="rgba(5, 199, 226, 0.1)" color="accent" p="0.5rem" borderRadius="6px" _hover={{ bg: 'rgba(5, 199, 226, 0.2)' }}>
-                                                    <Icon as={FiEdit2} />
+                                                    <Icon as={Pencil} />
                                                 </Box>
                                                 <Box as="button" bg="rgba(220, 38, 38, 0.1)" color="#dc2626" p="0.5rem" borderRadius="6px" _hover={{ bg: 'rgba(220, 38, 38, 0.2)' }}>
-                                                    <Icon as={FiTrash2} />
+                                                    <Icon as={Trash2} />
                                                 </Box>
                                             </Flex>
                                         </Table.Cell>
@@ -290,18 +290,18 @@ export const AppointmentsPage = () => {
                 </Box>
                 <Flex justify="center" align="center" gap="1rem" mt="1.5rem">
                     <Button variant="outline" size="sm" onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))} disabled={currentPage === 0} _disabled={{ opacity: 0.5, cursor: 'not-allowed' }}>
-                        <Icon as={FiChevronLeft} />
+                        <Icon as={ChevronLeft} />
                     </Button>
                     <Text fontWeight="600" fontSize="0.9rem" color="primary">
                         Page {currentPage + 1} sur {totalPages}
                     </Text>
                     <Button variant="outline" size="sm" onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))} disabled={currentPage >= totalPages - 1} _disabled={{ opacity: 0.5, cursor: 'not-allowed' }}>
-                        <Icon as={FiChevronRight} />
+                        <Icon as={ChevronRight} />
                     </Button>
                 </Flex>
                 {!isLoading && filteredAppointments.length === 0 && (
                     <Box textAlign="center" py="4rem">
-                        <Icon as={FiSearch} boxSize="3rem" color="rgba(10, 77, 104, 0.1)" mb="1rem" />
+                        <Icon as={Search} boxSize="3rem" color="rgba(10, 77, 104, 0.1)" mb="1rem" />
                         <Text fontSize="1.1rem" fontWeight="600" color="primary">Aucun rendez-vous trouvé</Text>
                     </Box>
                 )}
@@ -375,7 +375,7 @@ export const AppointmentsPage = () => {
             </Modal>
             {showSuccessToast && (
                 <Flex position="fixed" bottom="2rem" left="50%" transform="translateX(-50%)" bg="rgba(16, 185, 129, 0.95)" color="white" py="1rem" px="2rem" borderRadius="12px" boxShadow="0 10px 25px rgba(16, 185, 129, 0.3)" align="center" gap="0.75rem" zIndex="3000" css={{ animation: 'fadeInUp 0.4s ease-out' }}>
-                    <Icon as={FiCheck} boxSize="1.2rem" />
+                    <Icon as={Check} boxSize="1.2rem" />
                     <Text fontWeight="600">Statut mis à jour avec succès !</Text>
                 </Flex>
             )}

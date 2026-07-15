@@ -1,7 +1,6 @@
 import { Box, Table, Icon, Grid, Flex, Heading, Text, Button, Input, Spinner } from '@chakra-ui/react';
 import { toaster } from '../../components/ui/toaster';
-import { FiEdit2, FiCheckCircle, FiClock, FiDollarSign } from 'react-icons/fi';
-import { GiTooth } from 'react-icons/gi';
+import { Pencil, CheckCircle, Clock, DollarSign, Smile } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Badge } from '../../components/common/Badge';
 import { Modal } from '../../components/common/Modal';
@@ -154,7 +153,7 @@ export const ServicesPage = () => {
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)" boxShadow="0 2px 8px rgba(10, 77, 104, 0.06)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)' }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
                         <Box fontSize="2rem" color="accent">
-                            <Icon as={GiTooth} />
+                            <Icon as={Smile} />
                         </Box>
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
                             Total Services
@@ -168,7 +167,7 @@ export const ServicesPage = () => {
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(34, 197, 94, 0.2)" boxShadow="0 2px 8px rgba(34, 197, 94, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)' }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
                         <Box fontSize="2rem" color="#22c55e">
-                            <Icon as={FiCheckCircle} />
+                            <Icon as={CheckCircle} />
                         </Box>
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
                             Services Actifs
@@ -182,7 +181,7 @@ export const ServicesPage = () => {
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)' }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
                         <Box fontSize="2rem" color="accent">
-                            <Icon as={FiClock} />
+                            <Icon as={Clock} />
                         </Box>
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
                             Durée Moyenne
@@ -196,7 +195,7 @@ export const ServicesPage = () => {
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(251, 191, 36, 0.2)" boxShadow="0 2px 8px rgba(251, 191, 36, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(251, 191, 36, 0.15)' }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
                         <Box fontSize="2rem" color="#fbbf24">
-                            <Icon as={FiDollarSign} />
+                            <Icon as={DollarSign} />
                         </Box>
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
                             Prix Moyen
@@ -258,7 +257,7 @@ export const ServicesPage = () => {
                                         <Table.Cell py="1rem" px="1.25rem" fontWeight="600" color="primary" fontSize="0.95rem">
                                             <Flex align="center" gap="0.75rem">
                                                 <Box bg="rgba(5, 199, 226, 0.1)" borderRadius="8px" p="0.5rem" fontSize="1.25rem" color="accent">
-                                                    <Icon as={GiTooth} />
+                                                    <Icon as={Smile} />
                                                 </Box>
                                                 {service.name}
                                             </Flex>
@@ -266,7 +265,7 @@ export const ServicesPage = () => {
                                         <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.8)" fontSize="0.9rem">
                                             <Flex align="center" gap="0.5rem">
                                                 <Box fontSize="0.9rem" color="accent">
-                                                    <Icon as={FiClock} />
+                                                    <Icon as={Clock} />
                                                 </Box>
                                                 <Text fontWeight="500">{service.durationMinutes} min</Text>
                                             </Flex>
@@ -281,7 +280,7 @@ export const ServicesPage = () => {
                                         </Table.Cell>
                                         <Table.Cell py="1rem" px="1.25rem">
                                             <Box as="button" bg="rgba(5, 199, 226, 0.1)" border="1px solid rgba(5, 199, 226, 0.2)" cursor="pointer" p="0.5rem" borderRadius="6px" transition="all 0.3s ease" color="accent" display="flex" alignItems="center" justifyContent="center" _hover={{ bg: 'rgba(5, 199, 226, 0.2)', transform: 'translateY(-2px)', boxShadow: '0 2px 8px rgba(5, 199, 226, 0.3)' }} title="Modifier" onClick={() => openEditModal(service)}>
-                                                <Icon as={FiEdit2} boxSize="1.1rem" />
+                                                <Icon as={Pencil} boxSize="1.1rem" />
                                             </Box>
                                         </Table.Cell>
                                     </Table.Row>

@@ -1,21 +1,20 @@
 import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
-import type { IconType } from 'react-icons';
-import { FiBarChart2, FiCalendar, FiUsers, FiGrid, FiClipboard, FiSettings } from 'react-icons/fi';
+import { BarChart3, Calendar, Users, Grid, ClipboardList, Settings, Smile } from 'lucide-react';
 
 interface NavItem {
     path: string;
-    icon: IconType;
+    icon: typeof BarChart3;
     label: string;
 }
 
 const navItems: NavItem[] = [
-    { path: '/dashboard', icon: FiBarChart2, label: "Vue d'ensemble" },
-    { path: '/dashboard/appointments', icon: FiClipboard, label: 'Rendez-vous' },
-    { path: '/dashboard/patients', icon: FiUsers, label: 'Patients' },
-    { path: '/dashboard/calendar', icon: FiCalendar, label: 'Calendrier' },
-    { path: '/dashboard/services', icon: FiGrid, label: 'Services' },
-    { path: '/dashboard/settings', icon: FiSettings, label: 'Paramètres' },
+    { path: '/dashboard', icon: BarChart3, label: "Vue d'ensemble" },
+    { path: '/dashboard/appointments', icon: ClipboardList, label: 'Rendez-vous' },
+    { path: '/dashboard/patients', icon: Users, label: 'Patients' },
+    { path: '/dashboard/calendar', icon: Calendar, label: 'Calendrier' },
+    { path: '/dashboard/services', icon: Grid, label: 'Services' },
+    { path: '/dashboard/settings', icon: Settings, label: 'Paramètres' },
 ];
 
 interface SidebarProps {
@@ -30,7 +29,7 @@ export const Sidebar = ({ isOpen = true }: SidebarProps) => {
             <Box px="1.5rem" mb="2rem">
                 <Flex align="center" gap="0.5rem" fontFamily="'Poppins', sans-serif" fontSize="1.6rem" fontWeight="700">
                     <Flex w="40px" h="40px" bg="linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))" borderRadius="8px" align="center" justify="center" fontSize="1.5rem">
-                        🦷
+                        <Icon as={Smile} boxSize="1.5rem" />
                     </Flex>
                     DentiCare
                 </Flex>

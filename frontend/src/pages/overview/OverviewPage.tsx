@@ -1,5 +1,5 @@
 import { Box, Grid, Heading, Text, Icon } from '@chakra-ui/react';
-import { FiCalendar, FiUsers, FiCheckCircle, FiClock } from 'react-icons/fi';
+import { Calendar, Users, CheckCircle, Clock } from 'lucide-react';
 import { StatCard } from '../../components/dashboard/StatCard';
 import { ActivityChart } from '../../components/dashboard/ActivityChart';
 
@@ -24,10 +24,10 @@ export const OverviewPage = () => {
                 </Text>
             </Box>
             <Grid templateColumns="repeat(auto-fit, minmax(240px, 1fr))" gap="1.25rem" mb="2rem">
-                <StatCard title="Rendez-vous aujourd'hui" value="12" icon={<Icon as={FiCalendar} />} change="+3 depuis hier" variant="primary" />
-                <StatCard title="Patients actifs" value="342" icon={<Icon as={FiUsers} />} change="+15 ce mois" variant="accent" />
-                <StatCard title="Taux de présence" value="94%" icon={<Icon as={FiCheckCircle} />} change="+2% ce mois" variant="success" />
-                <StatCard title="En attente" value="8" icon={<Icon as={FiClock} />} change="Confirmations requises" variant="warning" />
+                <StatCard title="Rendez-vous aujourd'hui" value="12" icon={<Icon as={Calendar} />} change="+3 depuis hier" variant="primary" />
+                <StatCard title="Patients actifs" value="342" icon={<Icon as={Users} />} change="+15 ce mois" variant="accent" />
+                <StatCard title="Taux de présence" value="94%" icon={<Icon as={CheckCircle} />} change="+2% ce mois" variant="success" />
+                <StatCard title="En attente" value="8" icon={<Icon as={Clock} />} change="Confirmations requises" variant="warning" />
             </Grid>
             <ActivityChart />
         </Box>

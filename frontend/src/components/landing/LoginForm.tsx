@@ -2,7 +2,7 @@ import { Box, Button, Heading, Input, Text, Flex, Link } from '@chakra-ui/react'
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { Mail, Lock } from 'lucide-react';
 import { authService } from '../../services/authService';
 
 export const LoginForm = () => {
@@ -89,7 +89,7 @@ export const LoginForm = () => {
                             zIndex="1"
                             pointerEvents="none"
                         >
-                            <FiMail size={18} />
+                            <Mail size={18} />
                         </Box>
                         <Input
                             type="email"
@@ -134,7 +134,7 @@ export const LoginForm = () => {
                             zIndex="1"
                             pointerEvents="none"
                         >
-                            <FiLock size={18} />
+                            <Lock size={18} />
                         </Box>
                         <Input
                             type="password"

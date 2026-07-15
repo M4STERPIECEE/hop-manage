@@ -2,7 +2,7 @@ import { Box, Button, Grid, Heading, Input, Text, Flex, Icon, chakra } from '@ch
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { BookingFormData } from '../../types';
-import { FiUser, FiMail, FiPhone, FiCalendar, FiClock, FiActivity, FiArrowLeft, FiCheck } from 'react-icons/fi';
+import { User, Mail, Phone, Calendar, Clock, Activity, ArrowLeft, Check } from 'lucide-react';
 
 export const BookingForm = () => {
     const [step, setStep] = useState<'form' | 'summary'>('form');
@@ -85,7 +85,7 @@ export const BookingForm = () => {
                 css={{ animation: 'fadeIn 0.5s ease-out' }}
             >
                 <Box bg="success" w="4rem" h="4rem" borderRadius="full" display="flex" alignItems="center" justifyContent="center" mx="auto" mb="1.5rem">
-                    <FiCheck size={32} color="white" />
+                    <Check size={32} color="white" />
                 </Box>
                 <Heading as="h2" color="primary" mb="1rem">Rendez-vous confirmé !</Heading>
                 <Text color="textGray" fontSize="1.1rem">
@@ -123,7 +123,7 @@ export const BookingForm = () => {
                         borderRadius="full"
                         _hover={{ bg: 'rgba(10, 77, 104, 0.05)', color: 'primary' }}
                     >
-                        <FiArrowLeft size={20} />
+                        <ArrowLeft size={20} />
                     </Button>
                     <Heading as="h2" fontFamily="'Poppins', sans-serif" color="primary" fontSize="2rem">
                         Confirmation
@@ -135,12 +135,12 @@ export const BookingForm = () => {
                 </Text>
 
                 <Grid templateColumns="1fr" gap="0.75rem" mb="2.5rem">
-                    <SummaryItem icon={FiUser} label="Patient" value={`${formData.firstName} ${formData.lastName}`} />
-                    <SummaryItem icon={FiMail} label="Email" value={formData.email} />
-                    <SummaryItem icon={FiPhone} label="Téléphone" value={formData.phone} />
-                    <SummaryItem icon={FiCalendar} label="Date" value={formData.date ? new Date(formData.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''} />
-                    <SummaryItem icon={FiClock} label="Heure" value={formData.time} />
-                    <SummaryItem icon={FiActivity} label="Service" value={formData.service} />
+                    <SummaryItem icon={User} label="Patient" value={`${formData.firstName} ${formData.lastName}`} />
+                    <SummaryItem icon={Mail} label="Email" value={formData.email} />
+                    <SummaryItem icon={Phone} label="Téléphone" value={formData.phone} />
+                    <SummaryItem icon={Calendar} label="Date" value={formData.date ? new Date(formData.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''} />
+                    <SummaryItem icon={Clock} label="Heure" value={formData.time} />
+                    <SummaryItem icon={Activity} label="Service" value={formData.service} />
                 </Grid>
 
                 {error && (
@@ -166,7 +166,7 @@ export const BookingForm = () => {
                         boxShadow: '0 6px 20px rgba(10, 77, 104, 0.2)'
                     }}
                 >
-                    <FiCheck style={{ marginRight: '8px' }} /> Confirmer le rendez-vous
+                    <Check style={{ marginRight: '8px' }} /> Confirmer le rendez-vous
                 </Button>
             </Box>
         );

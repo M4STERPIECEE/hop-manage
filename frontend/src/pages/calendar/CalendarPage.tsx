@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Grid, Heading, Text, Badge, Spinner, Icon } from '@chakra-ui/react';
 import { useState, useEffect, useCallback } from 'react';
 import type { Appointment } from '../../types';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const CalendarPage = () => {
     const today = new Date();
@@ -160,14 +160,14 @@ export const CalendarPage = () => {
                 <Flex gap="0.4rem">
                     <Button onClick={() => changeMonth(-1)} variant="outline" size="sm" borderColor="primary" color="primary" _hover={{ bg: 'primary', color: 'white' }}>
                         <Flex align="center" gap="0.4rem">
-                            <Icon as={FiChevronLeft} />
+                            <Icon as={ChevronLeft} />
                             <Text as="span">Précédent</Text>
                         </Flex>
                     </Button>
                     <Button onClick={() => changeMonth(1)} variant="solid" size="sm" bg="primary" color="white" _hover={{ bg: 'primaryDark' }}>
                         <Flex align="center" gap="0.4rem">
                             <Text as="span">Suivant</Text>
-                            <Icon as={FiChevronRight} />
+                            <Icon as={ChevronRight} />
                         </Flex>
                     </Button>
                 </Flex>
