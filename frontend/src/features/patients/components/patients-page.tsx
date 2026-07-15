@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PatientModal } from './modals/patient-modal';
-import type { Patient } from '../../../shared/model';
-import { DataTable } from '../../../shared/ui/data-table';
+import type { Patient } from 'src/shared/model';
+import { DataTable } from 'src/shared/ui/data-table';
+import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
+import {
+    Table, TableHeader, TableBody, TableRow, TableHead, TableCell
+} from 'src/shared/ui/table';
 import { Users, UserCheck, UserPlus } from 'lucide-react';
 
 export const PatientsPage = () => {
@@ -82,29 +86,35 @@ export const PatientsPage = () => {
     return (
         <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
-                <div className="bg-white p-6 rounded-xl border border-[rgba(10,77,104,0.1)] shadow-[0_2px_8px_rgba(10,77,104,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Users className="w-6 h-6 text-[var(--primary)]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Total Patients</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[var(--primary)] font-poppins">{totalPatientsCount}</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Total Patients</CardTitle>
+                        <Users className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalPatientsCount}</div>
+                    </CardContent>
+                </Card>
 
-                <div className="bg-white p-6 rounded-xl border border-[rgba(5,199,226,0.2)] shadow-[0_2px_8px_rgba(5,199,226,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <UserCheck className="w-6 h-6 text-[var(--accent)]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Patients récents</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[var(--accent)] font-poppins">{activePatientsCount}</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Patients récents</CardTitle>
+                        <UserCheck className="h-4 w-4 text-[var(--accent)]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-[var(--accent)]">{activePatientsCount}</div>
+                    </CardContent>
+                </Card>
 
-                <div className="bg-white p-6 rounded-xl border border-[rgba(34,197,94,0.2)] shadow-[0_2px_8px_rgba(34,197,94,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <UserPlus className="w-6 h-6 text-[#22c55e]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Nouveaux ce mois</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[#22c55e] font-poppins">{newThisMonthCount}</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Nouveaux ce mois</CardTitle>
+                        <UserPlus className="h-4 w-4 text-green-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-green-500">{newThisMonthCount}</div>
+                    </CardContent>
+                </Card>
             </div>
 
             <DataTable
@@ -121,40 +131,38 @@ export const PatientsPage = () => {
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
             >
-                <div className="w-full">
-                    <table className="w-full text-left border-collapse">
-                        <thead className="bg-[rgba(10,77,104,0.04)] border-b border-[var(--border)]">
-                            <tr>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">ID</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Nom complet</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Email</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Téléphone</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Dernière visite</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[var(--border)]">
-                            {filteredPatients.map((patient) => (
-                                <tr key={patient.id} className="hover:bg-[rgba(5,199,226,0.04)] transition-colors">
-                                    <td className="py-4 px-5 text-[0.85rem] font-bold text-[rgba(10,77,104,0.5)]">
-                                        #{String(patient.id).substring(0, 8)}
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.95rem] font-semibold text-[var(--primary)]">
-                                        {patient.name}
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.7)]">
-                                        {patient.email}
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.9rem] font-medium text-[rgba(10,77,104,0.7)]">
-                                        {patient.phone}
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.7)]">
-                                        {formatDate(patient.lastVisit)}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>ID</TableHead>
+                            <TableHead>Nom complet</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Téléphone</TableHead>
+                            <TableHead>Dernière visite</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {filteredPatients.map((patient) => (
+                            <TableRow key={patient.id}>
+                                <TableCell className="font-medium text-muted-foreground">
+                                    #{String(patient.id).substring(0, 8)}
+                                </TableCell>
+                                <TableCell className="font-semibold">
+                                    {patient.name}
+                                </TableCell>
+                                <TableCell>
+                                    {patient.email}
+                                </TableCell>
+                                <TableCell>
+                                    {patient.phone}
+                                </TableCell>
+                                <TableCell>
+                                    {formatDate(patient.lastVisit)}
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </DataTable>
 
             <PatientModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

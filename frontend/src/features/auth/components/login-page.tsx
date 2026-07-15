@@ -1,4 +1,4 @@
-import { Header } from '../../../app/layout/header';
+import { Header } from 'src/app/layout/header';
 import { LoginForm } from './login-form';
 
 export const LoginPage = () => {

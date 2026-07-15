@@ -1,11 +1,16 @@
 import { toaster } from '../../../shared/ui/toaster';
 import { Pencil, CheckCircle, Clock, DollarSign, Smile } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Badge } from '../../../shared/ui/badge';
+import { Badge } from 'src/shared/ui/badge';
+import { Button } from 'src/shared/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
+import {
+    Table, TableHeader, TableBody, TableRow, TableHead, TableCell
+} from 'src/shared/ui/table';
 import { ServiceModal } from './modals/service-modal';
 import { API_ENDPOINTS } from '../../../shared/api/api';
-import { DataTable } from '../../../shared/ui/data-table';
-import { cn } from '../../../shared/lib/utils';
+import { DataTable } from 'src/shared/ui/data-table';
+import { cn } from 'src/shared/lib/utils';
 
 type ServiceApi = {
     id: string;
@@ -151,37 +156,45 @@ export const ServicesPage = () => {
     return (
         <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                <div className="bg-white p-6 rounded-xl border border-[rgba(10,77,104,0.1)] shadow-[0_2px_8px_rgba(10,77,104,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Smile className="w-8 h-8 text-[var(--accent)]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Total Services</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[var(--primary)] font-poppins">{totalServices}</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Total Services</CardTitle>
+                        <Smile className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalServices}</div>
+                    </CardContent>
+                </Card>
 
-                <div className="bg-white p-6 rounded-xl border border-[rgba(34,197,94,0.2)] shadow-[0_2px_8px_rgba(34,197,94,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <CheckCircle className="w-8 h-8 text-[#22c55e]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Services Actifs</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[#22c55e] font-poppins">{activeServices}</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Services Actifs</CardTitle>
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-green-500">{activeServices}</div>
+                    </CardContent>
+                </Card>
 
-                <div className="bg-white p-6 rounded-xl border border-[rgba(5,199,226,0.2)] shadow-[0_2px_8px_rgba(5,199,226,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Clock className="w-8 h-8 text-[var(--accent)]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Durée Moyenne</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[var(--accent)] font-poppins">{avgDuration} min</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Durée Moyenne</CardTitle>
+                        <Clock className="h-4 w-4 text-[var(--accent)]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-[var(--accent)]">{avgDuration} min</div>
+                    </CardContent>
+                </Card>
 
-                <div className="bg-white p-6 rounded-xl border border-[rgba(251,191,36,0.2)] shadow-[0_2px_8px_rgba(251,191,36,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(251,191,36,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <DollarSign className="w-8 h-8 text-[#fbbf24]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Prix Moyen</p>
-                    </div>
-                    <p className="text-3xl font-bold text-[#fbbf24] font-poppins">{formatPrice(avgPrice)}</p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Prix Moyen</CardTitle>
+                        <DollarSign className="h-4 w-4 text-yellow-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-yellow-500">{formatPrice(avgPrice)}</div>
+                    </CardContent>
+                </Card>
             </div>
 
             <DataTable
@@ -190,8 +203,9 @@ export const ServicesPage = () => {
                 filters={
                     <div className="flex gap-3 flex-wrap">
                         {categories.map((category) => (
-                            <button
+                            <Button
                                 key={category}
+                                variant={categoryFilter === category ? "default" : "outline"}
                                 onClick={() => handleCategoryFilter(category)}
                                 className={cn(
                                     "px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300",
@@ -201,7 +215,7 @@ export const ServicesPage = () => {
                                 )}
                             >
                                 {category}
-                            </button>
+                            </Button>
                         ))}
                     </div>
                 }
@@ -210,56 +224,56 @@ export const ServicesPage = () => {
                 emptyMessage="Aucun service trouvé"
                 emptySubMessage=""
             >
-                <div className="w-full">
-                    <table className="w-full text-left border-collapse">
-                        <thead className="bg-[rgba(10,77,104,0.04)] border-b border-[var(--border)]">
-                            <tr>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider min-w-[250px]">Service</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Durée</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Prix</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Statut</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[var(--border)]">
-                            {filteredServices.map((service) => (
-                                <tr key={service.id} className="hover:bg-[rgba(5,199,226,0.04)] transition-colors">
-                                    <td className="py-4 px-5 font-semibold text-[var(--primary)] text-[0.95rem]">
-                                        <div className="flex items-center gap-3">
-                                            <div className="bg-[rgba(5,199,226,0.1)] p-2 rounded-lg text-[var(--accent)]">
-                                                <Smile className="w-5 h-5" />
-                                            </div>
-                                            {service.name}
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="min-w-[250px]">Service</TableHead>
+                            <TableHead>Durée</TableHead>
+                            <TableHead>Prix</TableHead>
+                            <TableHead>Statut</TableHead>
+                            <TableHead>Actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {filteredServices.map((service) => (
+                            <TableRow key={service.id}>
+                                <TableCell className="font-semibold">
+                                    <div className="flex items-center gap-3">
+                                        <div className="bg-[rgba(5,199,226,0.1)] p-2 rounded-lg text-[var(--accent)]">
+                                            <Smile className="w-5 h-5" />
                                         </div>
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.8)]">
-                                        <div className="flex items-center gap-2">
-                                            <Clock className="w-4 h-4 text-[var(--accent)]" />
-                                            <span className="font-medium">{service.durationMinutes} min</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.95rem] font-bold text-[var(--primary)]">
-                                        {formatPrice(service.price)}
-                                    </td>
-                                    <td className="py-4 px-5">
-                                        <Badge variant={service.status === 'Actif' ? 'success' : 'secondary'}>
-                                            {service.status || 'Actif'}
-                                        </Badge>
-                                    </td>
-                                    <td className="py-4 px-5">
-                                        <button 
-                                            title="Modifier" 
-                                            onClick={() => openEditModal(service)}
-                                            className="p-2 bg-[rgba(5,199,226,0.1)] border border-[rgba(5,199,226,0.2)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(5,199,226,0.3)] transition-all"
-                                        >
-                                            <Pencil className="w-4 h-4" />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                        {service.name}
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex items-center gap-2">
+                                        <Clock className="w-4 h-4 text-[var(--accent)]" />
+                                        <span className="font-medium">{service.durationMinutes} min</span>
+                                    </div>
+                                </TableCell>
+                                <TableCell className="font-bold">
+                                    {formatPrice(service.price)}
+                                </TableCell>
+                                <TableCell>
+                                    <Badge variant={service.status === 'Actif' ? 'success' : 'secondary'}>
+                                        {service.status || 'Actif'}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <Button 
+                                        variant="ghost"
+                                        size="icon"
+                                        title="Modifier" 
+                                        onClick={() => openEditModal(service)}
+                                        className="p-2 bg-[rgba(5,199,226,0.1)] border border-[rgba(5,199,226,0.2)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(5,199,226,0.3)] transition-all"
+                                    >
+                                        <Pencil className="w-4 h-4" />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </DataTable>
 
             <ServiceModal

@@ -1,4 +1,4 @@
-import { Header } from '../../../app/layout/header';
+import { Header } from 'src/app/layout/header';
 import { HeroSection } from './hero-section';
 import { ServicesSection } from './services-section';
 

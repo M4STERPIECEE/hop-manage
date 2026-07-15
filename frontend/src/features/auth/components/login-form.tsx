@@ -5,6 +5,9 @@ import { authService } from '../api/auth-service';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
+import { Button } from 'src/shared/ui/button';
+import { Input } from 'src/shared/ui/input';
+import { Alert } from 'src/shared/ui/alert';
 export const LoginForm = () => {
     const [error, setError] = useState<string | null>(null);
     const [info, setInfo] = useState<string | null>(null);
@@ -79,7 +82,7 @@ export const LoginForm = () => {
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none z-10">
                                     <Mail className="w-[18px] h-[18px]" />
                                 </div>
-                                <input
+                                <Input
                                     type="email"
                                     name={field.name}
                                     value={field.state.value}
@@ -110,7 +113,7 @@ export const LoginForm = () => {
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none z-10">
                                     <Lock className="w-[18px] h-[18px]" />
                                 </div>
-                                <input
+                                <Input
                                     type="password"
                                     name={field.name}
                                     value={field.state.value}
@@ -141,27 +144,27 @@ export const LoginForm = () => {
                 </div>
 
                 {error && (
-                    <div className="mb-6 p-3.5 rounded-xl bg-red-600/20 backdrop-blur-md border border-red-600/30 text-[#ff8a8a] text-sm font-medium text-center">
+                    <Alert variant="destructive" className="mb-6">
                         {error}
-                    </div>
+                    </Alert>
                 )}
 
                 {info && (
-                    <div className="mb-6 p-3.5 rounded-xl bg-[#05c7e2]/20 backdrop-blur-md border border-[#05c7e2]/30 text-[#8ee2f1] text-sm font-medium text-center">
+                    <Alert className="mb-6">
                         {info}
-                    </div>
+                    </Alert>
                 )}
 
                 <form.Subscribe
                     selector={(state) => [state.canSubmit, state.isSubmitting]}
                     children={([canSubmit, isSubmitting]) => (
-                        <button
+                        <Button
                             type="submit"
                             disabled={!canSubmit || isSubmitting}
                             className="w-full h-14 bg-white text-[var(--primary)] rounded-xl text-lg font-semibold transition-all duration-300 hover:bg-white/90 hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {isSubmitting ? 'Connexion...' : 'Se connecter'}
-                        </button>
+                        </Button>
                     )}
                 />
             </form>

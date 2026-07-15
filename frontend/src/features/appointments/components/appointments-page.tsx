@@ -1,8 +1,16 @@
 import { Pencil, Trash2, Calendar, CheckCircle, Clock, Check } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
-import { Badge } from '../../../shared/ui';
+import { Badge } from 'src/shared/ui/badge';
+import { Button } from 'src/shared/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
+import {
+    Table, TableHeader, TableBody, TableRow, TableHead, TableCell
+} from 'src/shared/ui/table';
 import { AppointmentModal } from './modals/appointment-modal';
 import type { Appointment } from '../../../shared/model';
+import { DataTable } from 'src/shared/ui/data-table';
+import { toaster } from 'src/shared/ui/toaster';
+import { cn } from 'src/shared/lib/utils';
 
 const statusVariant: Record<string, 'warning' | 'success' | 'secondary' | 'destructive'> = {
   PENDING: 'warning',
@@ -13,8 +21,6 @@ const statusVariant: Record<string, 'warning' | 'success' | 'secondary' | 'destr
   Terminé: 'secondary',
   Annulé: 'destructive',
 };
-import { DataTable } from '../../../shared/ui/data-table';
-import { cn } from '../../../shared/lib/utils';
 
 export const AppointmentsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +32,6 @@ export const AppointmentsPage = () => {
     const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
     const [tempStatus, setTempStatus] = useState<string>('');
     const [isUpdating, setIsUpdating] = useState(false);
-    const [showSuccessToast, setShowSuccessToast] = useState(false);
     const [newAppointment, setNewAppointment] = useState({
         firstName: '',
         lastName: '',
@@ -98,8 +103,7 @@ export const AppointmentsPage = () => {
             fetchAppointments();
             setIsModalOpen(false);
             setSelectedAppointment(null);
-            setShowSuccessToast(true);
-            setTimeout(() => setShowSuccessToast(false), 4000);
+            toaster.create({ title: 'Succès', description: 'Statut mis à jour avec succès !', type: 'success' });
         } catch (error) {
             console.error('Error updating status:', error);
         } finally {
@@ -135,8 +139,7 @@ export const AppointmentsPage = () => {
                 time: '',
                 service: 'Consultation générale'
             });
-            setShowSuccessToast(true);
-            setTimeout(() => setShowSuccessToast(false), 4000);
+            toaster.create({ title: 'Succès', description: 'Rendez-vous créé avec succès !', type: 'success' });
         } catch (error) {
             console.error('Error creating appointment:', error);
         } finally {
@@ -189,50 +192,42 @@ export const AppointmentsPage = () => {
     return (
         <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                <div className="bg-white p-6 rounded-xl border border-[rgba(10,77,104,0.1)] shadow-[0_2px_8px_rgba(10,77,104,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Calendar className="w-6 h-6 text-[var(--primary)]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
-                            Total RDV
-                        </p>
-                    </div>
-                    <p className="text-3xl font-bold text-[var(--primary)] font-poppins">
-                        {appointments.length}
-                    </p>
-                </div>
-                <div className="bg-white p-6 rounded-xl border border-[rgba(34,197,94,0.2)] shadow-[0_2px_8px_rgba(34,197,94,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <CheckCircle className="w-6 h-6 text-[#22c55e]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
-                            Confirmés
-                        </p>
-                    </div>
-                    <p className="text-3xl font-bold text-[#22c55e] font-poppins">
-                        {confirmedCount}
-                    </p>
-                </div>
-                <div className="bg-white p-6 rounded-xl border border-[rgba(251,191,36,0.2)] shadow-[0_2px_8px_rgba(251,191,36,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(251,191,36,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Clock className="w-6 h-6 text-[#fbbf24]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
-                            En attente
-                        </p>
-                    </div>
-                    <p className="text-3xl font-bold text-[#fbbf24] font-poppins">
-                        {pendingCount}
-                    </p>
-                </div>
-                <div className="bg-white p-6 rounded-xl border border-[rgba(5,199,226,0.2)] shadow-[0_2px_8px_rgba(5,199,226,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.15)]">
-                    <div className="flex items-center gap-3 mb-2">
-                        <Check className="w-6 h-6 text-[var(--accent)]" />
-                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
-                            Terminés
-                        </p>
-                    </div>
-                    <p className="text-3xl font-bold text-[var(--accent)] font-poppins">
-                        {completedCount}
-                    </p>
-                </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Total RDV</CardTitle>
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{appointments.length}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Confirmés</CardTitle>
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-green-500">{confirmedCount}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">En attente</CardTitle>
+                        <Clock className="h-4 w-4 text-yellow-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-yellow-500">{pendingCount}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Terminés</CardTitle>
+                        <Check className="h-4 w-4 text-[var(--accent)]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-[var(--accent)]">{completedCount}</div>
+                    </CardContent>
+                </Card>
             </div>
 
             <DataTable
@@ -246,8 +241,9 @@ export const AppointmentsPage = () => {
                 filters={
                     <div className="flex gap-3 flex-wrap">
                         {statusOptions.map((status) => (
-                            <button
+                            <Button
                                 key={status}
+                                variant={statusFilter === status ? "default" : "outline"}
                                 onClick={() => handleStatusFilter(status)}
                                 className={cn(
                                     "px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300",
@@ -257,7 +253,7 @@ export const AppointmentsPage = () => {
                                 )}
                             >
                                 {status}
-                            </button>
+                            </Button>
                         ))}
                     </div>
                 }
@@ -269,66 +265,68 @@ export const AppointmentsPage = () => {
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
             >
-                <div className="w-full">
-                    <table className="w-full text-left border-collapse">
-                        <thead className="bg-[rgba(10,77,104,0.04)] border-b border-[var(--border)]">
-                            <tr>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Réf</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Patient</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Contact</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Service</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Date & Heure</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Statut</th>
-                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[var(--border)]">
-                            {filteredAppointments.map((appointment) => (
-                                <tr key={appointment.id} className="hover:bg-[rgba(5,199,226,0.04)] transition-colors">
-                                    <td className="py-4 px-5 text-[0.8rem] font-bold text-[rgba(10,77,104,0.5)]">
-                                        {appointment.id.substring(0, 8)}
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.95rem] font-semibold text-[var(--primary)]">
-                                        {appointment.patient}
-                                    </td>
-                                    <td className="py-4 px-5">
-                                        <div>
-                                            <p className="text-[0.85rem] text-[rgba(10,77,104,0.7)]">{appointment.email}</p>
-                                            <p className="text-[0.8rem] text-[rgba(10,77,104,0.5)]">{appointment.phone}</p>
-                                        </div>
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.9rem] font-medium text-[rgba(10,77,104,0.8)]">
-                                        {appointment.service}
-                                    </td>
-                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.7)]">
-                                        <div>
-                                            <p className="font-medium">{formatDate(appointment.date)}</p>
-                                            <p className="text-[0.8rem] text-[rgba(10,77,104,0.5)]">à {appointment.time}</p>
-                                        </div>
-                                    </td>
-                                    <td className="py-4 px-5">
-                                        <Badge variant={statusVariant[appointment.status]}>{appointment.status}</Badge>
-                                    </td>
-                                    <td className="py-4 px-5">
-                                        <div className="flex gap-2">
-                                            <button 
-                                                onClick={() => openEditModal(appointment)} 
-                                                className="p-2 bg-[rgba(5,199,226,0.1)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] transition-colors"
-                                            >
-                                                <Pencil className="w-4 h-4" />
-                                            </button>
-                                            <button 
-                                                className="p-2 bg-red-600/10 text-red-600 rounded-md hover:bg-red-600/20 transition-colors"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Réf</TableHead>
+                            <TableHead>Patient</TableHead>
+                            <TableHead>Contact</TableHead>
+                            <TableHead>Service</TableHead>
+                            <TableHead>Date & Heure</TableHead>
+                            <TableHead>Statut</TableHead>
+                            <TableHead>Actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {filteredAppointments.map((appointment) => (
+                            <TableRow key={appointment.id}>
+                                <TableCell className="font-medium text-muted-foreground">
+                                    {appointment.id.substring(0, 8)}
+                                </TableCell>
+                                <TableCell className="font-semibold">
+                                    {appointment.patient}
+                                </TableCell>
+                                <TableCell>
+                                    <div>
+                                        <p className="text-sm">{appointment.email}</p>
+                                        <p className="text-xs text-muted-foreground">{appointment.phone}</p>
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    {appointment.service}
+                                </TableCell>
+                                <TableCell>
+                                    <div>
+                                        <p className="font-medium">{formatDate(appointment.date)}</p>
+                                        <p className="text-xs text-muted-foreground">à {appointment.time}</p>
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+                                    <Badge variant={statusVariant[appointment.status]}>{appointment.status}</Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex gap-2">
+                                        <Button 
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => openEditModal(appointment)} 
+                                            className="p-2 bg-[rgba(5,199,226,0.1)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] transition-colors"
+                                        >
+                                            <Pencil className="w-4 h-4" />
+                                        </Button>
+                                        <Button 
+                                            variant="ghost"
+                                            size="icon"
+                                            className="p-2 bg-red-600/10 text-red-600 rounded-md hover:bg-red-600/20 transition-colors"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </DataTable>
 
             <AppointmentModal
@@ -344,12 +342,6 @@ export const AppointmentsPage = () => {
                 handleCreateAppointment={handleCreateAppointment}
             />
 
-            {showSuccessToast && (
-                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[rgba(16,185,129,0.95)] text-white py-4 px-8 rounded-xl shadow-[0_10px_25px_rgba(16,185,129,0.3)] flex items-center gap-3 z-[3000] animate-[fadeInUp_0.4s_ease-out]">
-                    <Check className="w-5 h-5" />
-                    <p className="font-semibold">Statut mis à jour avec succès !</p>
-                </div>
-            )}
         </div>
     );
 };
