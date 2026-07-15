@@ -37,12 +37,13 @@ export const TopBar = ({ title, onMenuToggle }: TopBarProps) => {
         <>
             <div className="bg-[var(--bg-white)] px-8 py-6 shadow-sm flex justify-between items-center sticky top-0 z-50">
                 <div className="flex items-center gap-4">
-                    <button 
+                    <Button 
+                        variant="default"
                         onClick={onMenuToggle} 
-                        className="block lg:hidden bg-[var(--primary)] text-white p-2 rounded-lg cursor-pointer"
+                        className="block lg:hidden p-2 rounded-lg"
                     >
                         <Menu className="w-6 h-6" />
-                    </button>
+                    </Button>
                     <h1 className="font-poppins text-3xl text-[var(--primary)] font-bold">
                         {title}
                     </h1>

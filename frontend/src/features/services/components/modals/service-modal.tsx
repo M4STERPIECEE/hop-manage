@@ -1,5 +1,7 @@
-import { Input, Button } from '../../../../shared/ui';
-import { Modal } from '../../../../shared/ui/modal';
+import { Input } from 'src/shared/ui/input';
+import { Button } from 'src/shared/ui/button';
+import { Label } from 'src/shared/ui/label';
+import { Modal } from 'src/shared/ui/modal';
 
 interface EditForm {
     durationMinutes: string;
@@ -28,8 +30,9 @@ export const ServiceModal = ({
         <Modal isOpen={isOpen} onClose={onClose} title="Modifier le service">
             <div className="flex flex-col gap-5">
                 <div>
-                    <label className="block mb-2 font-semibold text-[var(--primary)] text-[0.9rem]">Durée (minutes)</label>
+                    <Label htmlFor="durationMinutes">Durée (minutes)</Label>
                     <Input 
+                        id="durationMinutes"
                         type="number" 
                         value={editForm.durationMinutes} 
                         onChange={(e) => setEditForm(prev => ({ ...prev, durationMinutes: e.target.value }))} 
@@ -37,8 +40,9 @@ export const ServiceModal = ({
                     />
                 </div>
                 <div>
-                    <label className="block mb-2 font-semibold text-[var(--primary)] text-[0.9rem]">Prix (MGA)</label>
+                    <Label htmlFor="price">Prix (MGA)</Label>
                     <Input 
+                        id="price"
                         type="number" 
                         value={editForm.price} 
                         onChange={(e) => setEditForm(prev => ({ ...prev, price: e.target.value }))} 
@@ -46,9 +50,10 @@ export const ServiceModal = ({
                     />
                 </div>
                 <div>
-                    <label className="block mb-2 font-semibold text-[var(--primary)] text-[0.9rem]">Statut</label>
+                    <Label htmlFor="status">Statut</Label>
                     <select 
-                        className="w-full h-12 px-4 text-base border-2 border-[rgba(10,77,104,0.2)] rounded-lg bg-white outline-none cursor-pointer focus:border-[var(--accent)] focus:shadow-[0_0_0_1px_var(--accent)]"
+                        id="status"
+                        className="flex h-10 w-full rounded-md border border-[var(--border)] bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50"
                         value={editForm.status} 
                         onChange={(e) => setEditForm(prev => ({ ...prev, status: e.target.value }))}
                     >

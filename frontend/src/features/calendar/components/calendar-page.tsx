@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Appointment } from '../../../shared/model';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '../../../shared/ui';
-import { cn } from '../../../shared/lib/utils';
+import { Button } from 'src/shared/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
+import { Spinner } from 'src/shared/ui/spinner';
+import { cn } from 'src/shared/lib/utils';
 
 export const CalendarPage = () => {
     const today = new Date();
@@ -152,13 +154,13 @@ export const CalendarPage = () => {
     };
 
     return (
-        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(10,77,104,0.08)] border border-[rgba(10,77,104,0.08)] w-full relative">
-            <div className="flex justify-between items-center mb-4 pb-3 border-b-2 border-[rgba(10,77,104,0.08)]">
+        <Card className="w-full relative">
+            <CardHeader className="flex flex-row items-center justify-between border-b pb-3">
                 <div>
-                    <h2 className="font-poppins text-[1.4rem] text-[var(--primary)] mb-1 font-bold">
+                    <CardTitle className="font-poppins text-[1.4rem] mb-1">
                         {monthNames[currentMonth]} {currentYear}
-                    </h2>
-                    <p className="text-[0.75rem] text-[rgba(10,77,104,0.6)] font-medium">
+                    </CardTitle>
+                    <p className="text-xs text-muted-foreground">
                         Gérez vos rendez-vous
                     </p>
                 </div>
@@ -167,7 +169,6 @@ export const CalendarPage = () => {
                         onClick={() => changeMonth(-1)} 
                         variant="outline"
                         size="sm"
-                        className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white"
                     >
                         <ChevronLeft className="w-4 h-4 mr-1" />
                         Précédent
@@ -181,17 +182,18 @@ export const CalendarPage = () => {
                         <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                 </div>
-            </div>
-
-            {isLoading ? (
-                <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--accent)]"></div>
-                </div>
-            ) : (
-                <div className="grid grid-cols-7 gap-1.5 relative">
-                    {generateCalendar()}
-                </div>
-            )}
-        </div>
+            </CardHeader>
+            <CardContent className="pt-4">
+                {isLoading ? (
+                    <div className="flex justify-center items-center py-20">
+                        <Spinner className="h-12 w-12" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-7 gap-1.5 relative">
+                        {generateCalendar()}
+                    </div>
+                )}
+            </CardContent>
+        </Card>
     );
 };

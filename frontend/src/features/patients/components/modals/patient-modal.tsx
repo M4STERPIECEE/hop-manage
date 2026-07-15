@@ -1,4 +1,4 @@
-import { Modal } from '../../../../shared/ui/modal';
+import { Modal } from 'src/shared/ui/modal';
 
 interface PatientModalProps {
     isOpen: boolean;

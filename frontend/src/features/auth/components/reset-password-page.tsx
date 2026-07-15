@@ -1,4 +1,4 @@
-import { Header } from '../../../app/layout/header';
+import { Header } from 'src/app/layout/header';
 import { ResetPasswordForm } from './reset-password-form';
 
 export const ResetPasswordPage = () => {

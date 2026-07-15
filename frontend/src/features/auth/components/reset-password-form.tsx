@@ -3,7 +3,9 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
-import { Button } from '../../../shared/ui';
+import { Button } from 'src/shared/ui/button';
+import { Input } from 'src/shared/ui/input';
+import { Alert } from 'src/shared/ui/alert';
 
 export const ResetPasswordForm = () => {
     const [searchParams] = useSearchParams();
@@ -77,7 +79,7 @@ export const ResetPasswordForm = () => {
                             <label className="block text-[var(--text-dark)] font-semibold mb-2 text-[0.95rem]">
                                 Nouveau mot de passe
                             </label>
-                            <input
+                            <Input
                                 type="password"
                                 name={field.name}
                                 value={field.state.value}
@@ -102,7 +104,7 @@ export const ResetPasswordForm = () => {
                             <label className="block text-[var(--text-dark)] font-semibold mb-2 text-[0.95rem]">
                                 Confirmer le mot de passe
                             </label>
-                            <input
+                            <Input
                                 type="password"
                                 name={field.name}
                                 value={field.state.value}
@@ -118,15 +120,15 @@ export const ResetPasswordForm = () => {
                 />
 
                 {error && (
-                    <div className="mb-4 p-3 rounded-lg bg-red-600/10 border border-red-600/20 text-[#dc2626] text-sm font-semibold text-center">
+                    <Alert variant="destructive" className="mb-4">
                         {error}
-                    </div>
+                    </Alert>
                 )}
 
                 {info && (
-                    <div className="mb-4 p-3 rounded-lg bg-[#05c7e2]/10 border border-[#05c7e2]/20 text-[var(--accent)] text-sm font-semibold text-center">
+                    <Alert className="mb-4">
                         {info}
-                    </div>
+                    </Alert>
                 )}
 
                 <div className="flex justify-center mt-2">

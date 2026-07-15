@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import type { BookingFormData } from '../../../shared/model';
-import { User, Mail, Phone, Calendar, Clock, Activity, ArrowLeft, Check } from 'lucide-react';
+import type { BookingFormData } from 'src/shared/model';
+import { ArrowLeft, Check } from 'lucide-react';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
-import { Button } from '../../../shared/ui';
-import { InputField, SelectField } from '../../../shared/form';
+import { Button } from 'src/shared/ui/button';
+import { Card, CardTitle, CardContent } from 'src/shared/ui/card';
+import { InfoField } from 'src/shared/ui/info-field';
+import { InputField } from 'src/shared/form/input-field';
+import { SelectField } from 'src/shared/form/select-field';
 
 export const BookingForm = () => {
     const [step, setStep] = useState<'form' | 'summary'>('form');
@@ -59,18 +62,18 @@ export const BookingForm = () => {
 
     if (success) {
         return (
-            <div className="bg-white rounded-2xl p-12 shadow-[0_10px_30px_rgba(10,77,104,0.15)] text-center animate-[fadeIn_0.5s_ease-out]">
+            <Card className="p-12 text-center">
                 <div className="bg-[var(--success)] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Check className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="font-poppins text-[var(--primary)] text-3xl font-bold mb-4">Rendez-vous confirmé !</h2>
-                <p className="text-[var(--text-gray)] text-lg mb-8">
+                <CardTitle className="text-3xl font-bold mb-4">Rendez-vous confirmé !</CardTitle>
+                <CardContent className="p-0 text-lg mb-8">
                     Votre demande a été enregistrée avec succès. Notre équipe vous contactera sous peu pour confirmer l'horaire précis.
-                </p>
+                </CardContent>
                 <Button variant="outline" onClick={() => { setSuccess(false); setStep('form'); }}>
                     Retour à l'accueil
                 </Button>
-            </div>
+            </Card>
         );
     }
 
@@ -79,12 +82,13 @@ export const BookingForm = () => {
         return (
             <div className="bg-white rounded-2xl p-10 shadow-[0_10px_30px_rgba(10,77,104,0.15)] text-[var(--text-dark)] animate-[fadeInRight_0.5s_ease-out]">
                 <div className="flex items-center mb-8 gap-4">
-                    <button 
+                    <Button
+                        variant="ghost"
                         onClick={() => setStep('form')} 
                         className="p-2 rounded-full hover:bg-[rgba(10,77,104,0.05)] text-[var(--primary)] transition-colors"
                     >
                         <ArrowLeft className="w-5 h-5" />
-                    </button>
+                    </Button>
                     <h2 className="font-poppins text-[var(--primary)] text-3xl font-bold">
                         Confirmation
                     </h2>
@@ -95,12 +99,12 @@ export const BookingForm = () => {
                 </p>
 
                 <div className="grid grid-cols-1 gap-3 mb-10">
-                    <SummaryItem icon={User} label="Patient" value={`${value.firstName} ${value.lastName}`} />
-                    <SummaryItem icon={Mail} label="Email" value={value.email} />
-                    <SummaryItem icon={Phone} label="Téléphone" value={value.phone} />
-                    <SummaryItem icon={Calendar} label="Date" value={value.date ? new Date(value.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''} />
-                    <SummaryItem icon={Clock} label="Heure" value={value.time} />
-                    <SummaryItem icon={Activity} label="Service" value={value.service} />
+                    <InfoField label="Patient" value={`${value.firstName} ${value.lastName}`} />
+                    <InfoField label="Email" value={value.email} />
+                    <InfoField label="Téléphone" value={value.phone} />
+                    <InfoField label="Date" value={value.date ? new Date(value.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''} />
+                    <InfoField label="Heure" value={value.time} />
+                    <InfoField label="Service" value={value.service} />
                 </div>
 
                 {error && (
@@ -219,16 +223,3 @@ export const BookingForm = () => {
     );
 };
 
-const SummaryItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) => (
-    <div className="flex items-center p-3 bg-[rgba(10,77,104,0.03)] rounded-lg gap-4 border border-[rgba(10,77,104,0.05)]">
-        <Icon className="text-[var(--accent)] w-5 h-5" />
-        <div>
-            <p className="text-[0.7rem] text-[rgba(10,77,104,0.5)] font-bold uppercase tracking-wide">
-                {label}
-            </p>
-            <p className="text-[var(--primary)] font-bold text-base">
-                {value}
-            </p>
-        </div>
-    </div>
-);

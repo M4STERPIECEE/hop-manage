@@ -1,6 +1,8 @@
 import { useState, useEffect, type ElementType } from 'react';
-import { API_ENDPOINTS } from '../../../shared/api/api';
-import { Search, Sparkles, Gem, Smile, Crosshair, AlertTriangle, Loader2 } from 'lucide-react';
+import { API_ENDPOINTS } from 'src/shared/api/api';
+import { Search, Sparkles, Gem, Smile, Crosshair, AlertTriangle } from 'lucide-react';
+import { Spinner } from 'src/shared/ui/spinner';
+import { Card, CardTitle, CardContent } from 'src/shared/ui/card';
 
 interface ServiceWithIcon {
     id: string;
@@ -47,7 +49,7 @@ export const ServicesSection = () => {
     if (loading) {
         return (
             <section className="py-20 px-8 max-w-[1400px] mx-auto flex justify-center items-center min-h-[400px]" id="services">
-                <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin" />
+                <Spinner className="w-12 h-12 text-[var(--primary)]" />
             </section>
         );
     }
@@ -60,20 +62,17 @@ export const ServicesSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service) => (
-                    <div 
-                        key={service.id} 
-                        className="bg-white p-8 rounded-xl shadow-sm transition-all duration-300 border-2 border-transparent hover:-translate-y-1 hover:shadow-md hover:border-[var(--accent-soft)]"
-                    >
+                    <Card key={service.id} hoverable className="p-6">
                         <div className="w-[60px] h-[60px] bg-[var(--accent-soft)] rounded-xl flex items-center justify-center text-3xl mb-6">
                             <service.icon className="w-7 h-7 text-[var(--primary)]" />
                         </div>
-                        <h3 className="font-poppins text-2xl text-[var(--primary)] font-bold mb-3">
+                        <CardTitle className="font-poppins text-2xl mb-3">
                             {service.name}
-                        </h3>
-                        <p className="text-[var(--text-gray)] leading-relaxed">
+                        </CardTitle>
+                        <CardContent className="p-0 text-[var(--text-gray)] leading-relaxed">
                             {service.description}
-                        </p>
-                    </div>
+                        </CardContent>
+                    </Card>
                 ))}
             </div>
         </section>

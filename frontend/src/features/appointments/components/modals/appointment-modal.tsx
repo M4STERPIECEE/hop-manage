@@ -1,5 +1,8 @@
-import { Badge, Button, Input } from '../../../../shared/ui';
-import { Modal } from '../../../../shared/ui';
+import { Badge } from 'src/shared/ui/badge';
+import { Button } from 'src/shared/ui/button';
+import { Input } from 'src/shared/ui/input';
+import { Label } from 'src/shared/ui/label';
+import { Modal } from 'src/shared/ui/modal';
 import type { Appointment } from '../../../../shared/model';
 
 const statusVariant: Record<string, 'warning' | 'success' | 'secondary' | 'destructive'> = {
@@ -84,16 +87,18 @@ export const AppointmentModal = ({
                 <div>
                     <div className="grid grid-cols-2 gap-4 mb-6">
                         <div>
-                            <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Prénom</label>
+                            <Label htmlFor="firstName">Prénom</Label>
                             <Input 
+                                id="firstName"
                                 placeholder="Prénom" 
                                 value={newAppointment.firstName} 
                                 onChange={(e) => setNewAppointment({ ...newAppointment, firstName: e.target.value })} 
                             />
                         </div>
                         <div>
-                            <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Nom</label>
+                            <Label htmlFor="lastName">Nom</Label>
                             <Input 
+                                id="lastName"
                                 placeholder="Nom" 
                                 value={newAppointment.lastName} 
                                 onChange={(e) => setNewAppointment({ ...newAppointment, lastName: e.target.value })} 
@@ -103,8 +108,9 @@ export const AppointmentModal = ({
                     
                     <div className="grid grid-cols-2 gap-4 mb-6">
                         <div>
-                            <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Email</label>
+                            <Label htmlFor="email">Email</Label>
                             <Input 
+                                id="email"
                                 type="email" 
                                 placeholder="Email" 
                                 value={newAppointment.email} 
@@ -112,8 +118,9 @@ export const AppointmentModal = ({
                             />
                         </div>
                         <div>
-                            <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Téléphone</label>
+                            <Label htmlFor="phone">Téléphone</Label>
                             <Input 
+                                id="phone"
                                 placeholder="Téléphone" 
                                 value={newAppointment.phone} 
                                 onChange={(e) => setNewAppointment({ ...newAppointment, phone: e.target.value })} 
@@ -122,9 +129,10 @@ export const AppointmentModal = ({
                     </div>
 
                     <div className="mb-6">
-                        <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Service</label>
+                        <Label htmlFor="service">Service</Label>
                         <select 
-                            className="w-full h-10 border border-[var(--border)] rounded-md px-3 bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent text-sm"
+                            id="service"
+                            className="flex h-10 w-full rounded-md border border-[var(--border)] bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50"
                             value={newAppointment.service} 
                             onChange={(e) => setNewAppointment({ ...newAppointment, service: e.target.value })}
                         >
@@ -139,16 +147,18 @@ export const AppointmentModal = ({
 
                     <div className="grid grid-cols-2 gap-4 mb-8">
                         <div>
-                            <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Date</label>
+                            <Label htmlFor="date">Date</Label>
                             <Input 
+                                id="date"
                                 type="date" 
                                 value={newAppointment.date} 
                                 onChange={(e) => setNewAppointment({ ...newAppointment, date: e.target.value })} 
                             />
                         </div>
                         <div>
-                            <label className="block mb-1.5 font-semibold text-[0.9rem] text-[var(--text-dark)]">Heure</label>
+                            <Label htmlFor="time">Heure</Label>
                             <Input 
+                                id="time"
                                 type="time" 
                                 value={newAppointment.time} 
                                 onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })} 

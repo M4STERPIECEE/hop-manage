@@ -1,20 +1,21 @@
-import { Button, Input } from '../../../shared/ui';
+import { Button } from 'src/shared/ui/button';
+import { Input } from 'src/shared/ui/input';
+import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
+import { Label } from 'src/shared/ui/label';
 
 export const SettingsPage = () => {
     return (
-        <div className="bg-white rounded-xl shadow-[0_1px_3px_rgba(10,77,104,0.08)] overflow-hidden">
-            <div className="px-8 py-6 border-b-2 border-[var(--border)]">
-                <h2 className="font-poppins text-2xl text-[var(--primary)] font-bold">
+        <Card>
+            <CardHeader className="border-b pb-6">
+                <CardTitle className="font-poppins text-2xl">
                     Paramètres du cabinet
-                </h2>
-            </div>
-
-            <div className="p-8">
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8">
                 <div className="mb-6">
-                    <label className="block text-[var(--text-dark)] font-semibold mb-2">
-                        Nom du cabinet
-                    </label>
+                    <Label htmlFor="cabinet-name">Nom du cabinet</Label>
                     <Input 
+                        id="cabinet-name"
                         type="text" 
                         defaultValue="DentiCare" 
                         className="w-full"
@@ -22,10 +23,9 @@ export const SettingsPage = () => {
                 </div>
 
                 <div className="mb-6">
-                    <label className="block text-[var(--text-dark)] font-semibold mb-2">
-                        Adresse
-                    </label>
+                    <Label htmlFor="address">Adresse</Label>
                     <Input 
+                        id="address"
                         type="text" 
                         defaultValue="123 Avenue de la Santé, Paris" 
                         className="w-full"
@@ -34,20 +34,18 @@ export const SettingsPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div>
-                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
-                            Téléphone
-                        </label>
+                        <Label htmlFor="phone">Téléphone</Label>
                         <Input 
+                            id="phone"
                             type="tel" 
                             defaultValue="01 23 45 67 89" 
                             className="w-full"
                         />
                     </div>
                     <div>
-                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
-                            Email
-                        </label>
+                        <Label htmlFor="email">Email</Label>
                         <Input 
+                            id="email"
                             type="email" 
                             defaultValue="contact@denticare.fr" 
                             className="w-full"
@@ -57,20 +55,18 @@ export const SettingsPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div>
-                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
-                            Heure d'ouverture
-                        </label>
+                        <Label htmlFor="opening-time">Heure d'ouverture</Label>
                         <Input 
+                            id="opening-time"
                             type="time" 
                             defaultValue="08:00" 
                             className="w-full"
                         />
                     </div>
                     <div>
-                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
-                            Heure de fermeture
-                        </label>
+                        <Label htmlFor="closing-time">Heure de fermeture</Label>
                         <Input 
+                            id="closing-time"
                             type="time" 
                             defaultValue="18:00" 
                             className="w-full"
@@ -84,7 +80,7 @@ export const SettingsPage = () => {
                 >
                     Enregistrer les modifications
                 </Button>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     );
 };
