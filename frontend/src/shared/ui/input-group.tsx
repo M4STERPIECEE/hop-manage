@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type * as React from "react";
 
 import { cn } from "src/shared/lib/utils";
 import { Button } from "src/shared/ui/button";
@@ -87,21 +87,11 @@ function InputGroupButton({
   type = "button",
   variant = "ghost",
   size = "xs",
-  render,
   ...props
 }: Omit<React.ComponentProps<typeof Button>, "size" | "type"> &
   VariantProps<typeof inputGroupButtonVariants> & {
     type?: "button" | "submit" | "reset";
-    render?: React.ReactElement;
   }) {
-  if (render) {
-    return React.cloneElement(render, {
-      type,
-      "data-size": size,
-      className: cn(inputGroupButtonVariants({ size }), className),
-      ...props,
-    } as Record<string, unknown>);
-  }
   return (
     <Button
       type={type}

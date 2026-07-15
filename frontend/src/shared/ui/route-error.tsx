@@ -1,12 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { type ErrorComponentProps, useRouter } from "@tanstack/react-router";
 import { Button } from "src/shared/ui/button";
 
-type RouteErrorProps = {
-  error: Error;
-};
-
-export function RouteError({ error }: RouteErrorProps) {
-  const navigate = useNavigate();
+export function RouteError({ error }: ErrorComponentProps) {
+  const router = useRouter();
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-6 text-center">
       <h1 className="font-bold text-2xl">Une erreur est survenue</h1>
@@ -19,7 +15,7 @@ export function RouteError({ error }: RouteErrorProps) {
           {error.message}
         </p>
       ) : null}
-      <Button onClick={() => navigate(0)}>Réessayer</Button>
+      <Button onClick={() => router.invalidate()}>Réessayer</Button>
     </div>
   );
 }

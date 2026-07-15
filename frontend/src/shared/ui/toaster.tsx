@@ -1,21 +1,45 @@
-import { Toaster as Sonner, toast } from 'sonner';
+import { Toaster as SonnerToaster, toast } from "sonner";
 
-export const toaster = {
-    create: (options: { title?: string; description?: string; type?: 'success' | 'error' | 'info' | 'warning' }) => {
-        const { title, description, type } = options;
-        const msg = title || description;
-        if (type === 'success') {
-            toast.success(msg, { description: title && description ? description : undefined });
-        } else if (type === 'error') {
-            toast.error(msg, { description: title && description ? description : undefined });
-        } else {
-            toast(msg, { description: title && description ? description : undefined });
-        }
-    }
+function Toaster() {
+  return (
+    <SonnerToaster
+      position="bottom-right"
+      closeButton
+      toastOptions={{
+        className: "pointer-events-auto",
+        classNames: {
+          success:
+            "bg-success! text-success-foreground! border-success! [&_[data-icon]]:text-success-foreground! [&_button]:text-success-foreground!",
+        },
+      }}
+    />
+  );
+}
+
+type CreateToastOptions = {
+  title: string;
+  description?: string;
+  type?: "success" | "error" | "info" | "warning";
 };
 
-export function Toaster() {
-    return (
-        <Sonner position="top-right" richColors />
-    );
-}
+const toaster = {
+  create: (options: CreateToastOptions) => {
+    const { title, description, type } = options;
+    switch (type) {
+      case "success":
+        toast.success(title, { description });
+        break;
+      case "error":
+        toast.error(title, { description });
+        break;
+      case "warning":
+        toast.warning(title, { description });
+        break;
+      default:
+        toast(title, { description });
+        break;
+    }
+  },
+};
+
+export { Toaster, toaster };

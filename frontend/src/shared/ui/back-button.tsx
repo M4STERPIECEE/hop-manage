@@ -1,12 +1,15 @@
 import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Link, type LinkProps } from "react-router-dom";
-import type { ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import type { ComponentProps, ReactNode } from "react";
 
 import { cn } from "src/shared/lib/utils";
 import { buttonVariants } from "src/shared/ui/button";
 
-type BackButtonProps = Omit<LinkProps, "children" | "className"> & {
+type BackButtonProps = Omit<
+  ComponentProps<typeof Link>,
+  "children" | "className"
+> & {
   children?: ReactNode;
   className?: string;
 };

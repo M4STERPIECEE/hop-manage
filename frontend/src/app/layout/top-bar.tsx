@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ConfirmModal, Button } from '../../shared/ui';
 import { authService } from '../../features/auth/api/auth-service';

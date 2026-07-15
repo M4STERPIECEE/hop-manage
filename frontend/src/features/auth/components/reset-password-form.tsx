@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearch, useNavigate } from '@tanstack/react-router';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
@@ -8,13 +8,13 @@ import { Input } from 'src/shared/ui/input';
 import { Alert } from 'src/shared/ui/alert';
 
 export const ResetPasswordForm = () => {
-    const [searchParams] = useSearchParams();
+    const search = useSearch({ from: '/reset-password' });
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null);
     const [info, setInfo] = useState<string | null>(null);
 
     const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080';
-    const token = searchParams.get('token') ?? '';
+    const token = (search as { token?: string }).token ?? '';
 
     const form = useForm({
         defaultValues: {

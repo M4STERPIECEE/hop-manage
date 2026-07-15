@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { Mail, Lock } from 'lucide-react';
 import { authService } from '../api/auth-service';
 import { useForm } from '@tanstack/react-form';

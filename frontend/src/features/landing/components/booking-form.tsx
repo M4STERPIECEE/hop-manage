@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import type { BookingFormData } from 'src/shared/model';
 import { ArrowLeft, Check } from 'lucide-react';
-import { useForm } from '@tanstack/react-form';
+import { useAppForm } from 'src/shared/form/form-setup';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
 import { Button } from 'src/shared/ui/button';
 import { Card, CardTitle, CardContent } from 'src/shared/ui/card';
 import { InfoField } from 'src/shared/ui/info-field';
-import { InputField } from 'src/shared/form/input-field';
-import { SelectField } from 'src/shared/form/select-field';
 
 export const BookingForm = () => {
     const [step, setStep] = useState<'form' | 'summary'>('form');
@@ -18,7 +16,7 @@ export const BookingForm = () => {
     const apiBase = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
     const today = new Date().toISOString().split('T')[0];
 
-    const form = useForm({
+    const form = useAppForm({
         defaultValues: {
             firstName: '',
             lastName: '',
@@ -147,54 +145,53 @@ export const BookingForm = () => {
                 }}
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <form.Field
+                    <form.AppField
                         name="firstName"
                         validators={{ onChange: z.string().min(1, 'Prénom requis') }}
-                        children={(field) => <InputField field={field} label="Prénom" />}
+                        children={(field) => <field.InputField label="Prénom" />}
                     />
-                    <form.Field
+                    <form.AppField
                         name="lastName"
                         validators={{ onChange: z.string().min(1, 'Nom requis') }}
-                        children={(field) => <InputField field={field} label="Nom" />}
+                        children={(field) => <field.InputField label="Nom" />}
                     />
                 </div>
 
                 <div className="mb-4">
-                    <form.Field
+                    <form.AppField
                         name="email"
                         validators={{ onChange: z.string().email('Email invalide').min(1, 'Email requis') }}
-                        children={(field) => <InputField field={field} label="Email" type="email" />}
+                        children={(field) => <field.InputField label="Email" type="email" />}
                     />
                 </div>
 
                 <div className="mb-4">
-                    <form.Field
+                    <form.AppField
                         name="phone"
                         validators={{ onChange: z.string().min(1, 'Téléphone requis') }}
-                        children={(field) => <InputField field={field} label="Téléphone" type="tel" />}
+                        children={(field) => <field.InputField label="Téléphone" type="tel" />}
                     />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <form.Field
+                    <form.AppField
                         name="date"
                         validators={{ onChange: z.string().min(1, 'Date requise') }}
-                        children={(field) => <InputField field={field} label="Date" type="date" min={today} />}
+                        children={(field) => <field.InputField label="Date" type="date" min={today} />}
                     />
-                    <form.Field
+                    <form.AppField
                         name="time"
                         validators={{ onChange: z.string().min(1, 'Heure requise') }}
-                        children={(field) => <InputField field={field} label="Heure" type="time" />}
+                        children={(field) => <field.InputField label="Heure" type="time" />}
                     />
                 </div>
 
                 <div className="mb-6">
-                    <form.Field
+                    <form.AppField
                         name="service"
                         validators={{ onChange: z.string().min(1, 'Service requis') }}
                         children={(field: any) => (
-                            <SelectField 
-                                field={field} 
+                            <field.SelectField
                                 label="Type de soin" 
                                 options={[
                                     { label: 'Sélectionnez un service', value: '' },

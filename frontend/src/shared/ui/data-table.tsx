@@ -1,123 +1,194 @@
-import type { ReactNode } from 'react';
-import { Search, ChevronLeft, ChevronRight, Plus, Loader2 } from 'lucide-react';
-import { Button } from './button';
-import { Input } from './input';
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 
-interface DataTableProps {
-    title: string;
-    subtitle?: string;
-    onAdd?: () => void;
-    addButtonText?: string;
-    searchPlaceholder?: string;
-    searchValue?: string;
-    onSearch?: (value: string) => void;
-    filters?: ReactNode;
-    isLoading?: boolean;
-    isEmpty?: boolean;
-    emptyMessage?: string;
-    emptySubMessage?: string;
-    currentPage?: number;
-    totalPages?: number;
-    onPageChange?: (page: number) => void;
-    children: ReactNode;
+import { cn } from "src/shared/lib/utils";
+import { Skeleton } from "src/shared/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "src/shared/ui/table";
+
+export type DataTableColumn<TRow> = {
+  id: string;
+  header: ReactNode;
+  cell: (row: TRow) => ReactNode;
+  headerClassName?: string;
+  cellClassName?: string;
+};
+
+type DataTableProps<TRow> = {
+  columns: DataTableColumn<TRow>[];
+  data: TRow[];
+  getRowId: (row: TRow) => string | number;
+  onRowClick?: (row: TRow) => void;
+  emptyMessage?: ReactNode;
+  wrapperClassName?: string;
+  tableClassName?: string;
+  rowClassName?: string | ((row: TRow) => string);
+  /**
+   * When set, the table renders as a rounded-card CSS grid using these track
+   * sizes (e.g. `"minmax(0,2fr) minmax(0,1fr)"`). Otherwise a plain `<table>`.
+   */
+  gridTemplateColumns?: string;
+  /** Renders skeleton rows instead of `data` (e.g. while a query is pending). */
+  isLoading?: boolean;
+  /** Number of skeleton rows to render when `isLoading`. */
+  skeletonRows?: number;
+};
+
+// Spreads props (incl. onClick) through a component boundary so a clickable row
+// keeps its click behavior without tripping the a11y linter.
+function GridRow(props: ComponentProps<"div">) {
+  return <div {...props} />;
 }
 
-export function DataTable({
-    title,
-    subtitle,
-    onAdd,
-    addButtonText = 'Nouveau',
-    searchPlaceholder = 'Rechercher...',
-    searchValue,
-    onSearch,
-    filters,
-    isLoading = false,
-    isEmpty = false,
-    emptyMessage = 'Aucune donnée trouvée',
-    emptySubMessage = 'Essayez de modifier vos critères de recherche',
-    currentPage,
-    totalPages,
-    onPageChange,
-    children,
-}: DataTableProps) {
+export function DataTable<TRow>({
+  columns,
+  data,
+  getRowId,
+  onRowClick,
+  emptyMessage = "Aucun résultat.",
+  wrapperClassName,
+  tableClassName,
+  rowClassName,
+  gridTemplateColumns,
+  isLoading = false,
+  skeletonRows = 5,
+}: DataTableProps<TRow>) {
+  const resolveRowClassName = (row: TRow): string | undefined =>
+    typeof rowClassName === "function" ? rowClassName(row) : rowClassName;
+
+  const skeletonKeys = Array.from(
+    { length: skeletonRows },
+    (_, index) => `skeleton-row-${index}`,
+  );
+
+  if (gridTemplateColumns) {
+    const gridStyle: CSSProperties = { gridTemplateColumns };
     return (
-        <div className="bg-[var(--bg-white)] rounded-xl p-6 shadow-sm border border-[var(--border)]">
-            <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
-                <div>
-                    <h2 className="font-poppins text-2xl font-bold text-[var(--primary)] mb-1">
-                        {title}
-                    </h2>
-                    {subtitle && (
-                        <p className="text-sm text-[var(--primary)] opacity-60 font-medium">
-                            {subtitle}
-                        </p>
-                    )}
-                </div>
-
-                <div className="flex gap-4 items-center flex-nowrap max-w-full">
-                    {onSearch && (
-                        <Input
-                            placeholder={searchPlaceholder}
-                            value={searchValue}
-                            onChange={(e) => onSearch(e.target.value)}
-                            className="w-full md:w-[300px]"
-                        />
-                    )}
-                    
-                    {onAdd && (
-                        <Button onClick={onAdd} variant="secondary" className="flex items-center gap-2 font-semibold">
-                            <Plus className="h-4 w-4" />
-                            {addButtonText}
-                        </Button>
-                    )}
-                </div>
+      <div
+        className={cn(
+          "overflow-hidden rounded-2xl border border-border bg-card text-sm shadow-card",
+          wrapperClassName,
+        )}
+      >
+        <div
+          style={gridStyle}
+          className="grid items-center gap-4 border-b border-border bg-muted/40 px-6 py-2.5 font-semibold text-[11.5px] text-muted-foreground/70 uppercase tracking-[0.06em]"
+        >
+          {columns.map((column) => (
+            <div
+              key={column.id}
+              className={cn("min-w-0 truncate", column.headerClassName)}
+            >
+              {column.header}
             </div>
-
-            {filters && (
-                <div className="mb-6">
-                    {filters}
-                </div>
-            )}
-
-            <div className="overflow-x-auto rounded-lg border border-[var(--border)] min-h-[200px] relative">
-                {isLoading ? (
-                    <div className="flex justify-center items-center py-20">
-                        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
-                    </div>
-                ) : isEmpty ? (
-                    <div className="text-center py-16">
-                        <Search className="h-12 w-12 text-[var(--text-gray)] mx-auto mb-4 opacity-50" />
-                        <p className="text-lg font-semibold text-[var(--primary)] mb-2">{emptyMessage}</p>
-                        <p className="text-sm text-[var(--text-gray)]">{emptySubMessage}</p>
-                    </div>
-                ) : (
-                    children
-                )}
-            </div>
-
-            {totalPages !== undefined && currentPage !== undefined && onPageChange && totalPages > 0 && !isLoading && !isEmpty && (
-                <div className="flex justify-center items-center gap-4 mt-6">
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => onPageChange(Math.max(0, currentPage - 1))}
-                        disabled={currentPage === 0}
-                    >
-                        <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <span className="font-semibold text-sm text-[var(--primary)]">
-                        Page {currentPage + 1} sur {totalPages}
-                    </span>
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}
-                        disabled={currentPage >= totalPages - 1}
-                    >
-                        <ChevronRight className="h-4 w-4" />
-                    </Button>
-                </div>
-            )}
+          ))}
         </div>
+
+        {isLoading ? (
+          skeletonKeys.map((key) => (
+            <div
+              key={key}
+              style={gridStyle}
+              className="grid items-center gap-4 border-border border-b px-6 py-2.5 last:border-b-0"
+            >
+              {columns.map((column) => (
+                <div key={column.id} className="min-w-0">
+                  <Skeleton className="h-5 w-2/3" />
+                </div>
+              ))}
+            </div>
+          ))
+        ) : data.length === 0 ? (
+          <div className="px-6 py-8 text-center text-muted-foreground">
+            {emptyMessage}
+          </div>
+        ) : (
+          data.map((row) => (
+            <GridRow
+              key={getRowId(row)}
+              style={gridStyle}
+              onClick={onRowClick ? () => onRowClick(row) : undefined}
+              className={cn(
+                "grid items-center gap-4 border-border border-b px-6 py-2.5 transition-colors last:border-b-0",
+                onRowClick && "cursor-pointer hover:bg-muted/40",
+                resolveRowClassName(row),
+              )}
+            >
+              {columns.map((column) => (
+                <div
+                  key={column.id}
+                  className={cn("min-w-0 truncate", column.cellClassName)}
+                >
+                  {column.cell(row)}
+                </div>
+              ))}
+            </GridRow>
+          ))
+        )}
+      </div>
     );
+  }
+
+  return (
+    <div
+      className={
+        wrapperClassName ??
+        "overflow-hidden rounded-2xl border border-border bg-card shadow-card"
+      }
+    >
+      <Table className={tableClassName}>
+        <TableHeader>
+          <TableRow>
+            {columns.map((column) => (
+              <TableHead key={column.id} className={column.headerClassName}>
+                {column.header}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading ? (
+            skeletonKeys.map((key) => (
+              <TableRow key={key}>
+                {columns.map((column) => (
+                  <TableCell key={column.id} className={column.cellClassName}>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : data.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="py-8 text-center text-muted-foreground"
+              >
+                {emptyMessage}
+              </TableCell>
+            </TableRow>
+          ) : (
+            data.map((row) => (
+              <TableRow
+                key={getRowId(row)}
+                data-clickable={onRowClick ? true : undefined}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+                className={resolveRowClassName(row)}
+              >
+                {columns.map((column) => (
+                  <TableCell key={column.id} className={column.cellClassName}>
+                    {column.cell(row)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
 }

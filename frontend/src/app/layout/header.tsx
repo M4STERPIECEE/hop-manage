@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from '@tanstack/react-router';
 import { Smile } from 'lucide-react';
 import { Button } from '../../shared/ui';
 
