@@ -1,6 +1,6 @@
-import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { BarChart3, Calendar, Users, Grid, ClipboardList, Settings, Smile } from 'lucide-react';
+import { cn } from '../../shared/lib/utils';
 
 interface NavItem {
     path: string;
@@ -25,31 +25,45 @@ export const Sidebar = ({ isOpen = true }: SidebarProps) => {
     const location = useLocation();
 
     return (
-        <Box as="aside" w="280px" bg="primary" color="white" py="2rem" position="fixed" h="100vh" overflowY="auto" transition="transform 0.3s" transform={{ base: isOpen ? 'translateX(0)' : 'translateX(-100%)', lg: 'translateX(0)' }} zIndex="1000">
-            <Box px="1.5rem" mb="2rem">
-                <Flex align="center" gap="0.5rem" fontFamily="'Poppins', sans-serif" fontSize="1.6rem" fontWeight="700">
-                    <Flex w="40px" h="40px" bg="linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))" borderRadius="8px" align="center" justify="center" fontSize="1.5rem">
-                        <Icon as={Smile} boxSize="1.5rem" />
-                    </Flex>
+        <aside 
+            className={cn(
+                "w-[280px] bg-[var(--primary)] text-white py-8 fixed h-screen overflow-y-auto transition-transform duration-300 z-[1000]",
+                isOpen ? "translate-x-0" : "-translate-x-full",
+                "lg:translate-x-0"
+            )}
+        >
+            <div className="px-6 mb-8">
+                <div className="flex items-center gap-2 font-poppins text-2xl font-bold">
+                    <div className="w-10 h-10 bg-gradient-to-br from-white/20 to-white/10 rounded-lg flex items-center justify-center text-2xl">
+                        <Smile className="w-6 h-6" />
+                    </div>
                     DentiCare
-                </Flex>
-            </Box>
+                </div>
+            </div>
 
-            <Box as="nav">
-                <Box as="ul" listStyleType="none">
+            <nav>
+                <ul className="list-none">
                     {navItems.map((item) => {
                         const isActive = location.pathname === item.path;
                         return (
-                            <Box as="li" key={item.path} mb="0.5rem">
-                                <Link to={item.path} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', color: isActive ? 'white' : 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', transition: 'all 0.3s', background: isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent', borderLeft: isActive ? '3px solid var(--accent)' : '3px solid transparent' }} onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.color = 'white'; e.currentTarget.style.borderLeftColor = 'var(--accent)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent'; e.currentTarget.style.color = isActive ? 'white' : 'rgba(255, 255, 255, 0.8)'; e.currentTarget.style.borderLeftColor = isActive ? 'var(--accent)' : 'transparent'; }}>
-                                    <Icon as={item.icon} boxSize="1.25rem" />
-                                    <Text>{item.label}</Text>
+                            <li key={item.path} className="mb-2">
+                                <Link 
+                                    to={item.path} 
+                                    className={cn(
+                                        "flex items-center gap-4 py-4 px-6 no-underline transition-all duration-300 border-l-4",
+                                        isActive 
+                                            ? "text-white bg-white/10 border-[var(--accent)]" 
+                                            : "text-white/80 border-transparent hover:bg-white/10 hover:text-white hover:border-[var(--accent)]"
+                                    )}
+                                >
+                                    <item.icon className="w-5 h-5" />
+                                    <span>{item.label}</span>
                                 </Link>
-                            </Box>
+                            </li>
                         );
                     })}
-                </Box>
-            </Box>
-        </Box>
+                </ul>
+            </nav>
+        </aside>
     );
 };

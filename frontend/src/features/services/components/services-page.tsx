@@ -1,4 +1,3 @@
-import { Box, Table, Icon, Grid, Flex, Text, Button } from '@chakra-ui/react';
 import { toaster } from '../../../shared/ui/toaster';
 import { Pencil, CheckCircle, Clock, DollarSign, Smile } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -6,6 +5,7 @@ import { Badge } from '../../../shared/ui/badge';
 import { ServiceModal } from './modals/service-modal';
 import { API_ENDPOINTS } from '../../../shared/api/api';
 import { DataTable } from '../../../shared/ui/data-table';
+import { cn } from '../../../shared/lib/utils';
 
 type ServiceApi = {
     id: string;
@@ -149,127 +149,117 @@ export const ServicesPage = () => {
     };
 
     return (
-        <Box>
-            <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap="1.25rem" mb="2rem">
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)" boxShadow="0 2px 8px rgba(10, 77, 104, 0.06)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Box fontSize="2rem" color="accent">
-                            <Icon as={Smile} />
-                        </Box>
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
-                            Total Services
-                        </Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Poppins', sans-serif">
-                        {totalServices}
-                    </Text>
-                </Box>
+        <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                <div className="bg-white p-6 rounded-xl border border-[rgba(10,77,104,0.1)] shadow-[0_2px_8px_rgba(10,77,104,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Smile className="w-8 h-8 text-[var(--accent)]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Total Services</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[var(--primary)] font-poppins">{totalServices}</p>
+                </div>
 
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(34, 197, 94, 0.2)" boxShadow="0 2px 8px rgba(34, 197, 94, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Box fontSize="2rem" color="#22c55e">
-                            <Icon as={CheckCircle} />
-                        </Box>
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
-                            Services Actifs
-                        </Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Poppins', sans-serif">
-                        {activeServices}
-                    </Text>
-                </Box>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(34,197,94,0.2)] shadow-[0_2px_8px_rgba(34,197,94,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <CheckCircle className="w-8 h-8 text-[#22c55e]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Services Actifs</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[#22c55e] font-poppins">{activeServices}</p>
+                </div>
 
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Box fontSize="2rem" color="accent">
-                            <Icon as={Clock} />
-                        </Box>
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
-                            Durée Moyenne
-                        </Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">
-                        {avgDuration} min
-                    </Text>
-                </Box>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(5,199,226,0.2)] shadow-[0_2px_8px_rgba(5,199,226,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Clock className="w-8 h-8 text-[var(--accent)]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Durée Moyenne</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[var(--accent)] font-poppins">{avgDuration} min</p>
+                </div>
 
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(251, 191, 36, 0.2)" boxShadow="0 2px 8px rgba(251, 191, 36, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(251, 191, 36, 0.15)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Box fontSize="2rem" color="#fbbf24">
-                            <Icon as={DollarSign} />
-                        </Box>
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
-                            Prix Moyen
-                        </Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Poppins', sans-serif">
-                        {formatPrice(avgPrice)}
-                    </Text>
-                </Box>
-            </Grid>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(251,191,36,0.2)] shadow-[0_2px_8px_rgba(251,191,36,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(251,191,36,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <DollarSign className="w-8 h-8 text-[#fbbf24]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Prix Moyen</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[#fbbf24] font-poppins">{formatPrice(avgPrice)}</p>
+                </div>
+            </div>
+
             <DataTable
                 title="Services disponibles"
                 subtitle={`${filteredServices.length} service${filteredServices.length > 1 ? 's' : ''} disponible${filteredServices.length > 1 ? 's' : ''}`}
                 filters={
-                    <Flex gap="0.75rem" flexWrap="wrap">
+                    <div className="flex gap-3 flex-wrap">
                         {categories.map((category) => (
-                            <Button key={category} onClick={() => handleCategoryFilter(category)} bg={categoryFilter === category ? 'primary' : 'white'} color={categoryFilter === category ? 'white' : 'primary'} border="2px solid" borderColor={categoryFilter === category ? 'primary' : 'rgba(10, 77, 104, 0.2)'} px="1rem" py="0.5rem" borderRadius="20px" cursor="pointer" fontWeight="600" fontSize="0.85rem" transition="all 0.3s ease" _hover={{ bg: categoryFilter === category ? 'rgba(10, 77, 104, 0.9)' : 'rgba(10, 77, 104, 0.05)', transform: 'translateY(-2px)', boxShadow: '0 2px 8px rgba(10, 77, 104, 0.15)' }}>
+                            <button
+                                key={category}
+                                onClick={() => handleCategoryFilter(category)}
+                                className={cn(
+                                    "px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300",
+                                    categoryFilter === category
+                                        ? "bg-[var(--primary)] text-white border-[var(--primary)] hover:bg-[rgba(10,77,104,0.9)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(10,77,104,0.15)]"
+                                        : "bg-white text-[var(--primary)] border-[rgba(10,77,104,0.2)] hover:bg-[rgba(10,77,104,0.05)] hover:-translate-y-0.5"
+                                )}
+                            >
                                 {category}
-                            </Button>
+                            </button>
                         ))}
-                    </Flex>
+                    </div>
                 }
                 isLoading={isLoading}
                 isEmpty={!isLoading && filteredServices.length === 0}
                 emptyMessage="Aucun service trouvé"
                 emptySubMessage=""
             >
-                <Table.Root variant="line" size="md">
-                    <Table.Header bg="rgba(10, 77, 104, 0.04)">
-                        <Table.Row>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem" minW="250px">Service</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Durée</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Prix</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Statut</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Actions</Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {filteredServices.map((service, index) => (
-                            <Table.Row key={service.id} _hover={{ bg: 'rgba(5, 199, 226, 0.04)', transition: 'all 0.2s ease' }} borderBottom={index === filteredServices.length - 1 ? 'none' : '1px solid rgba(10, 77, 104, 0.08)'}>
-                                <Table.Cell py="1rem" px="1.25rem" fontWeight="600" color="primary" fontSize="0.95rem">
-                                    <Flex align="center" gap="0.75rem">
-                                        <Box bg="rgba(5, 199, 226, 0.1)" borderRadius="8px" p="0.5rem" fontSize="1.25rem" color="accent">
-                                            <Icon as={Smile} />
-                                        </Box>
-                                        {service.name}
-                                    </Flex>
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.8)" fontSize="0.9rem">
-                                    <Flex align="center" gap="0.5rem">
-                                        <Box fontSize="0.9rem" color="accent">
-                                            <Icon as={Clock} />
-                                        </Box>
-                                        <Text fontWeight="500">{service.durationMinutes} min</Text>
-                                    </Flex>
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="primary" fontSize="0.95rem" fontWeight="700">
-                                    {formatPrice(service.price)}
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem">
-                                    <Badge status={(service.status as 'Actif' | 'Inactif') || 'Actif'}>
-                                        {service.status || 'Actif'}
-                                    </Badge>
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem">
-                                    <Box as="button" bg="rgba(5, 199, 226, 0.1)" border="1px solid rgba(5, 199, 226, 0.2)" cursor="pointer" p="0.5rem" borderRadius="6px" transition="all 0.3s ease" color="accent" display="flex" alignItems="center" justifyContent="center" _hover={{ bg: 'rgba(5, 199, 226, 0.2)', transform: 'translateY(-2px)', boxShadow: '0 2px 8px rgba(5, 199, 226, 0.3)' }} title="Modifier" onClick={() => openEditModal(service)}>
-                                        <Icon as={Pencil} boxSize="1.1rem" />
-                                    </Box>
-                                </Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table.Root>
+                <div className="w-full">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-[rgba(10,77,104,0.04)] border-b border-[var(--border)]">
+                            <tr>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider min-w-[250px]">Service</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Durée</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Prix</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Statut</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[var(--border)]">
+                            {filteredServices.map((service) => (
+                                <tr key={service.id} className="hover:bg-[rgba(5,199,226,0.04)] transition-colors">
+                                    <td className="py-4 px-5 font-semibold text-[var(--primary)] text-[0.95rem]">
+                                        <div className="flex items-center gap-3">
+                                            <div className="bg-[rgba(5,199,226,0.1)] p-2 rounded-lg text-[var(--accent)]">
+                                                <Smile className="w-5 h-5" />
+                                            </div>
+                                            {service.name}
+                                        </div>
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.8)]">
+                                        <div className="flex items-center gap-2">
+                                            <Clock className="w-4 h-4 text-[var(--accent)]" />
+                                            <span className="font-medium">{service.durationMinutes} min</span>
+                                        </div>
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.95rem] font-bold text-[var(--primary)]">
+                                        {formatPrice(service.price)}
+                                    </td>
+                                    <td className="py-4 px-5">
+                                        <Badge variant={service.status === 'Actif' ? 'success' : 'secondary'}>
+                                            {service.status || 'Actif'}
+                                        </Badge>
+                                    </td>
+                                    <td className="py-4 px-5">
+                                        <button 
+                                            title="Modifier" 
+                                            onClick={() => openEditModal(service)}
+                                            className="p-2 bg-[rgba(5,199,226,0.1)] border border-[rgba(5,199,226,0.2)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(5,199,226,0.3)] transition-all"
+                                        >
+                                            <Pencil className="w-4 h-4" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </DataTable>
 
             <ServiceModal
@@ -280,6 +270,6 @@ export const ServicesPage = () => {
                 handleUpdateService={handleUpdateService}
                 isUpdating={isUpdating}
             />
-        </Box>
+        </div>
     );
 };

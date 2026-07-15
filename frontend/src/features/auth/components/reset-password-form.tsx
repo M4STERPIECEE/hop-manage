@@ -1,104 +1,149 @@
-import { Box, Button, Heading, Input, Text, Flex } from '@chakra-ui/react';
 import { useState } from 'react';
-import type { FormEvent } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useForm } from '@tanstack/react-form';
+import { zodValidator } from '@tanstack/zod-form-adapter';
+import { z } from 'zod';
+import { Button } from '../../../shared/ui';
 
 export const ResetPasswordForm = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [info, setInfo] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080';
     const token = searchParams.get('token') ?? '';
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        setInfo(null);
+    const form = useForm({
+        defaultValues: {
+            newPassword: '',
+            confirmPassword: '',
+        },
+        // @ts-ignore
+        validatorAdapter: zodValidator(),
+        onSubmit: async ({ value }) => {
+            setError(null);
+            setInfo(null);
 
-        if (!token) {
-            setError('Token manquant. Verifiez le lien recu par email.');
-            return;
-        }
-        if (!newPassword || newPassword.length < 8) {
-            setError('Mot de passe trop court (8 caracteres minimum).');
-            return;
-        }
-        if (newPassword !== confirmPassword) {
-            setError('Les mots de passe ne correspondent pas.');
-            return;
-        }
-
-        setIsSubmitting(true);
-        try {
-            const response = await fetch(`${apiBase}/api/v1/auth/reset-password`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token, newPassword }),
-            });
-
-            if (!response.ok) {
-                const data = await response.json().catch(() => ({}));
-                throw new Error(data.message || 'Erreur de reinitialisation.');
+            if (!token) {
+                setError('Token manquant. Verifiez le lien recu par email.');
+                return;
             }
 
-            setInfo('Mot de passe mis a jour. Vous pouvez vous connecter.');
-            setTimeout(() => navigate('/login'), 1200);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Erreur de reinitialisation.');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+            if (value.newPassword !== value.confirmPassword) {
+                setError('Les mots de passe ne correspondent pas.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiBase}/api/v1/auth/reset-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token, newPassword: value.newPassword }),
+                });
+
+                if (!response.ok) {
+                    const data = await response.json().catch(() => ({}));
+                    throw new Error(data.message || 'Erreur de reinitialisation.');
+                }
+
+                setInfo('Mot de passe mis a jour. Vous pouvez vous connecter.');
+                setTimeout(() => navigate('/login'), 1200);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Erreur de reinitialisation.');
+            }
+        },
+    });
 
     return (
-        <Box bg="white" borderRadius="16px" p="2.5rem" boxShadow="0 10px 30px rgba(10, 77, 104, 0.15)" color="textDark">
-            <Heading as="h2" fontFamily="'Poppins', sans-serif" color="primary" fontSize="2rem" mb="0.5rem">
+        <div className="bg-white rounded-2xl p-10 shadow-[0_10px_30px_rgba(10,77,104,0.15)] text-[var(--text-dark)]">
+            <h2 className="font-poppins text-[var(--primary)] text-3xl font-bold mb-2">
                 Reinitialiser le mot de passe
-            </Heading>
-            <Text fontSize="0.95rem" color="rgba(10, 77, 104, 0.7)" mb="1.5rem">
+            </h2>
+            <p className="text-[var(--primary)]/70 text-[0.95rem] mb-6">
                 Saisissez votre nouveau mot de passe pour acceder au tableau de bord.
-            </Text>
+            </p>
 
-            <form onSubmit={handleSubmit}>
-                <Box mb="1rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                        Nouveau mot de passe
-                    </Box>
-                    <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                </Box>
+            <form onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); form.handleSubmit(); }}>
+                <form.Field
+                    name="newPassword"
+                    validators={{
+                        onChange: z.string().min(8, 'Mot de passe trop court (8 caracteres minimum).'),
+                    }}
+                    children={(field) => (
+                        <div className="mb-4">
+                            <label className="block text-[var(--text-dark)] font-semibold mb-2 text-[0.95rem]">
+                                Nouveau mot de passe
+                            </label>
+                            <input
+                                type="password"
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                className="w-full p-3.5 border-2 border-[var(--border)] rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-[var(--accent)] focus:ring-[3px] focus:ring-[var(--accent)]/10"
+                            />
+                            {field.state.meta.errors ? (
+                                <p className="text-xs text-[var(--danger)] mt-1">{field.state.meta.errors.join(', ')}</p>
+                            ) : null}
+                        </div>
+                    )}
+                />
 
-                <Box mb="1.5rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                        Confirmer le mot de passe
-                    </Box>
-                    <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                </Box>
+                <form.Field
+                    name="confirmPassword"
+                    validators={{
+                        onChange: z.string().min(1, 'Veuillez confirmer le mot de passe'),
+                    }}
+                    children={(field) => (
+                        <div className="mb-6">
+                            <label className="block text-[var(--text-dark)] font-semibold mb-2 text-[0.95rem]">
+                                Confirmer le mot de passe
+                            </label>
+                            <input
+                                type="password"
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                className="w-full p-3.5 border-2 border-[var(--border)] rounded-lg text-base transition-all duration-300 focus:outline-none focus:border-[var(--accent)] focus:ring-[3px] focus:ring-[var(--accent)]/10"
+                            />
+                            {field.state.meta.errors ? (
+                                <p className="text-xs text-[var(--danger)] mt-1">{field.state.meta.errors.join(', ')}</p>
+                            ) : null}
+                        </div>
+                    )}
+                />
 
                 {error && (
-                    <Box mb="1rem" p="0.75rem" borderRadius="8px" bg="rgba(220, 38, 38, 0.08)" border="1px solid rgba(220, 38, 38, 0.2)" color="#dc2626" fontSize="0.9rem" fontWeight="600" textAlign="center">
+                    <div className="mb-4 p-3 rounded-lg bg-red-600/10 border border-red-600/20 text-[#dc2626] text-sm font-semibold text-center">
                         {error}
-                    </Box>
+                    </div>
                 )}
 
                 {info && (
-                    <Box mb="1rem" p="0.75rem" borderRadius="8px" bg="rgba(5, 199, 226, 0.08)" border="1px solid rgba(5, 199, 226, 0.2)" color="accent" fontSize="0.9rem" fontWeight="600" textAlign="center">
+                    <div className="mb-4 p-3 rounded-lg bg-[#05c7e2]/10 border border-[#05c7e2]/20 text-[var(--accent)] text-sm font-semibold text-center">
                         {info}
-                    </Box>
+                    </div>
                 )}
 
-                <Flex justify="center">
-                    <Button type="submit" bg="var(--primary)" color="white" p="1rem 2rem" border="2px solid var(--primary)" borderRadius="8px" fontSize="1.1rem" fontWeight="600" cursor="pointer" w="70%" transition="all 0.3s" _hover={{ bg: 'primary', color: 'white', transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.3)' }} disabled={isSubmitting}>
-                        {isSubmitting ? 'Mise a jour...' : 'Mettre a jour'}
-                    </Button>
-                </Flex>
+                <div className="flex justify-center mt-2">
+                    <form.Subscribe
+                        selector={(state) => [state.canSubmit, state.isSubmitting]}
+                        children={([canSubmit, isSubmitting]) => (
+                            <Button
+                                type="submit"
+                                disabled={!canSubmit || isSubmitting}
+                                className="w-[70%] py-3 text-lg"
+                            >
+                                {isSubmitting ? 'Mise a jour...' : 'Mettre a jour'}
+                            </Button>
+                        )}
+                    />
+                </div>
             </form>
-        </Box>
+        </div>
     );
 };

@@ -1,34 +1,21 @@
-/* eslint-disable react-refresh/only-export-components */
-import { 
-    createToaster, 
-    Toaster as ChakraToaster, 
-    Toast, 
-    Stack,
-    Portal
-} from '@chakra-ui/react';
+import { Toaster as Sonner, toast } from 'sonner';
 
-export const toaster = createToaster({
-    placement: 'top-end',
-    pauseOnPageIdle: true,
-});
-
-export const Toaster = () => {
-    return (
-        <Portal>
-            <ChakraToaster toaster={toaster}>
-                {(toast) => (
-                    <Toast.Root key={toast.id}>
-                        <Toast.Indicator />
-                        <Stack gap="1" flex="1">
-                            {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
-                            {toast.description && (
-                                <Toast.Description>{toast.description}</Toast.Description>
-                            )}
-                        </Stack>
-                        <Toast.CloseTrigger />
-                    </Toast.Root>
-                )}
-            </ChakraToaster>
-        </Portal>
-    );
+export const toaster = {
+    create: (options: { title?: string; description?: string; type?: 'success' | 'error' | 'info' | 'warning' }) => {
+        const { title, description, type } = options;
+        const msg = title || description;
+        if (type === 'success') {
+            toast.success(msg, { description: title && description ? description : undefined });
+        } else if (type === 'error') {
+            toast.error(msg, { description: title && description ? description : undefined });
+        } else {
+            toast(msg, { description: title && description ? description : undefined });
+        }
+    }
 };
+
+export function Toaster() {
+    return (
+        <Sonner position="top-right" richColors />
+    );
+}

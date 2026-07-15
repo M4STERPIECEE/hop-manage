@@ -1,6 +1,7 @@
-import { Box, Button, Flex, Heading, Input, Text, Spinner, Icon } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
-import { Search, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Plus, Loader2 } from 'lucide-react';
+import { Button } from './button';
+import { Input } from './input';
 
 interface DataTableProps {
     title: string;
@@ -21,7 +22,7 @@ interface DataTableProps {
     children: ReactNode;
 }
 
-export const DataTable = ({
+export function DataTable({
     title,
     subtitle,
     onAdd,
@@ -38,116 +39,85 @@ export const DataTable = ({
     totalPages,
     onPageChange,
     children,
-}: DataTableProps) => {
+}: DataTableProps) {
     return (
-        <Box bg="white" borderRadius="12px" p="1.5rem" boxShadow="0 2px 12px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)">
-            <Flex justify="space-between" align="center" mb="1.5rem" gap="1rem" flexWrap="wrap">
-                <Box>
-                    <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">
+        <div className="bg-[var(--bg-white)] rounded-xl p-6 shadow-sm border border-[var(--border)]">
+            <div className="flex justify-between items-center mb-6 gap-4 flex-wrap">
+                <div>
+                    <h2 className="font-poppins text-2xl font-bold text-[var(--primary)] mb-1">
                         {title}
-                    </Heading>
+                    </h2>
                     {subtitle && (
-                        <Text fontSize="0.85rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">
+                        <p className="text-sm text-[var(--primary)] opacity-60 font-medium">
                             {subtitle}
-                        </Text>
+                        </p>
                     )}
-                </Box>
+                </div>
 
-                <Flex gap="1rem" align="center" flexWrap="nowrap" maxW="100%">
+                <div className="flex gap-4 items-center flex-nowrap max-w-full">
                     {onSearch && (
                         <Input
                             placeholder={searchPlaceholder}
                             value={searchValue}
                             onChange={(e) => onSearch(e.target.value)}
-                            border="2px solid rgba(10, 77, 104, 0.15)"
-                            borderRadius="8px"
-                            px="1rem"
-                            py="0.6rem"
-                            fontSize="0.9rem"
-                            w={{ base: "100%", md: "300px" }}
-                            transition="all 0.3s ease"
-                            _focus={{ borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)', outline: 'none' }}
-                            _hover={{ borderColor: 'rgba(10, 77, 104, 0.25)' }}
+                            className="w-full md:w-[300px]"
                         />
                     )}
                     
                     {onAdd && (
-                        <Button
-                            onClick={onAdd}
-                            bg="accent"
-                            color="white"
-                            px="1.5rem"
-                            py="0.7rem"
-                            border="none"
-                            borderRadius="8px"
-                            cursor="pointer"
-                            fontWeight="600"
-                            transition="all 0.3s"
-                            display="flex"
-                            alignItems="center"
-                            gap="0.5rem"
-                            _hover={{ bg: '#04b3cf', transform: 'translateY(-2px)' }}
-                        >
-                            <Icon as={Plus} boxSize="1.1rem" />
+                        <Button onClick={onAdd} variant="secondary" className="flex items-center gap-2 font-semibold">
+                            <Plus className="h-4 w-4" />
                             {addButtonText}
                         </Button>
                     )}
-                </Flex>
-            </Flex>
+                </div>
+            </div>
 
             {filters && (
-                <Box mb="1.5rem">
+                <div className="mb-6">
                     {filters}
-                </Box>
+                </div>
             )}
 
-            <Box overflowX="auto" borderRadius="8px" border="1px solid rgba(10, 77, 104, 0.1)" minH="200px" position="relative">
+            <div className="overflow-x-auto rounded-lg border border-[var(--border)] min-h-[200px] relative">
                 {isLoading ? (
-                    <Flex justify="center" align="center" py="5rem">
-                        <Spinner size="xl" color="primary" />
-                    </Flex>
+                    <div className="flex justify-center items-center py-20">
+                        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+                    </div>
                 ) : isEmpty ? (
-                    <Box textAlign="center" py="4rem">
-                        <Icon as={Search} boxSize="3rem" color="rgba(10, 77, 104, 0.2)" mb="1rem" />
-                        <Text fontSize="1.1rem" fontWeight="600" color="primary" mb="0.5rem">{emptyMessage}</Text>
-                        <Text fontSize="0.9rem" color="rgba(10, 77, 104, 0.6)">{emptySubMessage}</Text>
-                    </Box>
+                    <div className="text-center py-16">
+                        <Search className="h-12 w-12 text-[var(--text-gray)] mx-auto mb-4 opacity-50" />
+                        <p className="text-lg font-semibold text-[var(--primary)] mb-2">{emptyMessage}</p>
+                        <p className="text-sm text-[var(--text-gray)]">{emptySubMessage}</p>
+                    </div>
                 ) : (
                     children
                 )}
-            </Box>
+            </div>
 
             {totalPages !== undefined && currentPage !== undefined && onPageChange && totalPages > 0 && !isLoading && !isEmpty && (
-                <Flex justify="center" align="center" gap="1rem" mt="1.5rem">
+                <div className="flex justify-center items-center gap-4 mt-6">
                     <Button
                         variant="outline"
-                        size="sm"
+                        size="icon"
                         onClick={() => onPageChange(Math.max(0, currentPage - 1))}
                         disabled={currentPage === 0}
-                        _disabled={{ opacity: 0.5, cursor: 'not-allowed' }}
-                        border="1px solid rgba(10, 77, 104, 0.2)"
-                        borderRadius="8px"
-                        _hover={currentPage > 0 ? { bg: 'rgba(5, 199, 226, 0.1)', color: 'accent', borderColor: 'accent' } : {}}
                     >
-                        <Icon as={ChevronLeft} />
+                        <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <Text fontWeight="600" fontSize="0.9rem" color="primary">
+                    <span className="font-semibold text-sm text-[var(--primary)]">
                         Page {currentPage + 1} sur {totalPages}
-                    </Text>
+                    </span>
                     <Button
                         variant="outline"
-                        size="sm"
+                        size="icon"
                         onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}
                         disabled={currentPage >= totalPages - 1}
-                        _disabled={{ opacity: 0.5, cursor: 'not-allowed' }}
-                        border="1px solid rgba(10, 77, 104, 0.2)"
-                        borderRadius="8px"
-                        _hover={currentPage < totalPages - 1 ? { bg: 'rgba(5, 199, 226, 0.1)', color: 'accent', borderColor: 'accent' } : {}}
                     >
-                        <Icon as={ChevronRight} />
+                        <ChevronRight className="h-4 w-4" />
                     </Button>
-                </Flex>
+                </div>
             )}
-        </Box>
+        </div>
     );
-};
+}

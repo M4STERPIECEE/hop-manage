@@ -1,4 +1,3 @@
-import { Box, Grid, Heading, Text, Icon } from '@chakra-ui/react';
 import { Calendar, Users, CheckCircle, Clock } from 'lucide-react';
 import { StatCard } from './stat-card';
 import { ActivityChart } from './activity-chart';
@@ -14,22 +13,22 @@ export const OverviewPage = () => {
                 : 'Bonsoir';
 
     return (
-        <Box>
-            <Box mb="2rem" p="1.5rem" bg="linear-gradient(135deg, rgba(10, 77, 104, 0.05) 0%, rgba(5, 199, 226, 0.05) 100%)" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)">
-                <Heading as="h1" fontFamily="'Poppins', sans-serif" fontSize="2rem" color="primary" mb="0.5rem" fontWeight="700">
+        <div>
+            <div className="mb-8 p-6 bg-gradient-to-br from-[rgba(10,77,104,0.05)] to-[rgba(5,199,226,0.05)] rounded-xl border border-[rgba(10,77,104,0.1)]">
+                <h1 className="font-poppins text-3xl text-[var(--primary)] mb-2 font-bold">
                     {greeting}, Dr. Martin 👋
-                </Heading>
-                <Text fontSize="0.95rem" color="rgba(10, 77, 104, 0.7)" fontWeight="500">
+                </h1>
+                <p className="text-[0.95rem] text-[rgba(10,77,104,0.7)] font-medium">
                     Voici un aperçu de votre activité aujourd'hui
-                </Text>
-            </Box>
-            <Grid templateColumns="repeat(auto-fit, minmax(240px, 1fr))" gap="1.25rem" mb="2rem">
-                <StatCard title="Rendez-vous aujourd'hui" value="12" icon={<Icon as={Calendar} />} change="+3 depuis hier" variant="primary" />
-                <StatCard title="Patients actifs" value="342" icon={<Icon as={Users} />} change="+15 ce mois" variant="accent" />
-                <StatCard title="Taux de présence" value="94%" icon={<Icon as={CheckCircle} />} change="+2% ce mois" variant="success" />
-                <StatCard title="En attente" value="8" icon={<Icon as={Clock} />} change="Confirmations requises" variant="warning" />
-            </Grid>
+                </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                <StatCard title="Rendez-vous aujourd'hui" value="12" icon={<Calendar />} change="+3 depuis hier" variant="primary" />
+                <StatCard title="Patients actifs" value="342" icon={<Users />} change="+15 ce mois" variant="accent" />
+                <StatCard title="Taux de présence" value="94%" icon={<CheckCircle />} change="+2% ce mois" variant="success" />
+                <StatCard title="En attente" value="8" icon={<Clock />} change="Confirmations requises" variant="warning" />
+            </div>
             <ActivityChart />
-        </Box>
+        </div>
     );
 };

@@ -1,7 +1,6 @@
-import { Box, Grid, Heading, Text, Spinner, Icon } from '@chakra-ui/react';
 import { useState, useEffect, type ElementType } from 'react';
 import { API_ENDPOINTS } from '../../../shared/api/api';
-import { Search, Sparkles, Gem, Smile, Crosshair, AlertTriangle } from 'lucide-react';
+import { Search, Sparkles, Gem, Smile, Crosshair, AlertTriangle, Loader2 } from 'lucide-react';
 
 interface ServiceWithIcon {
     id: string;
@@ -47,33 +46,36 @@ export const ServicesSection = () => {
 
     if (loading) {
         return (
-            <Box as="section" py="5rem" px="2rem" maxW="1400px" mx="auto" id="services" display="flex" justifyContent="center">
-                <Spinner size="xl" color="primary" />
-            </Box>
+            <section className="py-20 px-8 max-w-[1400px] mx-auto flex justify-center items-center min-h-[400px]" id="services">
+                <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin" />
+            </section>
         );
     }
 
     return (
-        <Box as="section" py="5rem" px="2rem" maxW="1400px" mx="auto" id="services">
-            <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="2.8rem" textAlign="center" color="primary" mb="3rem">
+        <section className="py-20 px-8 max-w-[1400px] mx-auto" id="services">
+            <h2 className="font-poppins text-4xl md:text-[2.8rem] text-center text-[var(--primary)] font-bold mb-12">
                 Nos Services
-            </Heading>
+            </h2>
 
-            <Grid templateColumns="repeat(auto-fit, minmax(280px, 1fr))" gap="2rem">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service) => (
-                    <Box key={service.id} bg="white" p="2rem" borderRadius="12px" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" transition="all 0.3s" border="2px solid transparent" _hover={{ transform: 'translateY(-5px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)', borderColor: 'accentSoft' }}>
-                        <Box w="60px" h="60px" bg="accentSoft" borderRadius="12px" display="flex" alignItems="center" justifyContent="center" fontSize="2rem" mb="1.5rem">
-                            <Icon as={service.icon} boxSize="1.8rem" color="primary" />
-                        </Box>
-                        <Heading as="h3" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary" mb="0.8rem">
+                    <div 
+                        key={service.id} 
+                        className="bg-white p-8 rounded-xl shadow-sm transition-all duration-300 border-2 border-transparent hover:-translate-y-1 hover:shadow-md hover:border-[var(--accent-soft)]"
+                    >
+                        <div className="w-[60px] h-[60px] bg-[var(--accent-soft)] rounded-xl flex items-center justify-center text-3xl mb-6">
+                            <service.icon className="w-7 h-7 text-[var(--primary)]" />
+                        </div>
+                        <h3 className="font-poppins text-2xl text-[var(--primary)] font-bold mb-3">
                             {service.name}
-                        </Heading>
-                        <Text color="textGray" lineHeight="1.7">
+                        </h3>
+                        <p className="text-[var(--text-gray)] leading-relaxed">
                             {service.description}
-                        </Text>
-                    </Box>
+                        </p>
+                    </div>
                 ))}
-            </Grid>
-        </Box>
+            </div>
+        </section>
     );
 };

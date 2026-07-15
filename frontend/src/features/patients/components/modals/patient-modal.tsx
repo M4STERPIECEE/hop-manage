@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { Modal } from '../../../../shared/ui/modal';
 
 interface PatientModalProps {
@@ -9,7 +8,7 @@ interface PatientModalProps {
 export const PatientModal = ({ isOpen, onClose }: PatientModalProps) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Nouveau patient">
-            <Box>Formulaire de création de patient à implémenter</Box>
+            <div>Formulaire de création de patient à implémenter</div>
         </Modal>
     );
 };

@@ -1,63 +1,90 @@
-import { Box, Button, Grid, Heading, Input } from '@chakra-ui/react';
+import { Button, Input } from '../../../shared/ui';
 
 export const SettingsPage = () => {
     return (
-        <Box bg="white" borderRadius="12px" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" overflow="hidden">
-            <Box px="2rem" py="1.5rem" borderBottom="2px solid var(--border)">
-                <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary">
+        <div className="bg-white rounded-xl shadow-[0_1px_3px_rgba(10,77,104,0.08)] overflow-hidden">
+            <div className="px-8 py-6 border-b-2 border-[var(--border)]">
+                <h2 className="font-poppins text-2xl text-[var(--primary)] font-bold">
                     Paramètres du cabinet
-                </Heading>
-            </Box>
+                </h2>
+            </div>
 
-            <Box p="2rem">
-                <Box mb="1.5rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem">
+            <div className="p-8">
+                <div className="mb-6">
+                    <label className="block text-[var(--text-dark)] font-semibold mb-2">
                         Nom du cabinet
-                    </Box>
-                    <Input type="text" defaultValue="DentiCare" w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                </Box>
+                    </label>
+                    <Input 
+                        type="text" 
+                        defaultValue="DentiCare" 
+                        className="w-full"
+                    />
+                </div>
 
-                <Box mb="1.5rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem">
+                <div className="mb-6">
+                    <label className="block text-[var(--text-dark)] font-semibold mb-2">
                         Adresse
-                    </Box>
-                    <Input type="text" defaultValue="123 Avenue de la Santé, Paris" w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                </Box>
+                    </label>
+                    <Input 
+                        type="text" 
+                        defaultValue="123 Avenue de la Santé, Paris" 
+                        className="w-full"
+                    />
+                </div>
 
-                <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1rem" mb="1.5rem">
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
                             Téléphone
-                        </Box>
-                        <Input type="tel" defaultValue="01 23 45 67 89" w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem">
+                        </label>
+                        <Input 
+                            type="tel" 
+                            defaultValue="01 23 45 67 89" 
+                            className="w-full"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
                             Email
-                        </Box>
-                        <Input type="email" defaultValue="contact@denticare.fr" w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                </Grid>
+                        </label>
+                        <Input 
+                            type="email" 
+                            defaultValue="contact@denticare.fr" 
+                            className="w-full"
+                        />
+                    </div>
+                </div>
 
-                <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1rem" mb="1.5rem">
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
                             Heure d'ouverture
-                        </Box>
-                        <Input type="time" defaultValue="08:00" w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem">
+                        </label>
+                        <Input 
+                            type="time" 
+                            defaultValue="08:00" 
+                            className="w-full"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-[var(--text-dark)] font-semibold mb-2">
                             Heure de fermeture
-                        </Box>
-                        <Input type="time" defaultValue="18:00" w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                </Grid>
+                        </label>
+                        <Input 
+                            type="time" 
+                            defaultValue="18:00" 
+                            className="w-full"
+                        />
+                    </div>
+                </div>
 
-                <Button bg="primary" color="white" px="2rem" py="1rem" border="none" borderRadius="8px" fontSize="1.1rem" fontWeight="600" cursor="pointer" w="100%" transition="all 0.3s" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" _hover={{ bg: 'primaryDark', transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)' }}>
+                <Button 
+                    variant="default"
+                    className="w-full py-4 text-lg font-semibold"
+                >
                     Enregistrer les modifications
                 </Button>
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 };

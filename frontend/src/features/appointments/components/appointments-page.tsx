@@ -1,10 +1,20 @@
-import { Box, Table, Text, Icon, Grid, Flex, Button } from '@chakra-ui/react';
 import { Pencil, Trash2, Calendar, CheckCircle, Clock, Check } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
-import { Badge } from '../../../shared/ui/badge';
+import { Badge } from '../../../shared/ui';
 import { AppointmentModal } from './modals/appointment-modal';
 import type { Appointment } from '../../../shared/model';
+
+const statusVariant: Record<string, 'warning' | 'success' | 'secondary' | 'destructive'> = {
+  PENDING: 'warning',
+  'En attente': 'warning',
+  CONFIRMED: 'success',
+  Confirmé: 'success',
+  COMPLETED: 'secondary',
+  Terminé: 'secondary',
+  Annulé: 'destructive',
+};
 import { DataTable } from '../../../shared/ui/data-table';
+import { cn } from '../../../shared/lib/utils';
 
 export const AppointmentsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -134,6 +144,7 @@ export const AppointmentsPage = () => {
         }
     };
     const formatDate = (dateStr: string) => {
+        if (!dateStr) return '';
         const date = new Date(dateStr);
         return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
     };
@@ -159,7 +170,11 @@ export const AppointmentsPage = () => {
             );
         }
         if (status !== 'Tous') {
-            filtered = filtered.filter((app) => app.status === status);
+            filtered = filtered.filter((app) => app.status === status || 
+                (status === 'Confirmé' && app.status === 'CONFIRMED') ||
+                (status === 'En attente' && app.status === 'PENDING') ||
+                (status === 'Terminé' && app.status === 'COMPLETED')
+            );
         }
 
         setFilteredAppointments(filtered);
@@ -172,45 +187,54 @@ export const AppointmentsPage = () => {
     const statusOptions = ['Tous', 'Confirmé', 'En attente', 'Terminé', 'Annulé'];
 
     return (
-        <Box>
-            <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap="1.25rem" mb="2rem">
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)" boxShadow="0 2px 8px rgba(10, 77, 104, 0.06)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)', }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={Calendar} boxSize="1.5rem" color="primary" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
+        <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                <div className="bg-white p-6 rounded-xl border border-[rgba(10,77,104,0.1)] shadow-[0_2px_8px_rgba(10,77,104,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Calendar className="w-6 h-6 text-[var(--primary)]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
                             Total RDV
-                        </Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Poppins', sans-serif" >
+                        </p>
+                    </div>
+                    <p className="text-3xl font-bold text-[var(--primary)] font-poppins">
                         {appointments.length}
-                    </Text>
-                </Box>
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(34, 197, 94, 0.2)" boxShadow="0 2px 8px rgba(34, 197, 94, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)', }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={CheckCircle} boxSize="1.5rem" color="#22c55e" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">
+                    </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(34,197,94,0.2)] shadow-[0_2px_8px_rgba(34,197,94,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <CheckCircle className="w-6 h-6 text-[#22c55e]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
                             Confirmés
-                        </Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Poppins', sans-serif">
+                        </p>
+                    </div>
+                    <p className="text-3xl font-bold text-[#22c55e] font-poppins">
                         {confirmedCount}
-                    </Text>
-                </Box>
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(251, 191, 36, 0.2)" boxShadow="0 2px 8px rgba(251, 191, 36, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(251, 191, 36, 0.15)', }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={Clock} boxSize="1.5rem" color="#fbbf24" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">En attente</Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Poppins', sans-serif">{pendingCount}</Text>
-                </Box>
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)', }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={Check} boxSize="1.5rem" color="accent" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Terminés</Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">{completedCount}</Text>
-                </Box>
-            </Grid>
+                    </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(251,191,36,0.2)] shadow-[0_2px_8px_rgba(251,191,36,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(251,191,36,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Clock className="w-6 h-6 text-[#fbbf24]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
+                            En attente
+                        </p>
+                    </div>
+                    <p className="text-3xl font-bold text-[#fbbf24] font-poppins">
+                        {pendingCount}
+                    </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(5,199,226,0.2)] shadow-[0_2px_8px_rgba(5,199,226,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Check className="w-6 h-6 text-[var(--accent)]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">
+                            Terminés
+                        </p>
+                    </div>
+                    <p className="text-3xl font-bold text-[var(--accent)] font-poppins">
+                        {completedCount}
+                    </p>
+                </div>
+            </div>
+
             <DataTable
                 title="Tous les rendez-vous"
                 subtitle={`${totalElements} rendez-vous au total`}
@@ -220,13 +244,22 @@ export const AppointmentsPage = () => {
                 searchValue={searchValue}
                 onSearch={handleSearch}
                 filters={
-                    <Flex gap="0.75rem" flexWrap="wrap">
+                    <div className="flex gap-3 flex-wrap">
                         {statusOptions.map((status) => (
-                            <Button key={status} onClick={() => handleStatusFilter(status)} bg={statusFilter === status ? 'primary' : 'white'} color={statusFilter === status ? 'white' : 'primary'} border="2px solid" borderColor={statusFilter === status ? 'primary' : 'rgba(10, 77, 104, 0.2)'} px="1rem" py="0.5rem" borderRadius="20px" cursor="pointer" fontWeight="600" fontSize="0.85rem" transition="all 0.3s ease" _hover={{ bg: statusFilter === status ? 'rgba(10, 77, 104, 0.9)' : 'rgba(10, 77, 104, 0.05)', transform: 'translateY(-2px)', boxShadow: '0 2px 8px rgba(10, 77, 104, 0.15)' }}>
+                            <button
+                                key={status}
+                                onClick={() => handleStatusFilter(status)}
+                                className={cn(
+                                    "px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300",
+                                    statusFilter === status
+                                        ? "bg-[var(--primary)] text-white border-[var(--primary)] hover:bg-[rgba(10,77,104,0.9)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(10,77,104,0.15)]"
+                                        : "bg-white text-[var(--primary)] border-[rgba(10,77,104,0.2)] hover:bg-[rgba(10,77,104,0.05)] hover:-translate-y-0.5"
+                                )}
+                            >
                                 {status}
-                            </Button>
+                            </button>
                         ))}
-                    </Flex>
+                    </div>
                 }
                 isLoading={isLoading}
                 isEmpty={!isLoading && filteredAppointments.length === 0}
@@ -236,54 +269,68 @@ export const AppointmentsPage = () => {
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
             >
-                <Table.Root variant="line" size="md">
-                    <Table.Header bg="rgba(10, 77, 104, 0.04)">
-                        <Table.Row>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Réf</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Patient</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Contact</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Service</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Date & Heure</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Statut</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" py="1rem" px="1.25rem">Actions</Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {filteredAppointments.map((appointment) => (
-                            <Table.Row key={appointment.id} _hover={{ bg: 'rgba(5, 199, 226, 0.04)' }}>
-                                <Table.Cell py="1rem" px="1.25rem" fontWeight="700" color="rgba(10, 77, 104, 0.5)" fontSize="0.8rem">{appointment.id.substring(0, 8)}</Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" fontWeight="600" color="primary" fontSize="0.95rem">{appointment.patient}</Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.7)" fontSize="0.9rem">
-                                    <Box>
-                                        <Text fontSize="0.85rem" mb="0.1rem">{appointment.email}</Text>
-                                        <Text fontSize="0.8rem" color="rgba(10, 77, 104, 0.5)">{appointment.phone}</Text>
-                                    </Box>
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.8)" fontSize="0.9rem" fontWeight="500">{appointment.service}</Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.7)" fontSize="0.9rem">
-                                    <Box>
-                                        <Text fontWeight="500">{formatDate(appointment.date)}</Text>
-                                        <Text fontSize="0.8rem" color="rgba(10, 77, 104, 0.5)">à {appointment.time}</Text>
-                                    </Box>
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem">
-                                    <Badge status={appointment.status}>{appointment.status}</Badge>
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem">
-                                    <Flex gap="0.5rem">
-                                        <Box as="button" onClick={() => openEditModal(appointment)} bg="rgba(5, 199, 226, 0.1)" color="accent" p="0.5rem" borderRadius="6px" _hover={{ bg: 'rgba(5, 199, 226, 0.2)' }}>
-                                            <Icon as={Pencil} />
-                                        </Box>
-                                        <Box as="button" bg="rgba(220, 38, 38, 0.1)" color="#dc2626" p="0.5rem" borderRadius="6px" _hover={{ bg: 'rgba(220, 38, 38, 0.2)' }}>
-                                            <Icon as={Trash2} />
-                                        </Box>
-                                    </Flex>
-                                </Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table.Root>
+                <div className="w-full">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-[rgba(10,77,104,0.04)] border-b border-[var(--border)]">
+                            <tr>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Réf</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Patient</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Contact</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Service</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Date & Heure</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Statut</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[var(--border)]">
+                            {filteredAppointments.map((appointment) => (
+                                <tr key={appointment.id} className="hover:bg-[rgba(5,199,226,0.04)] transition-colors">
+                                    <td className="py-4 px-5 text-[0.8rem] font-bold text-[rgba(10,77,104,0.5)]">
+                                        {appointment.id.substring(0, 8)}
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.95rem] font-semibold text-[var(--primary)]">
+                                        {appointment.patient}
+                                    </td>
+                                    <td className="py-4 px-5">
+                                        <div>
+                                            <p className="text-[0.85rem] text-[rgba(10,77,104,0.7)]">{appointment.email}</p>
+                                            <p className="text-[0.8rem] text-[rgba(10,77,104,0.5)]">{appointment.phone}</p>
+                                        </div>
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.9rem] font-medium text-[rgba(10,77,104,0.8)]">
+                                        {appointment.service}
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.7)]">
+                                        <div>
+                                            <p className="font-medium">{formatDate(appointment.date)}</p>
+                                            <p className="text-[0.8rem] text-[rgba(10,77,104,0.5)]">à {appointment.time}</p>
+                                        </div>
+                                    </td>
+                                    <td className="py-4 px-5">
+                                        <Badge variant={statusVariant[appointment.status]}>{appointment.status}</Badge>
+                                    </td>
+                                    <td className="py-4 px-5">
+                                        <div className="flex gap-2">
+                                            <button 
+                                                onClick={() => openEditModal(appointment)} 
+                                                className="p-2 bg-[rgba(5,199,226,0.1)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] transition-colors"
+                                            >
+                                                <Pencil className="w-4 h-4" />
+                                            </button>
+                                            <button 
+                                                className="p-2 bg-red-600/10 text-red-600 rounded-md hover:bg-red-600/20 transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </DataTable>
+
             <AppointmentModal
                 isOpen={isModalOpen}
                 onClose={() => { setIsModalOpen(false); setSelectedAppointment(null); }}
@@ -296,12 +343,13 @@ export const AppointmentsPage = () => {
                 setNewAppointment={setNewAppointment}
                 handleCreateAppointment={handleCreateAppointment}
             />
+
             {showSuccessToast && (
-                <Flex position="fixed" bottom="2rem" left="50%" transform="translateX(-50%)" bg="rgba(16, 185, 129, 0.95)" color="white" py="1rem" px="2rem" borderRadius="12px" boxShadow="0 10px 25px rgba(16, 185, 129, 0.3)" align="center" gap="0.75rem" zIndex="3000" css={{ animation: 'fadeInUp 0.4s ease-out' }}>
-                    <Icon as={Check} boxSize="1.2rem" />
-                    <Text fontWeight="600">Statut mis à jour avec succès !</Text>
-                </Flex>
+                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[rgba(16,185,129,0.95)] text-white py-4 px-8 rounded-xl shadow-[0_10px_25px_rgba(16,185,129,0.3)] flex items-center gap-3 z-[3000] animate-[fadeInUp_0.4s_ease-out]">
+                    <Check className="w-5 h-5" />
+                    <p className="font-semibold">Statut mis à jour avec succès !</p>
+                </div>
             )}
-        </Box>
+        </div>
     );
 };

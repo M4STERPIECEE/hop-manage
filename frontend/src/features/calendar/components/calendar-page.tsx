@@ -1,7 +1,8 @@
-import { Box, Button, Flex, Grid, Heading, Text, Badge, Spinner, Icon } from '@chakra-ui/react';
 import { useState, useEffect, useCallback } from 'react';
 import type { Appointment } from '../../../shared/model';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '../../../shared/ui';
+import { cn } from '../../../shared/lib/utils';
 
 export const CalendarPage = () => {
     const today = new Date();
@@ -13,18 +14,8 @@ export const CalendarPage = () => {
     const apiBase = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
 
     const monthNames = [
-        'Janvier',
-        'Février',
-        'Mars',
-        'Avril',
-        'Mai',
-        'Juin',
-        'Juillet',
-        'Août',
-        'Septembre',
-        'Octobre',
-        'Novembre',
-        'Décembre',
+        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
     ];
 
     const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
@@ -98,14 +89,14 @@ export const CalendarPage = () => {
 
         dayNames.forEach((day) => {
             days.push(
-                <Box key={`header-${day}`} textAlign="center" fontWeight="700" fontSize="0.65rem" p="0.35rem" color="primary" letterSpacing="0.5px" textTransform="uppercase">
+                <div key={`header-${day}`} className="text-center font-bold text-[0.65rem] p-1.5 text-[var(--primary)] tracking-wide uppercase">
                     {day}
-                </Box>
+                </div>
             );
         });
 
         for (let i = 0; i < firstDay; i++) {
-            days.push(<Box key={`empty-${i}`} />);
+            days.push(<div key={`empty-${i}`} />);
         }
 
         for (let day = 1; day <= daysInMonth; day++) {
@@ -122,24 +113,38 @@ export const CalendarPage = () => {
             const todayCheck = isToday(day);
 
             days.push(
-                <Box key={`day-${day}`} position="relative" aspectRatio="1.25" border="2px solid" borderColor={todayCheck ? 'accent' : hasAppointment ? 'rgba(5, 199, 226, 0.3)' : 'rgba(10, 77, 104, 0.1)'} borderRadius="8px" p="0.35rem" textAlign="center" cursor="pointer" transition="all 0.3s ease" bg={todayCheck ? 'linear-gradient(135deg, rgba(5, 199, 226, 0.15) 0%, rgba(5, 199, 226, 0.05) 100%)' : hasAppointment ? 'linear-gradient(135deg, rgba(5, 199, 226, 0.08) 0%, rgba(5, 199, 226, 0.02) 100%)' : 'transparent'} _hover={{ borderColor: 'accent', bg: 'linear-gradient(135deg, rgba(5, 199, 226, 0.15) 0%, rgba(5, 199, 226, 0.08) 100%)', transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.2)' }} display="flex" flexDirection="column" justifyContent="space-between" alignItems="center">
+                <div 
+                    key={`day-${day}`} 
+                    className={cn(
+                        "relative aspect-[1.25] border-2 rounded-lg p-1.5 text-center cursor-pointer transition-all duration-300 flex flex-col justify-between items-center group",
+                        todayCheck 
+                            ? "border-[var(--accent)] bg-gradient-to-br from-[rgba(5,199,226,0.15)] to-[rgba(5,199,226,0.05)] hover:bg-gradient-to-br hover:from-[rgba(5,199,226,0.15)] hover:to-[rgba(5,199,226,0.08)]" 
+                            : hasAppointment 
+                                ? "border-[rgba(5,199,226,0.3)] bg-gradient-to-br from-[rgba(5,199,226,0.08)] to-[rgba(5,199,226,0.02)] hover:border-[var(--accent)] hover:bg-gradient-to-br hover:from-[rgba(5,199,226,0.15)] hover:to-[rgba(5,199,226,0.08)]" 
+                                : "border-[rgba(10,77,104,0.1)] bg-transparent hover:border-[var(--accent)] hover:bg-gradient-to-br hover:from-[rgba(5,199,226,0.15)] hover:to-[rgba(5,199,226,0.08)]",
+                        "hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.2)]"
+                    )}
+                >
                     {todayCheck && (
-                        <Badge position="absolute" top="-8px" right="-8px" bg="accent" color="white" borderRadius="full" fontSize="0.65rem" px="0.5rem" py="0.15rem" fontWeight="700" display={{ base: 'none', sm: 'block' }}>
+                        <div className="absolute -top-2 -right-2 bg-[var(--accent)] text-white rounded-full text-[0.65rem] px-2 py-0.5 font-bold hidden sm:block shadow-sm">
                             Aujourd'hui
-                        </Badge>
+                        </div>
                     )}
-                    <Box fontWeight={todayCheck ? "800" : "600"} fontSize="0.8rem" color={todayCheck ? 'accent' : 'primary'}>
+                    <div className={cn(
+                        "text-[0.8rem]",
+                        todayCheck ? "font-extrabold text-[var(--accent)]" : "font-semibold text-[var(--primary)]"
+                    )}>
                         {day}
-                    </Box>
+                    </div>
                     {hasAppointment && (
-                        <Flex align="center" gap="0.25rem" mt="0.5rem">
-                            <Box w="6px" h="6px" borderRadius="full" bg="accent" />
-                            <Text fontSize="0.55rem" color="accent" fontWeight="600">
+                        <div className="flex items-center gap-1 mt-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+                            <span className="text-[0.55rem] text-[var(--accent)] font-semibold">
                                 {dayAppointments.length} RDV
-                            </Text>
-                        </Flex>
+                            </span>
+                        </div>
                     )}
-                </Box>
+                </div>
             );
         }
 
@@ -147,41 +152,46 @@ export const CalendarPage = () => {
     };
 
     return (
-        <Box bg="white" borderRadius="12px" p="1rem" boxShadow="0 4px 20px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)" w="100%" position="relative">
-            <Flex justify="space-between" align="center" mb="1rem" pb="0.75rem" borderBottom="2px solid rgba(10, 77, 104, 0.08)">
-                <Box>
-                    <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.4rem" color="primary" mb="0.25rem" fontWeight="700">
+        <div className="bg-white rounded-xl p-4 shadow-[0_4px_20px_rgba(10,77,104,0.08)] border border-[rgba(10,77,104,0.08)] w-full relative">
+            <div className="flex justify-between items-center mb-4 pb-3 border-b-2 border-[rgba(10,77,104,0.08)]">
+                <div>
+                    <h2 className="font-poppins text-[1.4rem] text-[var(--primary)] mb-1 font-bold">
                         {monthNames[currentMonth]} {currentYear}
-                    </Heading>
-                    <Text fontSize="0.75rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">
+                    </h2>
+                    <p className="text-[0.75rem] text-[rgba(10,77,104,0.6)] font-medium">
                         Gérez vos rendez-vous
-                    </Text>
-                </Box>
-                <Flex gap="0.4rem">
-                    <Button onClick={() => changeMonth(-1)} variant="outline" size="sm" borderColor="primary" color="primary" _hover={{ bg: 'primary', color: 'white' }}>
-                        <Flex align="center" gap="0.4rem">
-                            <Icon as={ChevronLeft} />
-                            <Text as="span">Précédent</Text>
-                        </Flex>
+                    </p>
+                </div>
+                <div className="flex gap-2">
+                    <Button 
+                        onClick={() => changeMonth(-1)} 
+                        variant="outline"
+                        size="sm"
+                        className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white"
+                    >
+                        <ChevronLeft className="w-4 h-4 mr-1" />
+                        Précédent
                     </Button>
-                    <Button onClick={() => changeMonth(1)} variant="solid" size="sm" bg="primary" color="white" _hover={{ bg: 'primaryDark' }}>
-                        <Flex align="center" gap="0.4rem">
-                            <Text as="span">Suivant</Text>
-                            <Icon as={ChevronRight} />
-                        </Flex>
+                    <Button 
+                        onClick={() => changeMonth(1)} 
+                        variant="default"
+                        size="sm"
+                    >
+                        Suivant
+                        <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
-                </Flex>
-            </Flex>
+                </div>
+            </div>
 
             {isLoading ? (
-                <Flex justify="center" align="center" py="5rem">
-                    <Spinner size="xl" color="accent" />
-                </Flex>
+                <div className="flex justify-center items-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--accent)]"></div>
+                </div>
             ) : (
-                <Grid templateColumns="repeat(7, 1fr)" gap="0.35rem" position="relative">
+                <div className="grid grid-cols-7 gap-1.5 relative">
                     {generateCalendar()}
-                </Grid>
+                </div>
             )}
-        </Box>
+        </div>
     );
 };

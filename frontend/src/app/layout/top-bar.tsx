@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { ConfirmModal } from '../../shared/ui';
+import { ConfirmModal, Button } from '../../shared/ui';
 import { authService } from '../../features/auth/api/auth-service';
+import { Menu } from 'lucide-react';
 
 interface TopBarProps {
     title: string;
@@ -35,26 +35,37 @@ export const TopBar = ({ title, onMenuToggle }: TopBarProps) => {
 
     return (
         <>
-            <Box bg="white" px="2rem" py="1.5rem" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" display="flex" justifyContent="space-between" alignItems="center" position="sticky" top="0" zIndex="100">
-                <Flex align="center" gap="1rem">
-                    <Button onClick={onMenuToggle} display={{ base: 'block', lg: 'none' }} bg="primary" color="white" border="none" p="0.8rem" borderRadius="8px" cursor="pointer" fontSize="1.5rem" minW="auto" h="auto">
-                        ☰
-                    </Button>
-                    <Heading as="h1" fontFamily="'Poppins', sans-serif" fontSize="1.8rem" color="primary">
+            <div className="bg-[var(--bg-white)] px-8 py-6 shadow-sm flex justify-between items-center sticky top-0 z-50">
+                <div className="flex items-center gap-4">
+                    <button 
+                        onClick={onMenuToggle} 
+                        className="block lg:hidden bg-[var(--primary)] text-white p-2 rounded-lg cursor-pointer"
+                    >
+                        <Menu className="w-6 h-6" />
+                    </button>
+                    <h1 className="font-poppins text-3xl text-[var(--primary)] font-bold">
                         {title}
-                    </Heading>
-                </Flex>
-                <Flex align="center" gap="1rem">
-                    <Flex w="45px" h="45px" bg="linear-gradient(135deg, var(--primary), var(--accent))" borderRadius="50%" align="center" justify="center" color="white" fontWeight="600">
+                    </h1>
+                </div>
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full flex items-center justify-center text-white font-semibold">
                         Dr
-                    </Flex>
-                    <Box display={{ base: 'none', md: 'block' }}>Dr. Martin</Box>
-                    <Button onClick={handleLogoutClick} bg="danger" color="white" px="1.2rem" py="0.6rem" border="none" borderRadius="6px" cursor="pointer" fontWeight="500" transition="all 0.3s" _hover={{ bg: '#dc2626', transform: 'translateY(-2px)' }}>
+                    </div>
+                    <div className="hidden md:block font-medium">Dr. Martin</div>
+                    <Button variant="danger" onClick={handleLogoutClick}>
                         Déconnexion
                     </Button>
-                </Flex>
-            </Box>
-            <ConfirmModal isOpen={isLogoutModalOpen} onConfirm={handleConfirmLogout} onCancel={handleCancelLogout} title="Confirmation de déconnexion" message="Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous reconnecter pour accéder à votre compte." confirmText="Se déconnecter" cancelText="Annuler" />
+                </div>
+            </div>
+            <ConfirmModal 
+                isOpen={isLogoutModalOpen} 
+                onConfirm={handleConfirmLogout} 
+                onCancel={handleCancelLogout} 
+                title="Confirmation de déconnexion" 
+                message="Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous reconnecter pour accéder à votre compte." 
+                confirmText="Se déconnecter" 
+                cancelText="Annuler" 
+            />
         </>
     );
 };

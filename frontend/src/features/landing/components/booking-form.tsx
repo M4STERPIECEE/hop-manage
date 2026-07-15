@@ -1,219 +1,234 @@
-import { Box, Button, Grid, Heading, Input, Text, Flex, Icon, chakra } from '@chakra-ui/react';
 import { useState } from 'react';
-import type { FormEvent } from 'react';
 import type { BookingFormData } from '../../../shared/model';
 import { User, Mail, Phone, Calendar, Clock, Activity, ArrowLeft, Check } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
+import { zodValidator } from '@tanstack/zod-form-adapter';
+import { z } from 'zod';
+import { Button } from '../../../shared/ui';
+import { InputField, SelectField } from '../../../shared/form';
 
 export const BookingForm = () => {
     const [step, setStep] = useState<'form' | 'summary'>('form');
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [formData, setFormData] = useState<BookingFormData>({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        date: '',
-        time: '',
-        service: '',
-    });
 
     const apiBase = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
+    const today = new Date().toISOString().split('T')[0];
 
-    const handleNextStep = (e: FormEvent) => {
-        e.preventDefault();
-        setStep('summary');
-    };
-
-    const handleConfirmBooking = async () => {
-        setIsSubmitting(true);
-        setError(null);
-        try {
-            const response = await fetch(`${apiBase}/appointments/public`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Erreur lors de la réservation');
+    const form = useForm({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            date: '',
+            time: '',
+            service: '',
+        } as BookingFormData,
+        // @ts-ignore
+        validatorAdapter: zodValidator(),
+        onSubmit: async ({ value }) => {
+            if (step === 'form') {
+                setStep('summary');
+                return;
             }
 
-            setSuccess(true);
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                date: '',
-                time: '',
-                service: '',
-            });
-            setTimeout(() => {
-                setSuccess(false);
-                setStep('form');
-            }, 5000);
-        } catch {
-            setError("Impossible de confirmer le rendez-vous. Veuillez réessayer.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+            setError(null);
+            try {
+                const response = await fetch(`${apiBase}/appointments/public`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(value),
+                });
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    ) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la réservation');
+                }
 
-    const today = new Date().toISOString().split('T')[0];
+                setSuccess(true);
+                form.reset();
+                setTimeout(() => {
+                    setSuccess(false);
+                    setStep('form');
+                }, 5000);
+            } catch {
+                setError("Impossible de confirmer le rendez-vous. Veuillez réessayer.");
+            }
+        },
+    });
 
     if (success) {
         return (
-            <Box bg="white" borderRadius="16px" p="3rem" boxShadow="0 10px 30px rgba(10, 77, 104, 0.15)" textAlign="center" css={{ animation: 'fadeIn 0.5s ease-out' }}>
-                <Box bg="success" w="4rem" h="4rem" borderRadius="full" display="flex" alignItems="center" justifyContent="center" mx="auto" mb="1.5rem">
-                    <Check size={32} color="white" />
-                </Box>
-                <Heading as="h2" color="primary" mb="1rem">Rendez-vous confirmé !</Heading>
-                <Text color="textGray" fontSize="1.1rem">
+            <div className="bg-white rounded-2xl p-12 shadow-[0_10px_30px_rgba(10,77,104,0.15)] text-center animate-[fadeIn_0.5s_ease-out]">
+                <div className="bg-[var(--success)] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Check className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="font-poppins text-[var(--primary)] text-3xl font-bold mb-4">Rendez-vous confirmé !</h2>
+                <p className="text-[var(--text-gray)] text-lg mb-8">
                     Votre demande a été enregistrée avec succès. Notre équipe vous contactera sous peu pour confirmer l'horaire précis.
-                </Text>
-                <Button mt="2rem" variant="ghost" color="primary" onClick={() => { setSuccess(false); setStep('form'); }}>
+                </p>
+                <Button variant="outline" onClick={() => { setSuccess(false); setStep('form'); }}>
                     Retour à l'accueil
                 </Button>
-            </Box>
+            </div>
         );
     }
 
     if (step === 'summary') {
+        const value = form.state.values;
         return (
-            <Box bg="white" borderRadius="16px" p="2.5rem" boxShadow="0 10px 30px rgba(10, 77, 104, 0.15)" color="textDark" css={{ animation: 'fadeInRight 0.5s ease-out' }}>
-                <Flex align="center" mb="2rem" gap="1rem">
-                    <Button variant="ghost" onClick={() => setStep('form')} p="0.5rem" borderRadius="full" _hover={{ bg: 'rgba(10, 77, 104, 0.05)', color: 'primary' }}>
-                        <ArrowLeft size={20} />
-                    </Button>
-                    <Heading as="h2" fontFamily="'Poppins', sans-serif" color="primary" fontSize="2rem">
+            <div className="bg-white rounded-2xl p-10 shadow-[0_10px_30px_rgba(10,77,104,0.15)] text-[var(--text-dark)] animate-[fadeInRight_0.5s_ease-out]">
+                <div className="flex items-center mb-8 gap-4">
+                    <button 
+                        onClick={() => setStep('form')} 
+                        className="p-2 rounded-full hover:bg-[rgba(10,77,104,0.05)] text-[var(--primary)] transition-colors"
+                    >
+                        <ArrowLeft className="w-5 h-5" />
+                    </button>
+                    <h2 className="font-poppins text-[var(--primary)] text-3xl font-bold">
                         Confirmation
-                    </Heading>
-                </Flex>
+                    </h2>
+                </div>
 
-                <Text mb="1.5rem" color="rgba(10, 77, 104, 0.7)" fontSize="0.95rem">
+                <p className="mb-6 text-[rgba(10,77,104,0.7)] text-sm">
                     Veuillez vérifier vos informations avant la confirmation finale.
-                </Text>
+                </p>
 
-                <Grid templateColumns="1fr" gap="0.75rem" mb="2.5rem">
-                    <SummaryItem icon={User} label="Patient" value={`${formData.firstName} ${formData.lastName}`} />
-                    <SummaryItem icon={Mail} label="Email" value={formData.email} />
-                    <SummaryItem icon={Phone} label="Téléphone" value={formData.phone} />
-                    <SummaryItem icon={Calendar} label="Date" value={formData.date ? new Date(formData.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''} />
-                    <SummaryItem icon={Clock} label="Heure" value={formData.time} />
-                    <SummaryItem icon={Activity} label="Service" value={formData.service} />
-                </Grid>
+                <div className="grid grid-cols-1 gap-3 mb-10">
+                    <SummaryItem icon={User} label="Patient" value={`${value.firstName} ${value.lastName}`} />
+                    <SummaryItem icon={Mail} label="Email" value={value.email} />
+                    <SummaryItem icon={Phone} label="Téléphone" value={value.phone} />
+                    <SummaryItem icon={Calendar} label="Date" value={value.date ? new Date(value.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''} />
+                    <SummaryItem icon={Clock} label="Heure" value={value.time} />
+                    <SummaryItem icon={Activity} label="Service" value={value.service} />
+                </div>
 
                 {error && (
-                    <Text color="danger" mb="1rem" fontSize="0.9rem" textAlign="center" fontWeight="500">
+                    <p className="text-[var(--danger)] mb-4 text-sm text-center font-medium">
                         {error}
-                    </Text>
+                    </p>
                 )}
 
-                <Button onClick={handleConfirmBooking} loading={isSubmitting} bg="primary" color="white" h="3.5rem" w="100%" borderRadius="12px" fontSize="1.1rem" fontWeight="600" transition="all 0.3s" _hover={{ bg: 'primaryDark', transform: 'translateY(-2px)', boxShadow: '0 6px 20px rgba(10, 77, 104, 0.2)' }}>
-                    <Check style={{ marginRight: '8px' }} /> Confirmer le rendez-vous
-                </Button>
-            </Box>
+                <form.Subscribe
+                    selector={(state) => [state.isSubmitting]}
+                    children={([isSubmitting]) => (
+                        <Button 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                form.handleSubmit();
+                            }} 
+                            disabled={isSubmitting} 
+                            className="w-full h-14 text-lg"
+                        >
+                            <Check className="w-5 h-5 mr-2" /> 
+                            {isSubmitting ? 'Confirmation...' : 'Confirmer le rendez-vous'}
+                        </Button>
+                    )}
+                />
+            </div>
         );
     }
 
     return (
-        <Box bg="white" borderRadius="16px" p="2.5rem" boxShadow="0 10px 30px rgba(10, 77, 104, 0.15)" color="textDark" css={{ animation: 'fadeInUp 0.8s ease-out 0.3s backwards' }}>
-            <Heading as="h2" fontFamily="'Poppins', sans-serif" color="primary" fontSize="2rem" mb="1.5rem">
+        <div className="bg-white rounded-2xl p-10 shadow-[0_10px_30px_rgba(10,77,104,0.15)] text-[var(--text-dark)] animate-[fadeInUp_0.8s_ease-out_0.3s_backwards]">
+            <h2 className="font-poppins text-[var(--primary)] text-3xl font-bold mb-6">
                 Réserver un rendez-vous
-            </Heading>
+            </h2>
 
-            <form onSubmit={handleNextStep}>
-                <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1rem" mb="1.5rem">
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                            Prénom
-                        </Box>
-                        <Input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                            Nom
-                        </Box>
-                        <Input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                </Grid>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    form.handleSubmit();
+                }}
+            >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <form.Field
+                        name="firstName"
+                        validators={{ onChange: z.string().min(1, 'Prénom requis') }}
+                        children={(field) => <InputField field={field} label="Prénom" />}
+                    />
+                    <form.Field
+                        name="lastName"
+                        validators={{ onChange: z.string().min(1, 'Nom requis') }}
+                        children={(field) => <InputField field={field} label="Nom" />}
+                    />
+                </div>
 
-                <Box mb="1.5rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                        Email
-                    </Box>
-                    <Input type="email" name="email" value={formData.email} onChange={handleChange} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                </Box>
+                <div className="mb-4">
+                    <form.Field
+                        name="email"
+                        validators={{ onChange: z.string().email('Email invalide').min(1, 'Email requis') }}
+                        children={(field) => <InputField field={field} label="Email" type="email" />}
+                    />
+                </div>
 
-                <Box mb="1.5rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                        Téléphone
-                    </Box>
-                    <Input type="tel" name="phone" value={formData.phone} onChange={handleChange} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                </Box>
+                <div className="mb-4">
+                    <form.Field
+                        name="phone"
+                        validators={{ onChange: z.string().min(1, 'Téléphone requis') }}
+                        children={(field) => <InputField field={field} label="Téléphone" type="tel" />}
+                    />
+                </div>
 
-                <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1rem" mb="1.5rem">
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                            Date
-                        </Box>
-                        <Input type="date" name="date" value={formData.date} onChange={handleChange} min={today} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                    <Box>
-                        <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                            Heure
-                        </Box>
-                        <Input type="time" name="time" value={formData.time} onChange={handleChange} required w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} />
-                    </Box>
-                </Grid>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <form.Field
+                        name="date"
+                        validators={{ onChange: z.string().min(1, 'Date requise') }}
+                        children={(field) => <InputField field={field} label="Date" type="date" min={today} />}
+                    />
+                    <form.Field
+                        name="time"
+                        validators={{ onChange: z.string().min(1, 'Heure requise') }}
+                        children={(field) => <InputField field={field} label="Heure" type="time" />}
+                    />
+                </div>
 
-                <Box mb="1.5rem">
-                    <Box as="label" display="block" color="textDark" fontWeight="600" mb="0.5rem" fontSize="0.95rem">
-                        Type de soin
-                    </Box>
-                    <chakra.select name="service" value={formData.service} onChange={handleChange} color={formData.service ? "textDark" : "gray.500"} w="100%" p="0.9rem" border="2px solid var(--border)" borderRadius="8px" fontSize="1rem" transition="all 0.3s" _focus={{ outline: 'none', borderColor: 'accent', boxShadow: '0 0 0 3px rgba(5, 199, 226, 0.1)' }} css={{ appearance: 'auto', backgroundColor: 'white' }}>
-                        <option value="" disabled style={{ color: '#a0a0a0' }}>
-                            Sélectionnez un service
-                        </option>
-                        <option value="Consultation generale">Consultation generale</option>
-                        <option value="Detartrage">Detartrage</option>
-                        <option value="Blanchiment">Blanchiment</option>
-                        <option value="Implant dentaire">Implant dentaire</option>
-                        <option value="Orthodontie">Orthodontie</option>
-                        <option value="Urgence">Urgence</option>
-                    </chakra.select>
-                </Box>
-                <Button type="submit" bg="primary" color="white" p="1rem 2rem" border="none" borderRadius="8px" fontSize="1.1rem" fontWeight="600" cursor="pointer" w="100%" transition="all 0.3s" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" _hover={{ bg: 'primaryDark', transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)' }}>
-                    Continuer
-                </Button>
+                <div className="mb-6">
+                    <form.Field
+                        name="service"
+                        validators={{ onChange: z.string().min(1, 'Service requis') }}
+                        children={(field: any) => (
+                            <SelectField 
+                                field={field} 
+                                label="Type de soin" 
+                                options={[
+                                    { label: 'Sélectionnez un service', value: '' },
+                                    { label: 'Consultation generale', value: 'Consultation generale' },
+                                    { label: 'Detartrage', value: 'Detartrage' },
+                                    { label: 'Blanchiment', value: 'Blanchiment' },
+                                    { label: 'Implant dentaire', value: 'Implant dentaire' },
+                                    { label: 'Orthodontie', value: 'Orthodontie' },
+                                    { label: 'Urgence', value: 'Urgence' },
+                                ]}
+                            />
+                        )}
+                    />
+                </div>
+                
+                <form.Subscribe
+                    selector={(state) => [state.canSubmit]}
+                    children={([canSubmit]) => (
+                        <Button type="submit" disabled={!canSubmit} className="w-full h-12 text-lg">
+                            Continuer
+                        </Button>
+                    )}
+                />
             </form>
-        </Box>
+        </div>
     );
 };
 
-const SummaryItem = ({ icon, label, value }: { icon: React.ElementType; label: string; value: string }) => (
-    <Flex align="center" p="0.8rem 1rem" bg="rgba(10, 77, 104, 0.03)" borderRadius="10px" gap="1rem" border="1px solid rgba(10, 77, 104, 0.05)">
-        <Icon as={icon} color="accent" boxSize="1.2rem" />
-        <Box>
-            <Text fontSize="0.7rem" color="rgba(10, 77, 104, 0.5)" fontWeight="700" textTransform="uppercase" letterSpacing="0.5px">
+const SummaryItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) => (
+    <div className="flex items-center p-3 bg-[rgba(10,77,104,0.03)] rounded-lg gap-4 border border-[rgba(10,77,104,0.05)]">
+        <Icon className="text-[var(--accent)] w-5 h-5" />
+        <div>
+            <p className="text-[0.7rem] text-[rgba(10,77,104,0.5)] font-bold uppercase tracking-wide">
                 {label}
-            </Text>
-            <Text color="primary" fontWeight="700" fontSize="1rem">
+            </p>
+            <p className="text-[var(--primary)] font-bold text-base">
                 {value}
-            </Text>
-        </Box>
-    </Flex>
+            </p>
+        </div>
+    </div>
 );

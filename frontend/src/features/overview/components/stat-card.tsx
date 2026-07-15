@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
+import { cn } from '../../../shared/lib/utils';
 
 interface StatCardProps {
     title: string;
@@ -10,37 +10,36 @@ interface StatCardProps {
 }
 
 export const StatCard = ({ title, value, icon, change, variant = 'primary' }: StatCardProps) => {
-    const getBorderColor = () => {
-        switch (variant) {
-            case 'accent':
-                return 'var(--accent)';
-            case 'success':
-                return 'var(--success)';
-            case 'warning':
-                return 'var(--warning)';
-            default:
-                return 'var(--primary)';
-        }
+    const borderColors = {
+        primary: 'border-l-[var(--primary)]',
+        accent: 'border-l-[var(--accent)]',
+        success: 'border-l-[var(--success)]',
+        warning: 'border-l-[var(--warning)]',
     };
 
     return (
-        <Box bg="white" p="1.8rem" borderRadius="12px" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" borderLeft={`4px solid ${getBorderColor()}`} transition="all 0.3s" _hover={{ transform: 'translateY(-3px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)' }}>
-            <Flex justify="space-between" align="center" mb="1rem">
-                <Text color="textGray" fontSize="0.9rem" fontWeight="500">
-                    {title}
-                </Text>
-                <Flex w="40px" h="40px" bg="accentSoft" borderRadius="8px" align="center" justify="center" fontSize="1.3rem">
-                    {icon}
-                </Flex>
-            </Flex>
-            <Heading as="div" fontFamily="'Poppins', sans-serif" fontSize="2.2rem" fontWeight="700" color="primary">
-                {value}
-            </Heading>
-            {change && (
-                <Text color="success" fontSize="0.85rem" mt="0.5rem">
-                    {change}
-                </Text>
+        <div 
+            className={cn(
+                "bg-white p-7 rounded-xl shadow-[0_1px_3px_rgba(10,77,104,0.08)] border-l-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]",
+                borderColors[variant]
             )}
-        </Box>
+        >
+            <div className="flex justify-between items-center mb-4">
+                <p className="text-[var(--text-gray)] text-[0.9rem] font-medium">
+                    {title}
+                </p>
+                <div className="w-10 h-10 bg-[var(--accent-soft)] rounded-lg flex items-center justify-center text-xl text-[var(--primary)]">
+                    {icon}
+                </div>
+            </div>
+            <div className="font-poppins text-4xl font-bold text-[var(--primary)]">
+                {value}
+            </div>
+            {change && (
+                <p className="text-[var(--success)] text-[0.85rem] mt-2 font-medium">
+                    {change}
+                </p>
+            )}
+        </div>
     );
 };

@@ -1,6 +1,6 @@
-import { Box, Flex, Link as ChakraLink, Icon } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Smile } from 'lucide-react';
+import { Button } from '../../shared/ui';
 
 interface HeaderProps {
     onAdminClick?: () => void;
@@ -8,37 +8,39 @@ interface HeaderProps {
 
 export const Header = ({ onAdminClick }: HeaderProps) => {
     return (
-        <Box as="header" bg="bgWhite" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" position="sticky" top="0" zIndex="100" css={{ animation: 'slideDown 0.6s ease-out' }}>
-            <Flex maxW="1400px" mx="auto" px="2rem" py="1.2rem" justify="space-between" align="center">
-                <Flex align="center" gap="0.5rem" fontFamily="'Poppins', sans-serif" fontSize="1.8rem" fontWeight="700" color="primary">
-                    <Flex w="40px" h="40px" bg="linear-gradient(135deg, var(--primary), var(--accent))" borderRadius="8px" align="center" justify="center" color="white" fontSize="1.5rem">
-                        <Icon as={Smile} boxSize="1.5rem" />
-                    </Flex>
+        <header className="bg-[var(--bg-white)] shadow-sm sticky top-0 z-[100] animate-[slideDown_0.6s_ease-out]">
+            <div className="max-w-[1400px] mx-auto px-8 py-5 flex justify-between items-center">
+                <div className="flex items-center gap-2 font-poppins text-3xl font-bold text-[var(--primary)]">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-lg flex items-center justify-center text-white">
+                        <Smile className="w-6 h-6" />
+                    </div>
                     DentiCare
-                </Flex>
+                </div>
 
-                <Flex as="ul" gap="2rem" listStyleType="none" display={{ base: 'none', md: 'flex' }}>
+                <ul className="hidden md:flex gap-8 list-none m-0 p-0">
                     <li>
-                        <ChakraLink href="#services" color="textGray" textDecoration="none" fontWeight="500" transition="color 0.3s" _hover={{ color: 'primary' }}>
+                        <a href="#services" className="text-[var(--text-gray)] no-underline font-medium transition-colors duration-300 hover:text-[var(--primary)]">
                             Services
-                        </ChakraLink>
+                        </a>
                     </li>
                     <li>
-                        <ChakraLink href="#about" color="textGray" textDecoration="none" fontWeight="500" transition="color 0.3s" _hover={{ color: 'primary' }}>
+                        <a href="#about" className="text-[var(--text-gray)] no-underline font-medium transition-colors duration-300 hover:text-[var(--primary)]">
                             À propos
-                        </ChakraLink>
+                        </a>
                     </li>
                     <li>
-                        <ChakraLink href="#contact" color="textGray" textDecoration="none" fontWeight="500" transition="color 0.3s" _hover={{ color: 'primary' }}>
+                        <a href="#contact" className="text-[var(--text-gray)] no-underline font-medium transition-colors duration-300 hover:text-[var(--primary)]">
                             Contact
-                        </ChakraLink>
+                        </a>
                     </li>
-                </Flex>
+                </ul>
 
-                <RouterLink to="/login" onClick={onAdminClick} style={{ background: 'var(--primary)', color: 'white', padding: '0.7rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600', transition: 'all 0.3s', boxShadow: '0 1px 3px rgba(10, 77, 104, 0.08)', display: 'inline-block' }} onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--primary-dark)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 77, 104, 0.12)'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 1px 3px rgba(10, 77, 104, 0.08)'; }}>
-                    Espace Admin
+                <RouterLink to="/login" onClick={onAdminClick}>
+                    <Button>
+                        Espace Admin
+                    </Button>
                 </RouterLink>
-            </Flex>
-        </Box>
+            </div>
+        </header>
     );
 };

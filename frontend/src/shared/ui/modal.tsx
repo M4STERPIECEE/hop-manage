@@ -1,29 +1,36 @@
-import { Box, Flex, Heading, Button } from '@chakra-ui/react';
-import type { ReactNode } from 'react';
+import * as React from 'react';
+import { Dialog } from '@base-ui/react';
 
-interface ModalProps {
+export interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     title: string;
-    children: ReactNode;
+    children: React.ReactNode;
 }
 
-export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
-    if (!isOpen) return null;
-
+export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     return (
-        <Flex position="fixed" top="0" left="0" w="100%" h="100%" bg="rgba(0, 0, 0, 0.5)" zIndex="2000" alignItems="center" justifyContent="center" p="1rem" onClick={(e) => { if (e.target === e.currentTarget) { onClose(); } }}>
-            <Box bg="white" borderRadius="16px" maxW="600px" w="100%" maxH="90vh" overflowY="auto" css={{ animation: 'slideUp 0.3s ease-out' }}>
-                <Flex p="2rem" borderBottom="2px solid var(--border)" justifyContent="space-between" alignItems="center">
-                    <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.8rem" color="primary">
-                        {title}
-                    </Heading>
-                    <Button onClick={onClose} bg="none" border="none" fontSize="2rem" cursor="pointer" color="textGray" transition="color 0.3s" _hover={{ color: 'danger' }} p="0" minW="auto" h="auto">
-                        ×
-                    </Button>
-                </Flex>
-                <Box p="2rem">{children}</Box>
-            </Box>
-        </Flex>
+        <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+            <Dialog.Portal>
+                <Dialog.Backdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity" />
+                <Dialog.Popup className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-[var(--border)] bg-[var(--bg-white)] p-6 shadow-lg sm:rounded-xl">
+                    <div className="flex flex-col space-y-1.5 text-center sm:text-left">
+                        <Dialog.Title className="text-lg font-semibold leading-none tracking-tight">
+                            {title}
+                        </Dialog.Title>
+                    </div>
+                    <div>
+                        {children}
+                    </div>
+                    <Dialog.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-bg-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-[var(--accent-soft)] data-[state=open]:text-[var(--text-gray)]">
+                        <span className="sr-only">Fermer</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </Dialog.Close>
+                </Dialog.Popup>
+            </Dialog.Portal>
+        </Dialog.Root>
     );
-};
+}

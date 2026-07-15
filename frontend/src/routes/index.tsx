@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
 import { ProtectedRoute } from '../features/auth/routing/protected-route';
 import { LandingPage } from '../features/landing/components/landing-page';
 import { DashboardLayout } from '../app/layout/dashboard-layout';
@@ -15,7 +14,7 @@ import { Toaster } from '../shared/ui/toaster';
 
 function App() {
   return (
-    <Box>
+    <div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -36,7 +35,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster />
-    </Box>
+    </div>
   );
 }
 

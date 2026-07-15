@@ -1,4 +1,3 @@
-import { Box, Flex } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import { Sidebar } from './sidebar';
@@ -16,14 +15,14 @@ export const DashboardLayout = ({ title }: DashboardLayoutProps) => {
     };
 
     return (
-        <Flex minH="100vh">
+        <div className="flex min-h-screen bg-[var(--bg-light)]">
             <Sidebar isOpen={isSidebarOpen} />
-            <Box flex="1" ml={{ base: '0', lg: '280px' }} bg="bgLight">
+            <div className="flex-1 ml-0 lg:ml-[280px]">
                 <TopBar title={title} onMenuToggle={toggleSidebar} />
-                <Box p="2rem">
+                <main className="p-8">
                     <Outlet />
-                </Box>
-            </Box>
-        </Flex>
+                </main>
+            </div>
+        </div>
     );
 };

@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Input, Button } from '@chakra-ui/react';
+import { Input, Button } from '../../../../shared/ui';
 import { Modal } from '../../../../shared/ui/modal';
 
 interface EditForm {
@@ -26,33 +26,45 @@ export const ServiceModal = ({
 }: ServiceModalProps) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Modifier le service">
-            <Box>
-                <Flex direction="column" gap="1.25rem">
-                    <Box>
-                        <Text mb="0.5rem" fontWeight="600" color="primary" fontSize="0.9rem">Duree (minutes)</Text>
-                        <Input type="number" value={editForm.durationMinutes} onChange={(e) => setEditForm(prev => ({ ...prev, durationMinutes: e.target.value }))} placeholder="Ex: 45" size="lg" px="1rem" py="0.75rem" h="48px" fontSize="1rem" borderRadius="8px" border="2px solid" borderColor="rgba(10, 77, 104, 0.2)" _focus={{ borderColor: "accent", boxShadow: "0 0 0 1px var(--colors-accent)" }} />
-                    </Box>
-                    <Box>
-                        <Text mb="0.5rem" fontWeight="600" color="primary" fontSize="0.9rem">Prix (MGA)</Text>
-                        <Input type="number" value={editForm.price} onChange={(e) => setEditForm(prev => ({ ...prev, price: e.target.value }))} placeholder="Ex: 80000" size="lg" px="1rem" py="0.75rem" h="48px" fontSize="1rem" borderRadius="8px" border="2px solid" borderColor="rgba(10, 77, 104, 0.2)" _focus={{ borderColor: "accent", boxShadow: "0 0 0 1px var(--colors-accent)" }} />
-                    </Box>
-                    <Box>
-                        <Text mb="0.5rem" fontWeight="600" color="primary" fontSize="0.9rem">Statut</Text>
-                        <select style={{ width: '100%', height: '48px', padding: '0 2.5rem 0 1rem', fontSize: '1rem', borderRadius: '8px', border: '2px solid rgba(10, 77, 104, 0.2)', outline: 'none', backgroundColor: 'white', cursor: 'pointer' }} value={editForm.status} onChange={(e) => setEditForm(prev => ({ ...prev, status: e.target.value }))}>
-                            <option value="Actif">Actif</option>
-                            <option value="Inactif">Inactif</option>
-                        </select>
-                    </Box>
-                    <Flex justify="flex-end" gap="1rem" mt="1.5rem">
-                        <Button variant="outline" onClick={onClose} px="1.5rem" py="0.75rem" h="44px" fontSize="0.95rem" fontWeight="600" borderRadius="8px" border="2px solid" borderColor="rgba(10, 77, 104, 0.3)" color="primary" _hover={{ bg: "rgba(10, 77, 104, 0.05)", borderColor: "primary" }}>
-                            Annuler
-                        </Button>
-                        <Button bg="primary" color="white" onClick={handleUpdateService} loading={isUpdating} px="1.5rem" py="0.75rem" h="44px" fontSize="0.95rem" fontWeight="600" borderRadius="8px" _hover={{ bg: "rgba(10, 77, 104, 0.9)" }}>
-                            Enregistrer
-                        </Button>
-                    </Flex>
-                </Flex>
-            </Box>
+            <div className="flex flex-col gap-5">
+                <div>
+                    <label className="block mb-2 font-semibold text-[var(--primary)] text-[0.9rem]">Durée (minutes)</label>
+                    <Input 
+                        type="number" 
+                        value={editForm.durationMinutes} 
+                        onChange={(e) => setEditForm(prev => ({ ...prev, durationMinutes: e.target.value }))} 
+                        placeholder="Ex: 45" 
+                    />
+                </div>
+                <div>
+                    <label className="block mb-2 font-semibold text-[var(--primary)] text-[0.9rem]">Prix (MGA)</label>
+                    <Input 
+                        type="number" 
+                        value={editForm.price} 
+                        onChange={(e) => setEditForm(prev => ({ ...prev, price: e.target.value }))} 
+                        placeholder="Ex: 80000" 
+                    />
+                </div>
+                <div>
+                    <label className="block mb-2 font-semibold text-[var(--primary)] text-[0.9rem]">Statut</label>
+                    <select 
+                        className="w-full h-12 px-4 text-base border-2 border-[rgba(10,77,104,0.2)] rounded-lg bg-white outline-none cursor-pointer focus:border-[var(--accent)] focus:shadow-[0_0_0_1px_var(--accent)]"
+                        value={editForm.status} 
+                        onChange={(e) => setEditForm(prev => ({ ...prev, status: e.target.value }))}
+                    >
+                        <option value="Actif">Actif</option>
+                        <option value="Inactif">Inactif</option>
+                    </select>
+                </div>
+                <div className="flex justify-end gap-4 mt-6">
+                    <Button variant="outline" onClick={onClose}>
+                        Annuler
+                    </Button>
+                    <Button onClick={handleUpdateService} disabled={isUpdating}>
+                        {isUpdating ? 'Enregistrement...' : 'Enregistrer'}
+                    </Button>
+                </div>
+            </div>
         </Modal>
     );
 };

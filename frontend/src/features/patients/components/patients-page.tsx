@@ -1,4 +1,3 @@
-import { Box, Table, Grid, Flex, Text, Icon } from '@chakra-ui/react';
 import { useState, useEffect, useCallback } from 'react';
 import { PatientModal } from './modals/patient-modal';
 import type { Patient } from '../../../shared/model';
@@ -57,6 +56,7 @@ export const PatientsPage = () => {
     }, [fetchPatients]);
 
     const formatDate = (dateStr: string) => {
+        if (!dateStr) return '';
         const date = new Date(dateStr);
         return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
     };
@@ -80,34 +80,33 @@ export const PatientsPage = () => {
     }).length;
 
     return (
-        <Box>
-            <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap="1.25rem" mb="2rem">
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)" boxShadow="0 2px 8px rgba(10, 77, 104, 0.06)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(10, 77, 104, 0.12)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={Users} boxSize="1.5rem" color="primary" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Total Patients</Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Poppins', sans-serif">{totalPatientsCount}</Text>
-                </Box>
+        <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+                <div className="bg-white p-6 rounded-xl border border-[rgba(10,77,104,0.1)] shadow-[0_2px_8px_rgba(10,77,104,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(10,77,104,0.12)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <Users className="w-6 h-6 text-[var(--primary)]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Total Patients</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[var(--primary)] font-poppins">{totalPatientsCount}</p>
+                </div>
 
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={UserCheck} boxSize="1.5rem" color="accent" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Patients récents</Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">{activePatientsCount}</Text>
-                </Box>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(5,199,226,0.2)] shadow-[0_2px_8px_rgba(5,199,226,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(5,199,226,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <UserCheck className="w-6 h-6 text-[var(--accent)]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Patients récents</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[var(--accent)] font-poppins">{activePatientsCount}</p>
+                </div>
 
-                <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(34, 197, 94, 0.2)" boxShadow="0 2px 8px rgba(34, 197, 94, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)' }}>
-                    <Flex align="center" gap="0.75rem" mb="0.5rem">
-                        <Icon as={UserPlus} boxSize="1.5rem" color="#22c55e" />
-                        <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Nouveaux ce mois</Text>
-                    </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Poppins', sans-serif">{newThisMonthCount}</Text>
-                </Box>
-            </Grid>
+                <div className="bg-white p-6 rounded-xl border border-[rgba(34,197,94,0.2)] shadow-[0_2px_8px_rgba(34,197,94,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]">
+                    <div className="flex items-center gap-3 mb-2">
+                        <UserPlus className="w-6 h-6 text-[#22c55e]" />
+                        <p className="text-[0.85rem] font-semibold text-[rgba(10,77,104,0.7)] uppercase tracking-wide">Nouveaux ce mois</p>
+                    </div>
+                    <p className="text-3xl font-bold text-[#22c55e] font-poppins">{newThisMonthCount}</p>
+                </div>
+            </div>
 
-            {/* Patients Table */}
             <DataTable
                 title="Liste des patients"
                 subtitle={`${totalElements} patient${totalElements > 1 ? 's' : ''} au total`}
@@ -122,33 +121,43 @@ export const PatientsPage = () => {
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
             >
-                <Table.Root variant="line" size="md">
-                    <Table.Header bg="rgba(10, 77, 104, 0.04)">
-                        <Table.Row>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">ID</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Nom complet</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Email</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Téléphone</Table.ColumnHeader>
-                            <Table.ColumnHeader fontWeight="700" fontSize="0.85rem" color="primary" textTransform="uppercase" letterSpacing="0.5px" py="1rem" px="1.25rem">Dernière visite</Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {filteredPatients.map((patient, index) => (
-                            <Table.Row key={patient.id} _hover={{ bg: 'rgba(5, 199, 226, 0.04)', transition: 'all 0.2s ease' }} borderBottom={index === filteredPatients.length - 1 ? 'none' : '1px solid rgba(10, 77, 104, 0.08)'}>
-                                <Table.Cell py="1rem" px="1.25rem" fontWeight="700" color="rgba(10, 77, 104, 0.5)" fontSize="0.85rem">
-                                    #{String(patient.id).substring(0, 8)}
-                                </Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" fontWeight="600" color="primary" fontSize="0.95rem">{patient.name}</Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.7)" fontSize="0.9rem">{patient.email}</Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.7)" fontSize="0.9rem" fontWeight="500">{patient.phone}</Table.Cell>
-                                <Table.Cell py="1rem" px="1.25rem" color="rgba(10, 77, 104, 0.7)" fontSize="0.9rem">{formatDate(patient.lastVisit)}</Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table.Root>
+                <div className="w-full">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-[rgba(10,77,104,0.04)] border-b border-[var(--border)]">
+                            <tr>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">ID</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Nom complet</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Email</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Téléphone</th>
+                                <th className="py-4 px-5 text-[0.85rem] font-bold text-[var(--primary)] uppercase tracking-wider">Dernière visite</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[var(--border)]">
+                            {filteredPatients.map((patient) => (
+                                <tr key={patient.id} className="hover:bg-[rgba(5,199,226,0.04)] transition-colors">
+                                    <td className="py-4 px-5 text-[0.85rem] font-bold text-[rgba(10,77,104,0.5)]">
+                                        #{String(patient.id).substring(0, 8)}
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.95rem] font-semibold text-[var(--primary)]">
+                                        {patient.name}
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.7)]">
+                                        {patient.email}
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.9rem] font-medium text-[rgba(10,77,104,0.7)]">
+                                        {patient.phone}
+                                    </td>
+                                    <td className="py-4 px-5 text-[0.9rem] text-[rgba(10,77,104,0.7)]">
+                                        {formatDate(patient.lastVisit)}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </DataTable>
 
             <PatientModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-        </Box>
+        </div>
     );
 };
