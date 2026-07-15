@@ -40,7 +40,7 @@ export const TopBar = ({ title, onMenuToggle }: TopBarProps) => {
                     <Button onClick={onMenuToggle} display={{ base: 'block', lg: 'none' }} bg="primary" color="white" border="none" p="0.8rem" borderRadius="8px" cursor="pointer" fontSize="1.5rem" minW="auto" h="auto">
                         ☰
                     </Button>
-                    <Heading as="h1" fontFamily="'Crimson Pro', serif" fontSize="1.8rem" color="primary">
+                    <Heading as="h1" fontFamily="'Poppins', sans-serif" fontSize="1.8rem" color="primary">
                         {title}
                     </Heading>
                 </Flex>

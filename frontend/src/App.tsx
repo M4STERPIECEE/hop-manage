@@ -1,16 +1,16 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { LandingPage } from './pages/LandingPage';
-import { DashboardLayout } from './pages/DashboardLayout';
-import { OverviewPage } from './pages/OverviewPage';
-import { AppointmentsPage } from './pages/AppointmentsPage';
-import { PatientsPage } from './pages/PatientsPage';
-import { CalendarPage } from './pages/CalendarPage';
-import { ServicesPage } from './pages/ServicesPage';
-import { SettingsPage } from './pages/SettingsPage';
-import { LoginPage } from './pages/LoginPage';
-import { ResetPasswordPage } from './pages/ResetPasswordPage';
+import { LandingPage } from './pages/landing/LandingPage';
+import { DashboardLayout } from './pages/dashboard/DashboardLayout';
+import { OverviewPage } from './pages/overview/OverviewPage';
+import { AppointmentsPage } from './pages/appointments/AppointmentsPage';
+import { PatientsPage } from './pages/patients/PatientsPage';
+import { CalendarPage } from './pages/calendar/CalendarPage';
+import { ServicesPage } from './pages/services/ServicesPage';
+import { SettingsPage } from './pages/settings/SettingsPage';
+import { LoginPage } from './pages/login/LoginPage';
+import { ResetPasswordPage } from './pages/resetpassword/ResetPasswordPage';
 import { Toaster } from './components/ui/toaster';
 
 function App() {

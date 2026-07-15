@@ -53,7 +53,7 @@ export const ConfirmModal = ({
                 >
                     <Heading
                         as="h2"
-                        fontFamily="'Crimson Pro', serif"
+                        fontFamily="'Poppins', sans-serif"
                         fontSize="1.8rem"
                         color="primary"
                     >

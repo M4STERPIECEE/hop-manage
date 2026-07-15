@@ -56,7 +56,7 @@ export const LoginForm = () => {
         >
             <Heading
                 as="h2"
-                fontFamily="'Crimson Pro', serif"
+                fontFamily="'Poppins', sans-serif"
                 color="primary"
                 fontSize="2rem"
                 mb="0.5rem"

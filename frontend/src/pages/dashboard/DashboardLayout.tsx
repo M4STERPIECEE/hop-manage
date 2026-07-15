@@ -1,8 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
-import { Sidebar } from '../components/dashboard/Sidebar';
-import { TopBar } from '../components/dashboard/TopBar';
+import { Sidebar } from '../../components/dashboard/Sidebar';
+import { TopBar } from '../../components/dashboard/TopBar';
 
 interface DashboardLayoutProps {
     title: string;

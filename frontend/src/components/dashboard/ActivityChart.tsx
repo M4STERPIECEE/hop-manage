@@ -16,7 +16,7 @@ export const ActivityChart = () => {
         <Box bg="white" borderRadius="12px" p="1.5rem" boxShadow="0 2px 12px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)" h="400px">
             <Flex justify="space-between" align="center" mb="2rem">
                 <Box>
-                    <Heading as="h2" fontFamily="'Crimson Pro', serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">
+                    <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">
                         Activité hebdomadaire
                     </Heading>
                     <Text fontSize="0.85rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">

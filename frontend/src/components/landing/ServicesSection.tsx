@@ -51,7 +51,7 @@ export const ServicesSection = () => {
         <Box as="section" py="5rem" px="2rem" maxW="1400px" mx="auto" id="services">
             <Heading
                 as="h2"
-                fontFamily="'Crimson Pro', serif"
+                fontFamily="'Poppins', sans-serif"
                 fontSize="2.8rem"
                 textAlign="center"
                 color="primary"
@@ -94,7 +94,7 @@ export const ServicesSection = () => {
                         </Box>
                         <Heading
                             as="h3"
-                            fontFamily="'Crimson Pro', serif"
+                            fontFamily="'Poppins', sans-serif"
                             fontSize="1.5rem"
                             color="primary"
                             mb="0.8rem"

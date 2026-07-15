@@ -33,7 +33,7 @@ export const StatCard = ({ title, value, icon, change, variant = 'primary' }: St
                     {icon}
                 </Flex>
             </Flex>
-            <Heading as="div" fontFamily="'Crimson Pro', serif" fontSize="2.2rem" fontWeight="700" color="primary">
+            <Heading as="div" fontFamily="'Poppins', sans-serif" fontSize="2.2rem" fontWeight="700" color="primary">
                 {value}
             </Heading>
             {change && (

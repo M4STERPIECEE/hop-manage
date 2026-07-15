@@ -125,7 +125,7 @@ export const BookingForm = () => {
                     >
                         <FiArrowLeft size={20} />
                     </Button>
-                    <Heading as="h2" fontFamily="'Crimson Pro', serif" color="primary" fontSize="2rem">
+                    <Heading as="h2" fontFamily="'Poppins', sans-serif" color="primary" fontSize="2rem">
                         Confirmation
                     </Heading>
                 </Flex>
@@ -185,7 +185,7 @@ export const BookingForm = () => {
         >
             <Heading
                 as="h2"
-                fontFamily="'Crimson Pro', serif"
+                fontFamily="'Poppins', sans-serif"
                 color="primary"
                 fontSize="2rem"
                 mb="1.5rem"

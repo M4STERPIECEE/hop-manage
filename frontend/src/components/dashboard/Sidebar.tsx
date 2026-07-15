@@ -28,7 +28,7 @@ export const Sidebar = ({ isOpen = true }: SidebarProps) => {
     return (
         <Box as="aside" w="280px" bg="primary" color="white" py="2rem" position="fixed" h="100vh" overflowY="auto" transition="transform 0.3s" transform={{ base: isOpen ? 'translateX(0)' : 'translateX(-100%)', lg: 'translateX(0)' }} zIndex="1000">
             <Box px="1.5rem" mb="2rem">
-                <Flex align="center" gap="0.5rem" fontFamily="'Crimson Pro', serif" fontSize="1.6rem" fontWeight="700">
+                <Flex align="center" gap="0.5rem" fontFamily="'Poppins', sans-serif" fontSize="1.6rem" fontWeight="700">
                     <Flex w="40px" h="40px" bg="linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))" borderRadius="8px" align="center" justify="center" fontSize="1.5rem">
                         🦷
                     </Flex>

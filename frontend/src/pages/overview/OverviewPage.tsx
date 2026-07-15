@@ -1,7 +1,7 @@
 import { Box, Grid, Heading, Text, Icon } from '@chakra-ui/react';
 import { FiCalendar, FiUsers, FiCheckCircle, FiClock } from 'react-icons/fi';
-import { StatCard } from '../components/dashboard/StatCard';
-import { ActivityChart } from '../components/dashboard/ActivityChart';
+import { StatCard } from '../../components/dashboard/StatCard';
+import { ActivityChart } from '../../components/dashboard/ActivityChart';
 
 export const OverviewPage = () => {
 
@@ -16,7 +16,7 @@ export const OverviewPage = () => {
     return (
         <Box>
             <Box mb="2rem" p="1.5rem" bg="linear-gradient(135deg, rgba(10, 77, 104, 0.05) 0%, rgba(5, 199, 226, 0.05) 100%)" borderRadius="12px" border="1px solid rgba(10, 77, 104, 0.1)">
-                <Heading as="h1" fontFamily="'Crimson Pro', serif" fontSize="2rem" color="primary" mb="0.5rem" fontWeight="700">
+                <Heading as="h1" fontFamily="'Poppins', sans-serif" fontSize="2rem" color="primary" mb="0.5rem" fontWeight="700">
                     {greeting}, Dr. Martin 👋
                 </Heading>
                 <Text fontSize="0.95rem" color="rgba(10, 77, 104, 0.7)" fontWeight="500">

@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Grid, Heading, Text, Badge, Spinner, Icon } from '@chakra-ui/react';
 import { useState, useEffect, useCallback } from 'react';
-import type { Appointment } from '../types';
+import type { Appointment } from '../../types';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 export const CalendarPage = () => {
@@ -150,7 +150,7 @@ export const CalendarPage = () => {
         <Box bg="white" borderRadius="12px" p="1rem" boxShadow="0 4px 20px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)" w="100%" position="relative">
             <Flex justify="space-between" align="center" mb="1rem" pb="0.75rem" borderBottom="2px solid rgba(10, 77, 104, 0.08)">
                 <Box>
-                    <Heading as="h2" fontFamily="'Crimson Pro', serif" fontSize="1.4rem" color="primary" mb="0.25rem" fontWeight="700">
+                    <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.4rem" color="primary" mb="0.25rem" fontWeight="700">
                         {monthNames[currentMonth]} {currentYear}
                     </Heading>
                     <Text fontSize="0.75rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">

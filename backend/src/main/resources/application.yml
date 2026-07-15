@@ -36,7 +36,7 @@ app:
     email: ${ADMIN_EMAIL}
     password: ${ADMIN_PASSWORD}
     reset-ttl-minutes: ${ADMIN_RESET_TTL_MINUTES:15}
-    reset-url: ${ADMIN_RESET_URL:http://localhost:5173/reset-password}
+    reset-url: ${ADMIN_RESET_URL:http://localhost:5100/reset-password}
   email:
     from: ${SMTP_FROM:}
 

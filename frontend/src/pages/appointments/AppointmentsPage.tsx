@@ -1,9 +1,9 @@
 import { Box, Table, Text, Icon, Grid, Flex, Heading, Input, Button, Spinner, chakra } from '@chakra-ui/react';
 import { FiEdit2, FiTrash2, FiCalendar, FiCheckCircle, FiClock, FiSearch, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useState, useEffect, useCallback } from 'react';
-import { Badge } from '../components/common/Badge';
-import { Modal } from '../components/common/Modal';
-import type { Appointment } from '../types';
+import { Badge } from '../../components/common/Badge';
+import { Modal } from '../../components/common/Modal';
+import type { Appointment } from '../../types';
 
 export const AppointmentsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -180,7 +180,7 @@ export const AppointmentsPage = () => {
                             Total RDV
                         </Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Crimson Pro', serif" >
+                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Poppins', sans-serif" >
                         {appointments.length}
                     </Text>
                 </Box>
@@ -191,7 +191,7 @@ export const AppointmentsPage = () => {
                             Confirmés
                         </Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Crimson Pro', serif">
+                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Poppins', sans-serif">
                         {confirmedCount}
                     </Text>
                 </Box>
@@ -200,20 +200,20 @@ export const AppointmentsPage = () => {
                         <Icon as={FiClock} boxSize="1.5rem" color="#fbbf24" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">En attente</Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Crimson Pro', serif">{pendingCount}</Text>
+                    <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Poppins', sans-serif">{pendingCount}</Text>
                 </Box>
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)', }}>
                     <Flex align="center" gap="0.75rem" mb="0.5rem">
                         <Icon as={FiCheck} boxSize="1.5rem" color="accent" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Terminés</Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Crimson Pro', serif">{completedCount}</Text>
+                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">{completedCount}</Text>
                 </Box>
             </Grid>
             <Box bg="white" borderRadius="12px" p="1.5rem" boxShadow="0 2px 12px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)">
                 <Flex justify="space-between" align="center" mb="1.5rem" flexWrap="wrap" gap="1rem">
                     <Box>
-                        <Heading as="h2" fontFamily="'Crimson Pro', serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">Tous les rendez-vous</Heading>
+                        <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">Tous les rendez-vous</Heading>
                         <Text fontSize="0.85rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">{totalElements} rendez-vous au total</Text>
                     </Box>
 

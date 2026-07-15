@@ -43,10 +43,10 @@ const customConfig = defineConfig({
             },
             fonts: {
                 heading: {
-                    value: "'Crimson Pro', serif",
+                    value: "'Poppins', sans-serif",
                 },
                 body: {
-                    value: "'DM Sans', sans-serif",
+                    value: "'Poppins', sans-serif",
                 },
             },
             shadows: {

@@ -34,7 +34,7 @@ export const HeroSection = () => {
                 <Box>
                     <Heading
                         as="h1"
-                        fontFamily="'Crimson Pro', serif"
+                        fontFamily="'Poppins', sans-serif"
                         fontSize={{ base: '2.5rem', md: '3.5rem' }}
                         fontWeight="700"
                         lineHeight="1.2"
@@ -67,7 +67,7 @@ export const HeroSection = () => {
                         <Box textAlign="center">
                             <Text
                                 as="span"
-                                fontFamily="'Crimson Pro', serif"
+                                fontFamily="'Poppins', sans-serif"
                                 fontSize="2.5rem"
                                 fontWeight="700"
                                 display="block"
@@ -81,7 +81,7 @@ export const HeroSection = () => {
                         <Box textAlign="center">
                             <Text
                                 as="span"
-                                fontFamily="'Crimson Pro', serif"
+                                fontFamily="'Poppins', sans-serif"
                                 fontSize="2.5rem"
                                 fontWeight="700"
                                 display="block"
@@ -95,7 +95,7 @@ export const HeroSection = () => {
                         <Box textAlign="center">
                             <Text
                                 as="span"
-                                fontFamily="'Crimson Pro', serif"
+                                fontFamily="'Poppins', sans-serif"
                                 fontSize="2.5rem"
                                 fontWeight="700"
                                 display="block"

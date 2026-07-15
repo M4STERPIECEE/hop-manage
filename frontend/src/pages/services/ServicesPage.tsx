@@ -1,11 +1,11 @@
 import { Box, Table, Icon, Grid, Flex, Heading, Text, Button, Input, Spinner } from '@chakra-ui/react';
-import { toaster } from '../components/ui/toaster';
+import { toaster } from '../../components/ui/toaster';
 import { FiEdit2, FiCheckCircle, FiClock, FiDollarSign } from 'react-icons/fi';
 import { GiTooth } from 'react-icons/gi';
 import { useEffect, useState } from 'react';
-import { Badge } from '../components/common/Badge';
-import { Modal } from '../components/common/Modal';
-import { API_ENDPOINTS } from '../config/api';
+import { Badge } from '../../components/common/Badge';
+import { Modal } from '../../components/common/Modal';
+import { API_ENDPOINTS } from '../../config/api';
 
 type ServiceApi = {
     id: string;
@@ -160,7 +160,7 @@ export const ServicesPage = () => {
                             Total Services
                         </Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Crimson Pro', serif">
+                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Poppins', sans-serif">
                         {totalServices}
                     </Text>
                 </Box>
@@ -174,7 +174,7 @@ export const ServicesPage = () => {
                             Services Actifs
                         </Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Crimson Pro', serif">
+                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Poppins', sans-serif">
                         {activeServices}
                     </Text>
                 </Box>
@@ -188,7 +188,7 @@ export const ServicesPage = () => {
                             Durée Moyenne
                         </Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Crimson Pro', serif">
+                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">
                         {avgDuration} min
                     </Text>
                 </Box>
@@ -202,7 +202,7 @@ export const ServicesPage = () => {
                             Prix Moyen
                         </Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Crimson Pro', serif">
+                    <Text fontSize="2rem" fontWeight="700" color="#fbbf24" fontFamily="'Poppins', sans-serif">
                         {formatPrice(avgPrice)}
                     </Text>
                 </Box>
@@ -210,7 +210,7 @@ export const ServicesPage = () => {
             <Box bg="white" borderRadius="12px" p="1.5rem" boxShadow="0 2px 12px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)">
                 <Flex justify="space-between" align="center" mb="1.5rem" flexWrap="wrap" gap="1rem">
                     <Box>
-                        <Heading as="h2" fontFamily="'Crimson Pro', serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">
+                        <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">
                             Services disponibles
                         </Heading>
                         <Text fontSize="0.85rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">

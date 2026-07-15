@@ -4,7 +4,7 @@ export const SettingsPage = () => {
     return (
         <Box bg="white" borderRadius="12px" boxShadow="0 1px 3px rgba(10, 77, 104, 0.08)" overflow="hidden">
             <Box px="2rem" py="1.5rem" borderBottom="2px solid var(--border)">
-                <Heading as="h2" fontFamily="'Crimson Pro', serif" fontSize="1.5rem" color="primary">
+                <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary">
                     Paramètres du cabinet
                 </Heading>
             </Box>

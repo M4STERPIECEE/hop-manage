@@ -1,7 +1,7 @@
 import { Box, Table, Grid, Flex, Heading, Text, Input, Button, Icon, Spinner } from '@chakra-ui/react';
 import { useState, useEffect, useCallback } from 'react';
-import { Modal } from '../components/common/Modal';
-import type { Patient } from '../types';
+import { Modal } from '../../components/common/Modal';
+import type { Patient } from '../../types';
 import { FiChevronLeft, FiChevronRight, FiUsers, FiUserCheck, FiUserPlus, FiSearch } from 'react-icons/fi';
 
 export const PatientsPage = () => {
@@ -86,7 +86,7 @@ export const PatientsPage = () => {
                         <Icon as={FiUsers} boxSize="1.5rem" color="primary" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Total Patients</Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Crimson Pro', serif">{totalPatientsCount}</Text>
+                    <Text fontSize="2rem" fontWeight="700" color="primary" fontFamily="'Poppins', sans-serif">{totalPatientsCount}</Text>
                 </Box>
 
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(5, 199, 226, 0.2)" boxShadow="0 2px 8px rgba(5, 199, 226, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(5, 199, 226, 0.15)' }}>
@@ -94,7 +94,7 @@ export const PatientsPage = () => {
                         <Icon as={FiUserCheck} boxSize="1.5rem" color="accent" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Patients récents</Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Crimson Pro', serif">{activePatientsCount}</Text>
+                    <Text fontSize="2rem" fontWeight="700" color="accent" fontFamily="'Poppins', sans-serif">{activePatientsCount}</Text>
                 </Box>
 
                 <Box bg="white" p="1.5rem" borderRadius="12px" border="1px solid rgba(34, 197, 94, 0.2)" boxShadow="0 2px 8px rgba(34, 197, 94, 0.08)" transition="all 0.3s ease" _hover={{ transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(34, 197, 94, 0.15)' }}>
@@ -102,7 +102,7 @@ export const PatientsPage = () => {
                         <Icon as={FiUserPlus} boxSize="1.5rem" color="#22c55e" />
                         <Text fontSize="0.85rem" fontWeight="600" color="rgba(10, 77, 104, 0.7)" textTransform="uppercase" letterSpacing="0.5px">Nouveaux ce mois</Text>
                     </Flex>
-                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Crimson Pro', serif">{newThisMonthCount}</Text>
+                    <Text fontSize="2rem" fontWeight="700" color="#22c55e" fontFamily="'Poppins', sans-serif">{newThisMonthCount}</Text>
                 </Box>
             </Grid>
 
@@ -110,7 +110,7 @@ export const PatientsPage = () => {
             <Box bg="white" borderRadius="12px" p="1.5rem" boxShadow="0 2px 12px rgba(10, 77, 104, 0.08)" border="1px solid rgba(10, 77, 104, 0.08)">
                 <Flex justify="space-between" align="center" mb="1.5rem" gap="1rem">
                     <Box>
-                        <Heading as="h2" fontFamily="'Crimson Pro', serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">Liste des patients</Heading>
+                        <Heading as="h2" fontFamily="'Poppins', sans-serif" fontSize="1.5rem" color="primary" mb="0.25rem" fontWeight="700">Liste des patients</Heading>
                         <Text fontSize="0.85rem" color="rgba(10, 77, 104, 0.6)" fontWeight="500">{totalElements} patient{totalElements > 1 ? 's' : ''} au total</Text>
                     </Box>
 

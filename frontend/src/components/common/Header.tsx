@@ -26,7 +26,7 @@ export const Header = ({ onAdminClick }: HeaderProps) => {
                 justify="space-between"
                 align="center"
             >
-                <Flex align="center" gap="0.5rem" fontFamily="'Crimson Pro', serif" fontSize="1.8rem" fontWeight="700" color="primary">
+                <Flex align="center" gap="0.5rem" fontFamily="'Poppins', sans-serif" fontSize="1.8rem" fontWeight="700" color="primary">
                     <Flex
                         w="40px"
                         h="40px"
