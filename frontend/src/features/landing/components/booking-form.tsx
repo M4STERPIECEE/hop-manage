@@ -3,6 +3,7 @@ import type { BookingFormData } from 'src/shared/model';
 import { useAppForm } from 'src/shared/form/form-setup';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
+import { User, Mail, Phone } from 'lucide-react';
 import { Button } from 'src/shared/ui/button';
 import { BookingSuccess } from './booking-success';
 import { BookingSummary } from './booking-summary';
@@ -113,12 +114,12 @@ export const BookingForm = () => {
                     <form.AppField
                         name="firstName"
                         validators={{ onChange: z.string().min(1, 'Prénom requis') }}
-                        children={(field) => <field.InputField label="Prénom" placeholder="Votre prénom" />}
+                        children={(field) => <field.InputField label="Prénom" placeholder="Votre prénom" startIcon={<User />} />}
                     />
                     <form.AppField
                         name="lastName"
                         validators={{ onChange: z.string().min(1, 'Nom requis') }}
-                        children={(field) => <field.InputField label="Nom" placeholder="Votre nom" />}
+                        children={(field) => <field.InputField label="Nom" placeholder="Votre nom" startIcon={<User />} />}
                     />
                 </div>
 
@@ -126,7 +127,7 @@ export const BookingForm = () => {
                     <form.AppField
                         name="email"
                         validators={{ onChange: z.string().email('Email invalide').min(1, 'Email requis') }}
-                        children={(field) => <field.InputField label="Email" type="email" placeholder="adresse@exemple.com" />}
+                        children={(field) => <field.InputField label="Email" type="email" placeholder="adresse@exemple.com" startIcon={<Mail />} />}
                     />
                 </div>
 
@@ -134,7 +135,7 @@ export const BookingForm = () => {
                     <form.AppField
                         name="phone"
                         validators={{ onChange: z.string().min(1, 'Téléphone requis') }}
-                        children={(field) => <field.InputField label="Téléphone" type="tel" placeholder="06 12 34 56 78" />}
+                        children={(field) => <field.InputField label="Téléphone" type="tel" placeholder="06 12 34 56 78" startIcon={<Phone />} />}
                     />
                 </div>
 
