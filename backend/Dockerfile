@@ -6,9 +6,9 @@ COPY build.gradle settings.gradle ./
 COPY gradle/ gradle/
 COPY gradlew .
 RUN chmod +x ./gradlew
-RUN ./gradlew dependencies --configuration compileClasspath --no-daemon 2>/dev/null || true
+RUN gradle dependencies --configuration compileClasspath --no-daemon 2>/dev/null || true
 COPY src/ src/
-RUN ./gradlew build --no-daemon -x test
+RUN gradle build --no-daemon -x test
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
