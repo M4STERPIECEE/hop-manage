@@ -13,18 +13,16 @@ export const HeroSection = () => {
                     </p>
 
                     <div className="flex gap-12 mt-12 justify-center lg:justify-start animate-[fadeInUp_0.8s_ease-out_0.4s_backwards]">
-                        <div className="text-center">
-                            <span className="font-poppins text-4xl font-bold block">15+</span>
-                            <span className="text-sm opacity-80">Années d'expérience</span>
-                        </div>
-                        <div className="text-center">
-                            <span className="font-poppins text-4xl font-bold block">5000+</span>
-                            <span className="text-sm opacity-80">Patients satisfaits</span>
-                        </div>
-                        <div className="text-center">
-                            <span className="font-poppins text-4xl font-bold block">98%</span>
-                            <span className="text-sm opacity-80">Taux de satisfaction</span>
-                        </div>
+                        {[
+                            { value: '15+', label: "Années d'expérience" },
+                            { value: '5000+', label: 'Patients satisfaits' },
+                            { value: '98%', label: 'Taux de satisfaction' }
+                        ].map((stat, i) => (
+                            <div key={i} className="text-center">
+                                <span className="font-poppins text-4xl font-bold block">{stat.value}</span>
+                                <span className="text-sm opacity-80">{stat.label}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
 

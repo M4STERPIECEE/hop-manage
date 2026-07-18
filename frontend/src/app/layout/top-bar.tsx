@@ -35,24 +35,24 @@ export const TopBar = ({ title, onMenuToggle }: TopBarProps) => {
 
     return (
         <>
-            <div className="bg-[var(--bg-white)] px-8 py-6 shadow-sm flex justify-between items-center sticky top-0 z-50">
-                <div className="flex items-center gap-4">
+            <div className="bg-[var(--bg-white)] px-6 py-4 shadow-sm flex justify-between items-center sticky top-0 z-50">
+                <div className="flex items-center gap-3">
                     <Button 
                         variant="default"
                         onClick={onMenuToggle} 
-                        className="block lg:hidden p-2 rounded-lg"
+                        className="block lg:hidden p-1.5 rounded-lg"
                     >
-                        <Menu className="w-6 h-6" />
+                        <Menu className="w-5 h-5" />
                     </Button>
-                    <h1 className="font-poppins text-3xl text-[var(--primary)] font-bold">
+                    <h1 className="font-poppins text-xl text-[var(--primary)] font-bold">
                         {title}
                     </h1>
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full flex items-center justify-center text-white font-semibold">
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full flex items-center justify-center text-white font-semibold text-sm">
                         Dr
                     </div>
-                    <div className="hidden md:block font-medium">Dr. Martin</div>
+                    <div className="hidden md:block font-medium text-sm">Dr. Martin</div>
                     <Button variant="destructive" onClick={handleLogoutClick}>
                         Déconnexion
                     </Button>

@@ -9,13 +9,13 @@ import { DataTable } from 'src/shared/ui/data-table';
 import { toaster } from 'src/shared/ui/toaster';
 
 const statusVariant: Record<string, 'warning' | 'success' | 'neutral' | 'destructive'> = {
-  PENDING: 'warning',
-  'En attente': 'warning',
-  CONFIRMED: 'success',
-  Confirmé: 'success',
-  COMPLETED: 'neutral',
-  Terminé: 'neutral',
-  Annulé: 'destructive',
+    PENDING: 'warning',
+    'En attente': 'warning',
+    CONFIRMED: 'success',
+    Confirmé: 'success',
+    COMPLETED: 'neutral',
+    Terminé: 'neutral',
+    Annulé: 'destructive',
 };
 
 export const AppointmentsPage = () => {
@@ -148,42 +148,22 @@ export const AppointmentsPage = () => {
     return (
         <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total RDV</CardTitle>
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{appointments.length}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Confirmés</CardTitle>
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-500">{confirmedCount}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">En attente</CardTitle>
-                        <Clock className="h-4 w-4 text-yellow-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-yellow-500">{pendingCount}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Terminés</CardTitle>
-                        <Check className="h-4 w-4 text-[var(--accent)]" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-[var(--accent)]">{completedCount}</div>
-                    </CardContent>
-                </Card>
+                {[
+                    { label: "Total RDV", icon: Calendar, iconColor: "text-muted-foreground", value: appointments.length, valueColor: "" },
+                    { label: "Confirmés", icon: CheckCircle, iconColor: "text-green-500", value: confirmedCount, valueColor: "text-green-500" },
+                    { label: "En attente", icon: Clock, iconColor: "text-yellow-500", value: pendingCount, valueColor: "text-yellow-500" },
+                    { label: "Terminés", icon: Check, iconColor: "text-[var(--accent)]", value: completedCount, valueColor: "text-[var(--accent)]" }
+                ].map((stat, i) => (
+                    <Card key={i}>
+                        <CardHeader className="flex flex-row items-center justify-between pb-2">
+                            <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
+                            <stat.icon className={`h-4 w-4 ${stat.iconColor}`} />
+                        </CardHeader>
+                        <CardContent>
+                            <div className={`text-2xl font-bold ${stat.valueColor}`}>{stat.value}</div>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
 
             <DataTable<Appointment>
@@ -194,16 +174,18 @@ export const AppointmentsPage = () => {
                     { id: 'service', header: 'Service', cell: (row) => row.service },
                     { id: 'date', header: 'Date & Heure', cell: (row) => <div><p className="font-medium">{formatDate(row.date)}</p><p className="text-xs text-muted-foreground">à {row.time}</p></div> },
                     { id: 'status', header: 'Statut', cell: (row) => <Badge variant={statusVariant[row.status]}>{row.status}</Badge> },
-                    { id: 'actions', header: 'Actions', cell: (row) => (
-                        <div className="flex gap-2">
-                            <Button variant="ghost" size="icon" onClick={() => openEditModal(row)} className="p-2 bg-[rgba(5,199,226,0.1)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] transition-colors">
-                                <Pencil className="w-4 h-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="p-2 bg-red-600/10 text-red-600 rounded-md hover:bg-red-600/20 transition-colors">
-                                <Trash2 className="w-4 h-4" />
-                            </Button>
-                        </div>
-                    )},
+                    {
+                        id: 'actions', header: 'Actions', cell: (row) => (
+                            <div className="flex gap-2">
+                                <Button variant="ghost" size="icon" onClick={() => openEditModal(row)} className="p-2 bg-[rgba(5,199,226,0.1)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] transition-colors">
+                                    <Pencil className="w-4 h-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon" className="p-2 bg-red-600/10 text-red-600 rounded-md hover:bg-red-600/20 transition-colors">
+                                    <Trash2 className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        )
+                    },
                 ]}
                 data={filteredAppointments}
                 getRowId={(row) => row.id}
