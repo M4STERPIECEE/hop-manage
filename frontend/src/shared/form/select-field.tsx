@@ -26,22 +26,26 @@ export function SelectField({ label, options, placeholder }: SelectFieldProps) {
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor={field.name}>{label}</Label>
-      <Select
-        value={field.state.value ?? ""}
-        onValueChange={(value) => field.handleChange((value as string) ?? "")}
-        onOpenChange={(open) => {
-          if (!open) field.handleBlur();
-        }}
-      >
-        <SelectTrigger
-          id={field.name}
-          className="w-full"
-          aria-invalid={!!error || undefined}
+        <Select
+          value={field.state.value ?? ""}
+          onValueChange={(value) => field.handleChange((value as string) ?? "")}
+          onOpenChange={(open) => {
+            if (!open) field.handleBlur();
+          }}
         >
-          <SelectValue placeholder={placeholder}>
-            {options.find((o) => o.value === field.state.value)?.label}
-          </SelectValue>
-        </SelectTrigger>
+          <SelectTrigger
+            id={field.name}
+            className="w-full"
+            aria-invalid={!!error || undefined}
+          >
+            <SelectValue placeholder={placeholder}>
+              {field.state.value ? (
+                options.find((o) => o.value === field.state.value)?.label
+              ) : (
+                <span className="text-muted-foreground">{placeholder || 'Sélectionnez...'}</span>
+              )}
+            </SelectValue>
+          </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>

@@ -17,6 +17,7 @@ export function InputField({
   labelAction,
   startIcon,
   endIcon,
+  className,
   ...props
 }: InputFieldProps) {
   const field = useFieldContext<string>();
@@ -33,9 +34,12 @@ export function InputField({
       </div>
       <div className="relative">
         {startIcon && (
-          <span className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-2 text-muted-foreground *:size-4">
-            {startIcon}
-          </span>
+          <>
+            <span className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-3 text-muted-foreground *:size-4">
+              {startIcon}
+            </span>
+            <div className="absolute left-10 top-1/2 -translate-y-1/2 h-5 w-px bg-gray-300 pointer-events-none z-10" />
+          </>
         )}
         <Input
           {...props}
@@ -45,7 +49,7 @@ export function InputField({
           onChange={(e) => field.handleChange(e.target.value)}
           onBlur={field.handleBlur}
           aria-invalid={!!error || undefined}
-          className={cn(startIcon && "pl-7", endIcon && "pr-7")}
+          className={cn(startIcon && "pl-14", endIcon && "pr-7", className)}
         />
         {endIcon && (
           <span className="-translate-y-1/2 absolute top-1/2 right-2 text-muted-foreground *:size-4">
