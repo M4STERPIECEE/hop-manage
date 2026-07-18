@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, User, Mail, Phone, Calendar, Clock, Activity, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, User, Calendar, ShieldCheck } from 'lucide-react';
 import type { BookingFormData } from 'src/shared/model';
 import { Button } from 'src/shared/ui/button';
 import { Checkbox } from 'src/shared/ui/checkbox';
