@@ -44,6 +44,25 @@ services:
           cpus: "1"
           memory: 512M
 
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: appointment-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - spring-backend
+    networks:
+      - backend-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+
 volumes:
   pgdata:
 
