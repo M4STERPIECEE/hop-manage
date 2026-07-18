@@ -30,6 +30,7 @@ export const LoginForm = () => {
             setInfo(null);
 
             try {
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 await authService.login(value);
                 navigate({ to: '/dashboard', replace: true });
             } catch (err) {
