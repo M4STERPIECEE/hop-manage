@@ -82,18 +82,9 @@ export const BookingForm = () => {
 
     if (step === 'summary') {
         return (
-            <form.Subscribe
-                selector={(state) => [state.isSubmitting]}
-                children={([isSubmitting]) => (
-                    <BookingSummary
-                        values={form.state.values}
-                        error={error}
-                        isSubmitting={isSubmitting}
-                        onBack={() => setStep('form')}
-                        onConfirm={() => form.handleSubmit()}
-                    />
-                )}
-            />
+            <form.Subscribe selector={(state) => [state.isSubmitting]} children={([isSubmitting]) => (
+                <BookingSummary values={form.state.values} error={error} isSubmitting={isSubmitting} onBack={() => setStep('form')} onConfirm={() => form.handleSubmit()} />
+            )} />
         );
     }
 
@@ -103,75 +94,40 @@ export const BookingForm = () => {
                 Réserver un rendez-vous
             </h2>
 
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    form.handleSubmit();
-                }}
-            >
+            <form onSubmit={(e) => { e.preventDefault(); e.stopPropagation(); form.handleSubmit(); }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <form.AppField
-                        name="firstName"
-                        validators={{ onChange: z.string().min(1, 'Prénom requis') }}
-                        children={(field) => <field.InputField label="Prénom" placeholder="Votre prénom" startIcon={<User />} />}
-                    />
-                    <form.AppField
-                        name="lastName"
-                        validators={{ onChange: z.string().min(1, 'Nom requis') }}
-                        children={(field) => <field.InputField label="Nom" placeholder="Votre nom" startIcon={<User />} />}
-                    />
+                    <form.AppField name="firstName" validators={{ onChange: z.string().min(1, 'Prénom requis') }} children={(field) => <field.InputField label="Prénom" placeholder="Votre prénom" startIcon={<User />} />} />
+                    <form.AppField name="lastName" validators={{ onChange: z.string().min(1, 'Nom requis') }} children={(field) => <field.InputField label="Nom" placeholder="Votre nom" startIcon={<User />} />} />
                 </div>
 
                 <div className="mb-6">
-                    <form.AppField
-                        name="email"
-                        validators={{ onChange: z.string().email('Email invalide').min(1, 'Email requis') }}
-                        children={(field) => <field.InputField label="Email" type="email" placeholder="adresse@exemple.com" startIcon={<Mail />} />}
-                    />
+                    <form.AppField name="email" validators={{ onChange: z.string().email('Email invalide').min(1, 'Email requis') }} children={(field) => <field.InputField label="Email" type="email" placeholder="adresse@exemple.com" startIcon={<Mail />} />} />
                 </div>
 
                 <div className="mb-6">
-                    <form.AppField
-                        name="phone"
-                        validators={{ onChange: z.string().min(1, 'Téléphone requis') }}
-                        children={(field) => <field.InputField label="Téléphone" type="tel" placeholder="06 12 34 56 78" startIcon={<Phone />} />}
-                    />
+                    <form.AppField name="phone" validators={{ onChange: z.string().min(1, 'Téléphone requis') }} children={(field) => <field.InputField label="Téléphone" type="tel" placeholder="06 12 34 56 78" startIcon={<Phone />} />} />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <form.AppField
-                        name="date"
-                        validators={{ onChange: z.string().min(1, 'Date requise') }}
-                        children={(field) => <field.DateField label="Date" fromDate={new Date()} />}
-                    />
-                    <form.AppField
-                        name="time"
-                        validators={{ onChange: z.string().min(1, 'Heure requise') }}
-                        children={(field: any) => (
-                            <field.SelectField label="Heure" options={TIME_OPTIONS} />
-                        )}
-                    />
+                    <form.AppField name="date" validators={{ onChange: z.string().min(1, 'Date requise') }} children={(field) => <field.DateField label="Date" fromDate={new Date()} />} />
+                    <form.AppField name="time" validators={{ onChange: z.string().min(1, 'Heure requise') }} children={(field: any) => (
+                        <field.SelectField label="Heure" placeholder="Sélectionnez une heure" options={TIME_OPTIONS} />
+                    )} />
                 </div>
 
                 <div className="mb-8">
-                    <form.AppField
-                        name="service"
-                        validators={{ onChange: z.string().min(1, 'Service requis') }}
-                        children={(field: any) => (
-                            <field.SelectField label="Type de soin" options={SERVICE_OPTIONS} />
-                        )}
-                    />
+                    <form.AppField name="service" validators={{ onChange: z.string().min(1, 'Service requis') }} children={(field: any) => (
+                        <field.SelectField label="Type de soin" placeholder="Sélectionnez un service" options={SERVICE_OPTIONS} />
+                    )} />
                 </div>
 
-                <form.Subscribe
-                    selector={(state) => [state.canSubmit]}
-                    children={([canSubmit]) => (
-                        <Button type="submit" disabled={!canSubmit} className="w-full h-14 text-lg">
+                <form.Subscribe selector={(state) => [state.canSubmit]} children={([canSubmit]) => (
+                    <div className="flex justify-center">
+                        <Button type="submit" disabled={!canSubmit} className="w-fit px-8 h-12 text-base">
                             Continuer
                         </Button>
-                    )}
-                />
+                    </div>
+                )} />
             </form>
         </div>
     );
