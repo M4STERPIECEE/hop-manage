@@ -5,6 +5,7 @@ WORKDIR /app
 COPY build.gradle settings.gradle ./
 COPY gradle/ gradle/
 COPY gradlew .
+RUN chmod +x ./gradlew
 RUN ./gradlew dependencies --configuration compileClasspath --no-daemon 2>/dev/null || true
 COPY src/ src/
 RUN ./gradlew build --no-daemon -x test
