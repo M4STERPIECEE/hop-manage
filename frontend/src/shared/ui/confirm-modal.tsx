@@ -29,7 +29,7 @@ export function ConfirmModal({
                 <Button variant="outline" onClick={onCancel}>
                     {cancelText}
                 </Button>
-                <Button variant="danger" onClick={onConfirm}>
+                <Button variant="destructive" onClick={onConfirm}>
                     {confirmText}
                 </Button>
             </div>

@@ -63,26 +63,24 @@ export function DateTimePicker({
   return (
     <div className={cn("flex gap-2", className)}>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger
-          render={
-            <Button
-              id={id}
-              type="button"
-              variant="outline"
-              className={cn(
-                "flex-1 justify-between font-normal",
-                !value && "text-muted-foreground",
-              )}
-            >
-              <span className="truncate">{displayValue || placeholder}</span>
-              <HugeiconsIcon
-                icon={Calendar03Icon}
-                strokeWidth={2}
-                className="size-3.5 text-muted-foreground shrink-0"
-              />
-            </Button>
-          }
-        />
+        <PopoverTrigger asChild>
+          <Button
+            id={id}
+            type="button"
+            variant="outline"
+            className={cn(
+              "flex-1 justify-between font-normal",
+              !value && "text-muted-foreground",
+            )}
+          >
+            <span className="truncate">{displayValue || placeholder}</span>
+            <HugeiconsIcon
+              icon={Calendar03Icon}
+              strokeWidth={2}
+              className="size-3.5 text-muted-foreground shrink-0"
+            />
+          </Button>
+        </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
             mode="single"

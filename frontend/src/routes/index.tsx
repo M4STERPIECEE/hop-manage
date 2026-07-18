@@ -1,4 +1,10 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Navigate,
+  Outlet,
+} from '@tanstack/react-router';
 import { ProtectedRoute } from '../features/auth/routing/protected-route';
 import { LandingPage } from '../features/landing/components/landing-page';
 import { DashboardLayout } from '../app/layout/dashboard-layout';
@@ -12,31 +18,96 @@ import { LoginPage } from '../features/auth/components/login-page';
 import { ResetPasswordPage } from '../features/auth/components/reset-password-page';
 import { Toaster } from '../shared/ui/toaster';
 
-function App() {
-  return (
+const rootRoute = createRootRoute({
+  component: () => (
     <div>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        
-        {/* Routes Protégées */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<DashboardLayout title="Vue d'ensemble" />}>
-            <Route index element={<OverviewPage />} />
-            <Route path="appointments" element={<AppointmentsPage />} />
-            <Route path="patients" element={<PatientsPage />} />
-            <Route path="calendar" element={<CalendarPage />} />
-            <Route path="services" element={<ServicesPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-        </Route>
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Outlet />
       <Toaster />
     </div>
-  );
-}
+  ),
+  notFoundComponent: () => <Navigate to="/" />,
+});
 
-export default App;
+const landingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: LandingPage,
+});
+
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/login',
+  component: LoginPage,
+});
+
+const resetPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/reset-password',
+  component: ResetPasswordPage,
+});
+
+const protectedRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'protected',
+  component: ProtectedRoute,
+});
+
+const dashboardRoute = createRoute({
+  getParentRoute: () => protectedRoute,
+  path: '/dashboard',
+  component: () => <DashboardLayout title="Vue d'ensemble" />,
+});
+
+const overviewRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: '/',
+  component: OverviewPage,
+});
+
+const appointmentsRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: '/appointments',
+  component: AppointmentsPage,
+});
+
+const patientsRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: '/patients',
+  component: PatientsPage,
+});
+
+const calendarRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: '/calendar',
+  component: CalendarPage,
+});
+
+const servicesRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: '/services',
+  component: ServicesPage,
+});
+
+const settingsRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: '/settings',
+  component: SettingsPage,
+});
+
+const routeTree = rootRoute.addChildren([
+  landingRoute,
+  loginRoute,
+  resetPasswordRoute,
+  protectedRoute.addChildren([
+    dashboardRoute.addChildren([
+      overviewRoute,
+      appointmentsRoute,
+      patientsRoute,
+      calendarRoute,
+      servicesRoute,
+      settingsRoute,
+    ]),
+  ]),
+]);
+
+export const router = createRouter({ routeTree });

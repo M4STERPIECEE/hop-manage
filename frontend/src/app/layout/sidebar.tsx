@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '@tanstack/react-router';
 import { BarChart3, Calendar, Users, Grid, ClipboardList, Settings, Smile } from 'lucide-react';
 import { cn } from '../../shared/lib/utils';
 

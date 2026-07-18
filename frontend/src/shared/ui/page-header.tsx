@@ -1,10 +1,10 @@
-import type { LinkProps } from "react-router-dom";
-import type { ReactNode } from "react";
+import type { Link } from "@tanstack/react-router";
+import type { ComponentProps, ReactNode } from "react";
 import { BackButton } from "src/shared/ui/back-button";
 
 type BackTo = {
   to: string;
-  state?: LinkProps["state"];
+  params?: ComponentProps<typeof Link>["params"];
   label?: string;
 };
 
@@ -25,7 +25,7 @@ export function PageHeader({
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="flex min-w-0 flex-col gap-1">
         {backTo && (
-          <BackButton to={backTo.to} state={backTo.state}>
+          <BackButton to={backTo.to} params={backTo.params}>
             {backTo.label}
           </BackButton>
         )}

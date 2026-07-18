@@ -4,13 +4,9 @@ import { useEffect, useState } from 'react';
 import { Badge } from 'src/shared/ui/badge';
 import { Button } from 'src/shared/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
-import {
-    Table, TableHeader, TableBody, TableRow, TableHead, TableCell
-} from 'src/shared/ui/table';
 import { ServiceModal } from './modals/service-modal';
 import { API_ENDPOINTS } from '../../../shared/api/api';
 import { DataTable } from 'src/shared/ui/data-table';
-import { cn } from 'src/shared/lib/utils';
 
 type ServiceApi = {
     id: string;
@@ -23,7 +19,7 @@ type ServiceApi = {
 
 export const ServicesPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [categoryFilter, setCategoryFilter] = useState<string>('Tous');
+    const [categoryFilter] = useState<string>('Tous');
     const [servicesData, setServicesData] = useState<ServiceApi[]>([]);
     const [filteredServices, setFilteredServices] = useState<ServiceApi[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -46,8 +42,6 @@ export const ServicesPage = () => {
         currency: 'MGA',
         maximumFractionDigits: 0,
     }).format(value);
-
-    const categories = ['Tous', 'Consultation', 'Nettoyage', 'Esthétique', 'Chirurgie'];
 
     useEffect(() => {
         fetchServices();
@@ -93,10 +87,6 @@ export const ServicesPage = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const handleCategoryFilter = (category: string) => {
-        setCategoryFilter(category);
     };
 
     const openEditModal = (service: ServiceApi) => {
@@ -197,84 +187,40 @@ export const ServicesPage = () => {
                 </Card>
             </div>
 
-            <DataTable
-                title="Services disponibles"
-                subtitle={`${filteredServices.length} service${filteredServices.length > 1 ? 's' : ''} disponible${filteredServices.length > 1 ? 's' : ''}`}
-                filters={
-                    <div className="flex gap-3 flex-wrap">
-                        {categories.map((category) => (
-                            <Button
-                                key={category}
-                                variant={categoryFilter === category ? "default" : "outline"}
-                                onClick={() => handleCategoryFilter(category)}
-                                className={cn(
-                                    "px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300",
-                                    categoryFilter === category
-                                        ? "bg-[var(--primary)] text-white border-[var(--primary)] hover:bg-[rgba(10,77,104,0.9)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(10,77,104,0.15)]"
-                                        : "bg-white text-[var(--primary)] border-[rgba(10,77,104,0.2)] hover:bg-[rgba(10,77,104,0.05)] hover:-translate-y-0.5"
-                                )}
-                            >
-                                {category}
-                            </Button>
-                        ))}
-                    </div>
-                }
+            <DataTable<ServiceApi>
+                columns={[
+                    { id: 'service', header: 'Service', headerClassName: 'min-w-[250px]', cell: (row) => (
+                        <div className="flex items-center gap-3 font-semibold">
+                            <div className="bg-[rgba(5,199,226,0.1)] p-2 rounded-lg text-[var(--accent)]">
+                                <Smile className="w-5 h-5" />
+                            </div>
+                            {row.name}
+                        </div>
+                    )},
+                    { id: 'duration', header: 'Durée', cell: (row) => (
+                        <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-[var(--accent)]" />
+                            <span className="font-medium">{row.durationMinutes} min</span>
+                        </div>
+                    )},
+                    { id: 'price', header: 'Prix', cell: (row) => <span className="font-bold">{formatPrice(row.price)}</span> },
+                    { id: 'status', header: 'Statut', cell: (row) => (
+                        <Badge variant={row.status === 'Actif' ? 'success' : 'neutral'}>
+                            {row.status || 'Actif'}
+                        </Badge>
+                    )},
+                    { id: 'actions', header: 'Actions', cell: (row) => (
+                        <Button variant="ghost" size="icon" title="Modifier" onClick={() => openEditModal(row)}
+                            className="p-2 bg-[rgba(5,199,226,0.1)] border border-[rgba(5,199,226,0.2)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(5,199,226,0.3)] transition-all">
+                            <Pencil className="w-4 h-4" />
+                        </Button>
+                    )},
+                ]}
+                data={filteredServices}
+                getRowId={(row) => row.id}
                 isLoading={isLoading}
-                isEmpty={!isLoading && filteredServices.length === 0}
                 emptyMessage="Aucun service trouvé"
-                emptySubMessage=""
-            >
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="min-w-[250px]">Service</TableHead>
-                            <TableHead>Durée</TableHead>
-                            <TableHead>Prix</TableHead>
-                            <TableHead>Statut</TableHead>
-                            <TableHead>Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {filteredServices.map((service) => (
-                            <TableRow key={service.id}>
-                                <TableCell className="font-semibold">
-                                    <div className="flex items-center gap-3">
-                                        <div className="bg-[rgba(5,199,226,0.1)] p-2 rounded-lg text-[var(--accent)]">
-                                            <Smile className="w-5 h-5" />
-                                        </div>
-                                        {service.name}
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-[var(--accent)]" />
-                                        <span className="font-medium">{service.durationMinutes} min</span>
-                                    </div>
-                                </TableCell>
-                                <TableCell className="font-bold">
-                                    {formatPrice(service.price)}
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant={service.status === 'Actif' ? 'success' : 'secondary'}>
-                                        {service.status || 'Actif'}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>
-                                    <Button 
-                                        variant="ghost"
-                                        size="icon"
-                                        title="Modifier" 
-                                        onClick={() => openEditModal(service)}
-                                        className="p-2 bg-[rgba(5,199,226,0.1)] border border-[rgba(5,199,226,0.2)] text-[var(--accent)] rounded-md hover:bg-[rgba(5,199,226,0.2)] hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(5,199,226,0.3)] transition-all"
-                                    >
-                                        <Pencil className="w-4 h-4" />
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </DataTable>
+            />
 
             <ServiceModal
                 isOpen={isModalOpen}

@@ -1,23 +1,27 @@
-import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
-import { Tick02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { Root, Indicator } from "@radix-ui/react-checkbox";
+import { Check } from "lucide-react";
 
 import { cn } from "src/shared/lib/utils";
 
-function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
+function Checkbox({
+  className,
+  ...props
+}: React.ComponentProps<typeof Root>) {
   return (
-    <CheckboxPrimitive.Root
+    <Root
       data-slot="checkbox"
       className={cn(
-        "peer inline-flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input shadow-xs outline-none transition-[box-shadow,background-color,border-color] focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:bg-primary data-[checked]:text-primary-foreground data-[checked]:border-primary",
+        "peer size-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
         className,
       )}
       {...props}
     >
-      <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
-        <HugeiconsIcon icon={Tick02Icon} className="size-3" />
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
+      <Indicator
+        className={cn("flex items-center justify-center text-current")}
+      >
+        <Check className="size-3" />
+      </Indicator>
+    </Root>
   );
 }
 

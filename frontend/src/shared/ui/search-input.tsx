@@ -23,7 +23,7 @@ export function SearchInput({
   onChange,
   placeholder,
   delayMs = 300,
-  size = "default",
+  size: _size,
   className,
   inputClassName,
 }: SearchInputProps) {
@@ -44,7 +44,6 @@ export function SearchInput({
       />
       <Input
         type="search"
-        size={size}
         placeholder={placeholder}
         value={term}
         onChange={(event) => {

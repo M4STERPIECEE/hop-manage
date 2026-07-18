@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ConfirmModal, Button } from '../../shared/ui';
 import { authService } from '../../features/auth/api/auth-service';
@@ -21,11 +21,11 @@ export const TopBar = ({ title, onMenuToggle }: TopBarProps) => {
         try {
             await authService.logout();
             setIsLogoutModalOpen(false);
-            navigate('/', { replace: true });
+            navigate({ to: '/', replace: true });
         } catch (error) {
             console.error('Erreur lors de la déconnexion:', error);
             setIsLogoutModalOpen(false);
-            navigate('/', { replace: true });
+            navigate({ to: '/', replace: true });
         }
     };
 
@@ -53,7 +53,7 @@ export const TopBar = ({ title, onMenuToggle }: TopBarProps) => {
                         Dr
                     </div>
                     <div className="hidden md:block font-medium">Dr. Martin</div>
-                    <Button variant="danger" onClick={handleLogoutClick}>
+                    <Button variant="destructive" onClick={handleLogoutClick}>
                         Déconnexion
                     </Button>
                 </div>

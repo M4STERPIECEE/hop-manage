@@ -3,9 +3,6 @@ import { PatientModal } from './modals/patient-modal';
 import type { Patient } from 'src/shared/model';
 import { DataTable } from 'src/shared/ui/data-table';
 import { Card, CardHeader, CardTitle, CardContent } from 'src/shared/ui/card';
-import {
-    Table, TableHeader, TableBody, TableRow, TableHead, TableCell
-} from 'src/shared/ui/table';
 import { Users, UserCheck, UserPlus } from 'lucide-react';
 
 export const PatientsPage = () => {
@@ -13,9 +10,7 @@ export const PatientsPage = () => {
     const [patients, setPatients] = useState<Patient[]>([]);
     const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [searchValue, setSearchValue] = useState('');
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
 
     const apiBase = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1';
@@ -46,7 +41,6 @@ export const PatientsPage = () => {
 
             setPatients(mapped);
             setFilteredPatients(mapped);
-            setTotalPages(data.totalPages || 1);
             setTotalElements(data.totalElements || 0);
         } catch (error) {
             console.error('Error fetching patients:', error);
@@ -65,16 +59,6 @@ export const PatientsPage = () => {
         return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
     };
 
-    const handleSearch = (value: string) => {
-        setSearchValue(value);
-        const filtered = patients.filter(
-            (patient) =>
-                patient.name.toLowerCase().includes(value.toLowerCase()) ||
-                patient.email.toLowerCase().includes(value.toLowerCase()) ||
-                patient.phone.toLowerCase().includes(value.toLowerCase())
-        );
-        setFilteredPatients(filtered);
-    };
     const totalPatientsCount = totalElements;
     const activePatientsCount = patients.length;
     const newThisMonthCount = patients.filter(p => {
@@ -117,53 +101,19 @@ export const PatientsPage = () => {
                 </Card>
             </div>
 
-            <DataTable
-                title="Liste des patients"
-                subtitle={`${totalElements} patient${totalElements > 1 ? 's' : ''} au total`}
-                searchPlaceholder="Rechercher un patient..."
-                searchValue={searchValue}
-                onSearch={handleSearch}
+            <DataTable<Patient>
+                columns={[
+                    { id: 'id', header: 'ID', cell: (row) => <span className="font-medium text-muted-foreground">#{String(row.id).substring(0, 8)}</span> },
+                    { id: 'name', header: 'Nom complet', cell: (row) => <span className="font-semibold">{row.name}</span> },
+                    { id: 'email', header: 'Email', cell: (row) => row.email },
+                    { id: 'phone', header: 'Téléphone', cell: (row) => row.phone },
+                    { id: 'lastVisit', header: 'Dernière visite', cell: (row) => formatDate(row.lastVisit) },
+                ]}
+                data={filteredPatients}
+                getRowId={(row) => String(row.id)}
                 isLoading={isLoading}
-                isEmpty={!isLoading && filteredPatients.length === 0}
                 emptyMessage="Aucun patient trouvé"
-                emptySubMessage="Essayez de modifier vos critères de recherche"
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-            >
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Nom complet</TableHead>
-                            <TableHead>Email</TableHead>
-                            <TableHead>Téléphone</TableHead>
-                            <TableHead>Dernière visite</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {filteredPatients.map((patient) => (
-                            <TableRow key={patient.id}>
-                                <TableCell className="font-medium text-muted-foreground">
-                                    #{String(patient.id).substring(0, 8)}
-                                </TableCell>
-                                <TableCell className="font-semibold">
-                                    {patient.name}
-                                </TableCell>
-                                <TableCell>
-                                    {patient.email}
-                                </TableCell>
-                                <TableCell>
-                                    {patient.phone}
-                                </TableCell>
-                                <TableCell>
-                                    {formatDate(patient.lastVisit)}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </DataTable>
+            />
 
             <PatientModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>

@@ -1,36 +1,36 @@
-import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../lib/utils';
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
+
+import { cn } from "src/shared/lib/utils";
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2',
+  "inline-flex items-center rounded-full px-2 py-0.5 font-medium text-xs",
   {
     variants: {
       variant: {
-        default:
-          'border-transparent bg-[var(--primary)] text-white hover:bg-[var(--primary-dark)]',
-        secondary:
-          'border-transparent bg-[var(--accent-soft)] text-[var(--primary)] hover:bg-[var(--accent)] hover:text-white',
-        destructive:
-          'border-transparent bg-[var(--danger)] text-white hover:opacity-80',
-        outline: 'text-[var(--text-dark)] border-[var(--border)]',
-        success: 'border-transparent bg-[var(--success)] text-white hover:opacity-80',
-        warning: 'border-transparent bg-[var(--warning)] text-white hover:opacity-80',
+        neutral: "bg-muted text-muted-foreground",
+        success: "bg-success/15 text-success",
+        warning: "bg-warning/15 text-warning",
+        info: "bg-info/15 text-info",
+        accent: "bg-accent text-accent-foreground",
+        destructive: "bg-destructive/15 text-destructive",
       },
     },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
+    defaultVariants: { variant: "neutral" },
+  },
 );
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
-
-function Badge({ className, variant, ...props }: BadgeProps) {
+function Badge({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <span
+      data-slot="badge"
+      className={cn(badgeVariants({ variant }), className)}
+      {...props}
+    />
   );
 }
 

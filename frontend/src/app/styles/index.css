@@ -1,77 +1,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @theme {
-  --color-primary: #0A4D68;
-  --color-primary-dark: #083d52;
-  --color-accent: #05C7E2;
-  --color-accent-soft: #E8F9FD;
-  --color-bg-light: #FAFBFC;
-  --color-bg-white: #FFFFFF;
-  --color-text-dark: #1a2332;
-  --color-text-gray: #6b7280;
-  --color-border: #e5e7eb;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --font-poppins: 'Poppins', sans-serif;
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+  --color-card: #ffffff;
+  --color-card-foreground: #111111;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #111111;
+  --color-primary: #18181b;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #18181b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+  --color-accent: #f4f4f5;
+  --color-accent-foreground: #18181b;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-ring: #18181b;
+  --radius: 0.5rem;
 }
+
 :root {
-  --primary: #0A4D68;
-  --primary-dark: #083d52;
-  --accent: #05C7E2;
-  --accent-soft: #E8F9FD;
-  --bg-light: #FAFBFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1a2332;
-  --text-gray: #6b7280;
-  --border: #e5e7eb;
-  --success: #10b981;
+  --primary: #18181b;
+  --primary-dark: #09090b;
+  --accent: #18181b;
+  --accent-soft: #f4f4f5;
+  --bg-light: #fafafa;
+  --bg-white: #ffffff;
+  --text-dark: #111111;
+  --text-gray: #71717a;
+  --border: #e4e4e7;
+  --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
+  --primary-foreground: #fafafa;
+  --accent-foreground: #18181b;
 }
 
-
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   font-family: 'Poppins', sans-serif;
   background: var(--bg-light);
   color: var(--text-dark);
-  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
+@keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(12px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.page-transition {
+  animation: page-enter 0.4s ease-out;
 }

@@ -5,13 +5,13 @@ import { Label } from 'src/shared/ui/label';
 import { Modal } from 'src/shared/ui/modal';
 import type { Appointment } from '../../../../shared/model';
 
-const statusVariant: Record<string, 'warning' | 'success' | 'secondary' | 'destructive'> = {
+const statusVariant: Record<string, 'warning' | 'success' | 'neutral' | 'destructive'> = {
   PENDING: 'warning',
   'En attente': 'warning',
   CONFIRMED: 'success',
   Confirmé: 'success',
-  COMPLETED: 'secondary',
-  Terminé: 'secondary',
+  COMPLETED: 'neutral',
+  Terminé: 'neutral',
   Annulé: 'destructive',
 };
 
