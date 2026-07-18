@@ -1,13 +1,18 @@
-import { Radio as RadioPrimitive } from "@base-ui/react/radio";
-import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
+import {
+  Root,
+  Item,
+  Indicator,
+} from "@radix-ui/react-radio-group";
+import { Circle } from "lucide-react";
+
 import { cn } from "src/shared/lib/utils";
 
-function RadioGroup<Value extends string>({
+function RadioGroup({
   className,
   ...props
-}: RadioGroupPrimitive.Props<Value>) {
+}: React.ComponentProps<typeof Root>) {
   return (
-    <RadioGroupPrimitive
+    <Root
       data-slot="radio-group"
       className={cn("flex flex-col gap-2", className)}
       {...props}
@@ -15,33 +20,23 @@ function RadioGroup<Value extends string>({
   );
 }
 
-function Radio({ className, ...props }: RadioPrimitive.Root.Props) {
+function Radio({
+  className,
+  ...props
+}: React.ComponentProps<typeof Item>) {
   return (
-    <RadioPrimitive.Root
+    <Item
       data-slot="radio"
-      className={cn("group/radio flex items-center gap-2", className)}
+      className={cn(
+        "aspect-square size-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
       {...props}
     >
-      <span
-        data-slot="radio-indicator"
-        className={cn(
-          "flex size-4 shrink-0 items-center justify-center rounded-full border border-input shadow-xs outline-none transition-[box-shadow,background-color,border-color]",
-          "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          "data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground",
-        )}
-      >
-        <RadioPrimitive.Indicator
-          className={cn(
-            "flex items-center justify-center",
-            "hidden size-[7px] rounded-full bg-current group-data-[checked]/radio:block",
-          )}
-        />
-      </span>
-      <span data-slot="radio-label" className="text-sm">
-        {props.children}
-      </span>
-    </RadioPrimitive.Root>
+      <Indicator className="flex items-center justify-center">
+        <Circle className="size-2.5 fill-current text-current" />
+      </Indicator>
+    </Item>
   );
 }
 

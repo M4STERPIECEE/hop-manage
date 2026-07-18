@@ -52,7 +52,7 @@ export const ResetPasswordForm = () => {
                 }
 
                 setInfo('Mot de passe mis a jour. Vous pouvez vous connecter.');
-                setTimeout(() => navigate('/login'), 1200);
+                setTimeout(() => navigate({ to: '/login' }), 1200);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Erreur de reinitialisation.');
             }

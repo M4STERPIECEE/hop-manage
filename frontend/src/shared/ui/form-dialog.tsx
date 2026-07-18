@@ -46,7 +46,7 @@ export function FormDialog({
   onOpenChange,
   title,
   description,
-  icon,
+  icon: _icon,
   trigger,
   footer,
   className,
@@ -55,17 +55,14 @@ export function FormDialog({
 }: FormDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {trigger && <DialogTrigger render={trigger} />}
+      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent
         className={cn(
           "flex max-h-[calc(100vh-56px)] flex-col gap-0 overflow-hidden p-0 sm:max-w-[660px]",
           className,
         )}
       >
-        <DialogHeader
-          icon={icon}
-          className="shrink-0 border-b-2 border-border p-5"
-        >
+        <DialogHeader className="shrink-0 border-b-2 border-border p-5">
           <DialogTitle className="text-[17.5px] font-bold tracking-[-0.3px] text-foreground">
             {title}
           </DialogTitle>

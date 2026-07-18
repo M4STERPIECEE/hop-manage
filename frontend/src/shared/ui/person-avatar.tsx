@@ -39,10 +39,15 @@ export function PersonAvatar({
   size = "default",
 }: PersonAvatarProps) {
   return (
-    <Avatar size={size}>
+    <Avatar>
       <AvatarImage src={avatar || undefined} alt={name} />
       <AvatarFallback
-        className={cn(avatarColor(name), "font-medium text-avatar-foreground")}
+        className={cn(
+          avatarColor(name),
+          "font-medium text-primary-foreground",
+          size === "sm" && "text-xs",
+          size === "lg" && "text-lg",
+        )}
       >
         {initials(name) || "?"}
       </AvatarFallback>

@@ -62,7 +62,7 @@ export const ServicesSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service) => (
-                    <Card key={service.id} hoverable className="p-6">
+                    <Card key={service.id} hoverable className="p-6 ring-0 border-0 shadow-sm hover:ring-0">
                         <div className="w-[60px] h-[60px] bg-[var(--accent-soft)] rounded-xl flex items-center justify-center text-3xl mb-6">
                             <service.icon className="w-7 h-7 text-[var(--primary)]" />
                         </div>

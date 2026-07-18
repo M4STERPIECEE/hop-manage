@@ -15,7 +15,7 @@ export const DashboardLayout = ({ title }: DashboardLayoutProps) => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[var(--bg-light)]">
+        <div className="flex min-h-screen bg-[var(--bg-light)] page-transition">
             <Sidebar isOpen={isSidebarOpen} />
             <div className="flex-1 ml-0 lg:ml-[280px]">
                 <TopBar title={title} onMenuToggle={toggleSidebar} />

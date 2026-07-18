@@ -20,20 +20,18 @@ export function DisabledButtonHint({
 }: Props) {
   return (
     <Tooltip>
-      <TooltipTrigger
-        render={
-          <span className="relative inline-flex">
-            <Button variant={variant} size={size} disabled>
-              {children}
-            </Button>
-            <HugeiconsIcon
-              icon={InformationCircleIcon}
-              strokeWidth={2}
-              className="absolute -top-1.5 -right-1.5 size-3.5 rounded-full bg-background text-muted-foreground"
-            />
-          </span>
-        }
-      />
+      <TooltipTrigger asChild>
+        <span className="relative inline-flex">
+          <Button variant={variant} size={size} disabled>
+            {children}
+          </Button>
+          <HugeiconsIcon
+            icon={InformationCircleIcon}
+            strokeWidth={2}
+            className="absolute -top-1.5 -right-1.5 size-3.5 rounded-full bg-background text-muted-foreground"
+          />
+        </span>
+      </TooltipTrigger>
       <TooltipContent>{reason}</TooltipContent>
     </Tooltip>
   );
